@@ -16,11 +16,22 @@ const TermsAgree = ():any => {
 
     const {setActiveProgressTab} = useJoinProgressStore();
 
+    const termsAgreeHandler = () => {
+
+        if(!termsAgreeCheck1) {
+            console.log('agree1 not checked');
+        } else if(!termsAgreeCheck2) {
+            console.log('agree2 not checked');
+        } else if(!termsAgreeCheck3) {
+            console.log('agree3 not checked');
+        } else {
+            setActiveProgressTab("joinProgress2");
+        }
+    }
+
     useEffect(() => {
-        console.log(termsAgreeCheck1);
-        console.log(termsAgreeCheck2);
-        console.log(termsAgreeCheck3);
-    }, [termsAgreeCheck1, termsAgreeCheck2, termsAgreeCheck3])
+
+    }, [])
     
     return (
         <TermsAgreeView>
@@ -30,7 +41,7 @@ const TermsAgree = ():any => {
             <input type="checkbox" onClick={() => setTermsAgreeCheck2(!termsAgreeCheck2)} />
             <input type="checkbox" onClick={() => setTermsAgreeCheck3(!termsAgreeCheck3)} />
 
-            <button onClick={() => setActiveProgressTab("joinProgress2")}>다음 단계</button>
+            <button onClick={() => termsAgreeHandler()}>다음 단계</button>
         </TermsAgreeView>
     )
 }

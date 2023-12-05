@@ -8,7 +8,6 @@ const EnterInfo = ():any => {
 
     const navigate = useNavigate();
 
-    const [memberEmail, setMemberEmail] = useState("");
     const [memberId, setMemberId] = useState("");
     const [memberName, setMemberName] = useState("");
     const [memberPw, setMemberPw] = useState("");
@@ -17,7 +16,6 @@ const EnterInfo = ():any => {
     const [memberPhone, setMemberPhone] = useState("");
 
     // 경고 메시지
-    const [memberEmailMessage, setMemberEmailMessage] = useState("");
     const [memberIdMessage, setMemberIdMessage] = useState("");
     const [memberNameMessage, setMemberNameMessage] = useState("");
     const [memberPwMessage, setMemberPwMessage] = useState("");
@@ -26,7 +24,6 @@ const EnterInfo = ():any => {
     const [memberPhoneMessage, setMemberPhoneMessage] = useState("");
 
     // 유효성 검사
-    const [isMemberEmailEffect, setIsMemberEmailEffect] = useState(true);
     const [isMemberIdEffect, setIsMemberIdEffect] = useState(true);
     const [isMemberNameEffect, setIsMemberNameEffect] = useState(true);
     const [isMemberPwEffect, setIsMemberPwEffect] = useState(true);
@@ -34,23 +31,7 @@ const EnterInfo = ():any => {
     const [isMemberGenderEffect, setIsMemberGenderEffect] = useState(true);
     const [isMemberPhoneEffect, setIsMemberPhoneEffect] = useState(true);
 
-    const {activeProgressTab, setActiveProgressTab} = useJoinProgressStore();
-
-    const memberEmailRegex = (data:string):void => {
-        const regexChk:RegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        const currentData:string = data;
-
-        // setMemberEmail(currentData);
-        setActiveProgressTab(currentData);
-
-        // if(!regexChk.test(currentData)) {
-        //     setMemberEmailMessage('이메일 주소를 다시 확인해주세요.');
-        //     setIsMemberEmailEffect(false);
-        // } else {
-        //     setMemberEmailMessage('');
-        //     setIsMemberEmailEffect(true);
-        // }
-    }
+    const {setActiveProgressTab} = useJoinProgressStore();
 
     const memberIdRegex = (data:string):void => {
         const regexChk:RegExp = /^[a-zA-Z]?[0-9a-zA-Z]{4,50}$/i;
@@ -129,7 +110,7 @@ const EnterInfo = ():any => {
     const signUpHandler = ():void => {
 
         const memberData:{} = {
-            memberEmail: memberEmail,
+            memberEmail: "s",
             memberId: memberId,
             memberName: memberName,
             memberPw: memberPw,
@@ -138,7 +119,7 @@ const EnterInfo = ():any => {
         }
 
         console.log(memberData);
-        navigate("/joinComplete");
+        setActiveProgressTab("joinProgress4");
 
         // axios({
         //     method: "POST",
@@ -154,13 +135,6 @@ const EnterInfo = ():any => {
     return (
         <>
             <div style={{marginTop: '150px'}}>
-                <div>
-                    <input type="text" onChange={(data) => memberEmailRegex(data.target.value)} placeholder="이메일"
-                           style={ isMemberEmailEffect ? {} : {border: '2px solid red'} } />
-                    <span style={  isMemberEmailEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberEmailMessage}
-                    </span>
-                </div>
                 <div>
                     <input type="text" onChange={(data) => memberIdRegex(data.target.value)} placeholder="아이디"
                            style={ isMemberIdEffect ? {} : {border: '2px solid red'} } />
@@ -204,6 +178,7 @@ const EnterInfo = ():any => {
                 </div>
             </div>
             <div>
+                <button onClick={() => setActiveProgressTab("joinProgress2")}>뒤로 가기</button>
                 <button onClick={() => signUpHandler()}>회원 가입</button>
             </div>
         </>

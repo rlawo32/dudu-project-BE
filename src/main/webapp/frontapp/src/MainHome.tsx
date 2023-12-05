@@ -1,6 +1,12 @@
+import HeaderNavigation from "./navigation/HeaderNavigation";
 
-const MainHome = () => {
+const MainHome = ():any => {
 
+    return (
+        <div>
+            <HeaderNavigation />
+        </div>
+    )
 }
 
 export default MainHome;

@@ -1,13 +1,14 @@
 package com.cac.duduproject.web.controller;
 
 import com.cac.duduproject.service.member.MemberService;
+import com.cac.duduproject.util.EmailUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,10 +17,25 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @GetMapping("/sendAuthCode")
+    public Map<String, Object> sendAuthCode(HttpServletRequest request) {
+        return EmailUtil.sendAuthCode(request.getParameter("memberEmail"));
+    }
+
     @PostMapping("/signUp")
     public CommonResponseDto<?> signUp(@RequestBody MemberSignUpRequestDto requestDto) {
-
         return memberService.signUp(requestDto);
     }
+
+    @GetMapping("/memberIdDuplicationChk")
+    public boolean memberIdDuplicationChk(HttpServletRequest request) {
+        return memberService.memberIdDuplicationChk(request.getParameter("memberId"));
+    }
+
+    @GetMapping("/memberEmailDuplicationChk")
+    public boolean memberEmailDuplicationChk(HttpServletRequest request) {
+        return memberService.memberEmailDuplicationChk(request.getParameter("memberEmail"));
+    }
+
 
 }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import {useState} from "react";
 
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
-import {useEffect, useState} from "react";
 
 const TermsAgreeView = styled.div`
   text-align: center;
@@ -28,10 +28,6 @@ const TermsAgree = ():any => {
             setActiveProgressTab("joinProgress2");
         }
     }
-
-    useEffect(() => {
-
-    }, [])
     
     return (
         <TermsAgreeView>

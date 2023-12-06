@@ -3,6 +3,8 @@ import { create } from "zustand";
 interface joinProgressStore {
     activeProgressTab: string;
     setActiveProgressTab: (tabId: string) => void;
+    inputMemberEmail: string;
+    setInputMemberEmail: (email: string) => void;
 }
 
 const useJoinProgressStore = create<joinProgressStore>((set) => ({
@@ -11,6 +13,11 @@ const useJoinProgressStore = create<joinProgressStore>((set) => ({
     setActiveProgressTab: (tabId: string) =>
         set((state: {activeProgressTab: string}) => ({
             activeProgressTab: (state.activeProgressTab = tabId),
+        })),
+    inputMemberEmail: "",
+    setInputMemberEmail: (email: string) =>
+        set((state: {inputMemberEmail: string}) => ({
+            inputMemberEmail: (state.inputMemberEmail = email),
         }))
 }));
 

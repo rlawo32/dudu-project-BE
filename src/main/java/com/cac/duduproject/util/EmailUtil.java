@@ -45,13 +45,12 @@ public class EmailUtil {
         });
 
         try {
-
             Message message = new MimeMessage(session);
 
             message.setHeader("Content-Type", "text/plain; charset=UTF-8");
-            message.setFrom(new InternetAddress(USERNAME, "인증코드관리자"));
+            message.setFrom(new InternetAddress(USERNAME, "DuDu 문화센터 관리자"));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(memberEmail));
-            message.setSubject("인증 요청 메일입니다.");
+            message.setSubject("[DuDu 문화센터] 인증 요청 메일입니다.");
             message.setText("인증번호는 " + authCode + "입니다.");
 
             Transport.send(message);

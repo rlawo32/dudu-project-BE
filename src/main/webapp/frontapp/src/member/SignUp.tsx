@@ -1,12 +1,11 @@
-import HeaderNavigation from "../navigation/HeaderNavigation";
-import {useEffect} from "react";
 import styled from "styled-components";
 
-import JoinProgressMark from "./view/JoinProgressMark";
-import TermsAgree from "./view/TermsAgree";
-import EmailAuth from "./view/EmailAuth";
-import EnterInfo from "./view/EnterInfo";
-import JoinComplete from "./view/JoinComplete";
+import HeaderNavigation from "../navigation/HeaderNavigation";
+import JoinProgressMark from "./signUpView/JoinProgressMark";
+import TermsAgree from "./signUpView/TermsAgree";
+import EmailAuth from "./signUpView/EmailAuth";
+import EnterInfo from "./signUpView/EnterInfo";
+import JoinComplete from "./signUpView/JoinComplete";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
 
 const JoinProgressView = styled.div`
@@ -18,11 +17,7 @@ const JoinProgressView = styled.div`
 
 const SignUp = ():any => {
 
-    const {activeProgressTab, setActiveProgressTab} = useJoinProgressStore();
-
-    useEffect(() => {
-        console.log(activeProgressTab);
-    }, [setActiveProgressTab])
+    const {activeProgressTab} = useJoinProgressStore();
 
     return (
         <div style={{position: "relative", height: "100%", width: "100%"}}>

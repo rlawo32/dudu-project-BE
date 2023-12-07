@@ -1,6 +1,6 @@
 package com.cac.duduproject.web.dto.member;
 
-import com.cac.duduproject.jpa.domain.Member;
+import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.util.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;

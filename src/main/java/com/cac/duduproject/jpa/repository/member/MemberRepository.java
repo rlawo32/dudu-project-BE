@@ -1,15 +1,13 @@
-package com.cac.duduproject.jpa.repository;
+package com.cac.duduproject.jpa.repository.member;
 
-import com.cac.duduproject.jpa.domain.Member;
+import com.cac.duduproject.jpa.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    Optional<Member> findByMemberId(String memberId);
 
     boolean existsByMemberEmail(String memberEmail);
 

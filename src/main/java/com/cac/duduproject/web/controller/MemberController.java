@@ -2,7 +2,9 @@ package com.cac.duduproject.web.controller;
 
 import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.EmailUtil;
+import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
 import com.cac.duduproject.web.dto.CommonResponseDto;
+import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,11 @@ public class MemberController {
     @PostMapping("/signUp")
     public CommonResponseDto<?> signUp(@RequestBody MemberSignUpRequestDto requestDto) {
         return memberService.signUp(requestDto);
+    }
+
+    @PostMapping("/signIn")
+    public CommonResponseDto<JwtTokenResponseDto> signIn(@RequestBody MemberSignInRequestDto requestDto) {
+        return memberService.signIn(requestDto);
     }
 
     @GetMapping("/memberIdDuplicationChk")

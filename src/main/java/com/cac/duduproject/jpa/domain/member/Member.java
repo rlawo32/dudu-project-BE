@@ -1,4 +1,4 @@
-package com.cac.duduproject.jpa.domain;
+package com.cac.duduproject.jpa.domain.member;
 
 import com.cac.duduproject.util.Role;
 import jakarta.persistence.*;
@@ -72,15 +72,14 @@ public class Member {
     }
 
     @Builder
-    public Member(String memberEmail, String memberId, String memberName, String memberPw, String memberGender,
-                  String memberPhone, String memberWithdrawYn, Role role) {
+    public Member(String memberEmail, String memberId, String memberName, String memberPw,
+                  String memberGender, String memberPhone, Role role) {
         this.memberEmail = memberEmail;
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberPw = memberPw;
         this.memberGender = memberGender;
         this.memberPhone = memberPhone;
-        this.memberWithdrawYn = memberWithdrawYn;
         this.role = role;
     }
 

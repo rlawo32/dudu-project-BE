@@ -149,7 +149,7 @@ const EnterInfo = ():any => {
 
     const signUpHandler = ():void => {
 
-        const memberData:{} = {
+        const signUpData:object = {
             memberEmail: inputMemberEmail,
             memberId: memberId,
             memberName: memberName,
@@ -182,7 +182,7 @@ const EnterInfo = ():any => {
             axios({
                 method: "POST",
                 url: "/member/signUp",
-                data: JSON.stringify(memberData),
+                data: JSON.stringify(signUpData),
                 headers: {'Content-type': 'application/json'}
             }).then((res) => {
                 window.alert("회원가입 완료");

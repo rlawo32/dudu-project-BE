@@ -16,7 +16,7 @@ const TermsAgree = ():any => {
 
     const {setActiveProgressTab} = useJoinProgressStore();
 
-    const termsAgreeHandler = () => {
+    const termsAgreeHandler = ():void => {
 
         if(!termsAgreeCheck1) {
             console.log('agree1 not checked');

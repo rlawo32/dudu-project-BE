@@ -2,9 +2,11 @@ package com.cac.duduproject.service.member;
 
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.domain.member.MemberLog;
+import com.cac.duduproject.jpa.domain.member.MemberTerms;
 import com.cac.duduproject.jpa.domain.member.RefreshToken;
 import com.cac.duduproject.jpa.repository.member.MemberLogRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
+import com.cac.duduproject.jpa.repository.member.MemberTermsRepository;
 import com.cac.duduproject.jpa.repository.member.RefreshTokenRepository;
 import com.cac.duduproject.util.jwt.JwtTokenProvider;
 import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
@@ -29,6 +31,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberLogRepository memberLogRepository;
+    private final MemberTermsRepository memberTermsRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -38,7 +41,10 @@ public class MemberService {
     @Transactional
     public CommonResponseDto<?> signUp(MemberSignUpRequestDto requestDto) {
         try {
-            memberRepository.save(requestDto.toMember(passwordEncoder));
+            Member member = memberRepository.save(requestDto.toMember(passwordEncoder));
+
+            requestDto.getMemberTermsAgree().setMember(member);
+            memberTermsRepository.save(requestDto.getMemberTermsAgree().toMemberTerms());
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
@@ -68,7 +74,7 @@ public class MemberService {
             MemberLog memberLog;
 
             if(member.getMemberWithdrawYn().equals("Y")) {
-                return CommonResponseDto.setFailed("This User Has Withdrawn!");
+                return CommonResponseDto.setFailed("탈퇴된 사용자 입니다.");
             } else {
                 boolean matchPassword = passwordEncoder.matches(memberPw, member.getMemberPw());
 
@@ -82,7 +88,7 @@ public class MemberService {
 
                     memberLogRepository.save(memberLog);
 
-                    return CommonResponseDto.setFailed("Sign In Information Does Not Match");
+                    return CommonResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
                 } else {
                     // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
                     UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
@@ -116,7 +122,7 @@ public class MemberService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResponseDto.setFailed("Data Base Error!");
+            return CommonResponseDto.setFailed("가입된 사용자가 아닙니다.");
         }
 
         return CommonResponseDto.setSuccess("Sign In Success", tokenDto);

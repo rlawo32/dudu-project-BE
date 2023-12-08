@@ -14,17 +14,19 @@ const TermsAgree = ():any => {
     const [termsAgreeCheck2, setTermsAgreeCheck2] = useState(false);
     const [termsAgreeCheck3, setTermsAgreeCheck3] = useState(false);
 
-    const {setActiveProgressTab} = useJoinProgressStore();
+    const {setActiveProgressTab, setInputTermsAgree} = useJoinProgressStore();
 
     const termsAgreeHandler = ():void => {
+        const termsData:object = {
+            termsAgree1: termsAgreeCheck1,
+            termsAgree2: termsAgreeCheck2,
+            termsAgree3: termsAgreeCheck3
+        }
 
-        if(!termsAgreeCheck1) {
-            console.log('agree1 not checked');
-        } else if(!termsAgreeCheck2) {
-            console.log('agree2 not checked');
-        } else if(!termsAgreeCheck3) {
-            console.log('agree3 not checked');
+        if(!termsAgreeCheck1 || !termsAgreeCheck2) {
+            alert('필수 약관에 동의해주시길 바랍니다.')
         } else {
+            setInputTermsAgree(termsData);
             setActiveProgressTab("joinProgress2");
         }
     }

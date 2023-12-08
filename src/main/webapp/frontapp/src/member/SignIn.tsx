@@ -1,10 +1,13 @@
-import styled from "styled-components";
 import {useState} from "react";
+import {setCookie} from "../Cookie";
+import {Link} from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
-
-import {setCookie} from "../Cookie";
+import useJoinProgressStore from "../stores/useJoinProgressStore";
+import FindIdModal from "./signInView/FindIdModal";
+import FindPwModal from "./signInView/FindPwModal";
 
 const SignInMain = styled.div`
   position: relative;
@@ -20,8 +23,12 @@ const SignInMain = styled.div`
 
 const SignIn = ():any => {
 
-    const [loginMemberId, setLoginMemberId] = useState("");
-    const [loginMemberPw, setLoginMemberPw] = useState("");
+    const [loginMemberId, setLoginMemberId] = useState<string>("");
+    const [loginMemberPw, setLoginMemberPw] = useState<string>("");
+    const [isFindIdModal, setIsFindIdModal] = useState<boolean>(false);
+    const [isFindPwModal, setIsFindPwModal] = useState<boolean>(false);
+
+    const {setActiveProgressTab} = useJoinProgressStore();
 
     const signInHandler = ():void => {
         const signInData:object = {
@@ -36,6 +43,7 @@ const SignIn = ():any => {
             headers: {'Content-type': 'application/json'}
         }).then((res) => {
             const responseData = res.data;
+            console.log(responseData)
             if(responseData.data) {
                 const { grantType, accessToken, refreshToken, refreshTokenExpiresIn } = responseData.data;
                 const expires:Date  = new Date(refreshTokenExpiresIn);
@@ -48,7 +56,13 @@ const SignIn = ():any => {
                     // expires
                 });
             } else {
-                alert('로그인에 실패했습니다.');
+                alert(responseData.message);
+            }
+        }).catch((err) => {
+            const errCode:string = err.message.substring(err.message.length-3);
+
+            if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
+                alert('새로고침을 한번 해주세요');
             }
         })
     }
@@ -60,7 +74,6 @@ const SignIn = ():any => {
         }).then((res) => {
             console.log('success !');
         }).catch((err) => {
-            console.log(err)
             const errCode:string = err.message.substring(err.message.length-3);
             
             if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
@@ -92,9 +105,13 @@ const SignIn = ():any => {
                         <button onClick={() => window.location.href=process.env.REACT_APP_BASE_URL + "/oauth2/authorization/naver"}>네이버</button>
                     </div>
 
-
                     <button onClick={() => jwtTest()} style={{marginTop: '200px'}}>test</button>
+                    <button onClick={() => setIsFindIdModal(true)}>아이디 찾기</button>
+                    <button onClick={() => setIsFindPwModal(true)}>비밀번호 찾기</button>
+                    <Link to="/signUp" onClick={() => setActiveProgressTab("joinProgress1")}>test</Link>
                 </div>
+                {isFindIdModal ? <FindIdModal setIsFindIdModal={setIsFindIdModal} /> : <div />}
+                {isFindPwModal ? <FindPwModal setIsFindPwModal={setIsFindPwModal} /> : <div />}
             </div>
         </SignInMain>
     )

@@ -29,7 +29,6 @@ function App() {
                 headers: {'Content-type': 'application/json'}
             }).then((res) => {
                 const responseData = res.data;
-                console.log(responseData)
                 if(responseData.result) {
                     const { grantType, accessToken, refreshToken, accessTokenExpiresIn} = responseData.data;
                     const expires:Date = new Date(accessTokenExpiresIn);

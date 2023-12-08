@@ -17,8 +17,6 @@ const StyledHeaderNavigation = styled.div`
 
 const HeaderNavigation = ():any => {
 
-    const {setActiveProgressTab} = useJoinProgressStore();
-
     return (
         <StyledHeaderNavigation>
             <Styled.styledLink to="/" style={{marginLeft: '20px'}}>
@@ -27,9 +25,6 @@ const HeaderNavigation = ():any => {
             <div style={{marginRight: '20px'}}>
                 <Styled.styledLink to="/signIn" style={{marginRight: '20px'}}>
                     SignIn
-                </Styled.styledLink>
-                <Styled.styledLink to="/signUp" onClick={() => setActiveProgressTab("joinProgress1")}>
-                    SignUp
                 </Styled.styledLink>
             </div>
         </StyledHeaderNavigation>

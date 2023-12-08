@@ -7,6 +7,7 @@ import EmailAuth from "./signUpView/EmailAuth";
 import EnterInfo from "./signUpView/EnterInfo";
 import JoinComplete from "./signUpView/JoinComplete";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
+import {useEffect} from "react";
 
 const JoinProgressView = styled.div`
   position: relative;

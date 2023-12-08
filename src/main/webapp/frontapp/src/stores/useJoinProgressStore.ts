@@ -5,6 +5,8 @@ interface joinProgressStore {
     setActiveProgressTab: (tabId: string) => void;
     inputMemberEmail: string;
     setInputMemberEmail: (email: string) => void;
+    inputTermsAgree: object;
+    setInputTermsAgree: (termsAgree: object) => void;
 }
 
 const useJoinProgressStore = create<joinProgressStore>((set) => ({
@@ -18,7 +20,12 @@ const useJoinProgressStore = create<joinProgressStore>((set) => ({
     setInputMemberEmail: (email: string) =>
         set((state: {inputMemberEmail: string}) => ({
             inputMemberEmail: (state.inputMemberEmail = email),
-        }))
+        })),
+    inputTermsAgree: {},
+    setInputTermsAgree: (termsAgree: object) =>
+        set((state: {inputTermsAgree: object}) => ({
+            inputTermsAgree: (state.inputTermsAgree = termsAgree),
+        })),
 }));
 
 export default useJoinProgressStore;

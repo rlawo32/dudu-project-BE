@@ -16,6 +16,7 @@ public class MemberSignUpRequestDto {
     private String memberPw;
     private String memberGender;
     private String memberPhone;
+    private MemberTermsAgreeRequestDto memberTermsAgree;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
@@ -30,5 +31,4 @@ public class MemberSignUpRequestDto {
                 .memberProvider("COMMON")
                 .build();
     }
-
 }

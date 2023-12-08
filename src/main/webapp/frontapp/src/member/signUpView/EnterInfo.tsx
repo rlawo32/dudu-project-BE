@@ -36,7 +36,7 @@ const EnterInfo = ():any => {
     const [isMemberGenderConfirm, setIsMemberGenderConfirm] = useState(false);
     const [isMemberPhoneConfirm, setIsMemberPhoneConfirm] = useState(false);
 
-    const {setActiveProgressTab, inputMemberEmail} = useJoinProgressStore();
+    const {setActiveProgressTab, inputMemberEmail, inputTermsAgree} = useJoinProgressStore();
 
     const memberIdRegex = (data:string):void => {
         const regexChk:RegExp = /^[a-zA-Z]?[0-9a-zA-Z]{5,50}$/i;
@@ -56,7 +56,6 @@ const EnterInfo = ():any => {
     }
 
     const memberIdDuplicationHandler = ():void => {
-
         if(isMemberIdConfirm) {
             axios({
                 method: "GET",
@@ -64,7 +63,6 @@ const EnterInfo = ():any => {
                 params: {memberId: memberId}
             }).then((res) => {
                 if(res.data) {
-                    alert('이미 가입된 아이디입니다.');
                     setIsMemberIdEffect(false);
                     setMemberIdMessage('이미 가입된 아이디입니다.');
                 } else {
@@ -155,7 +153,8 @@ const EnterInfo = ():any => {
             memberName: memberName,
             memberPw: memberPw,
             memberGender: memberGender,
-            memberPhone: memberPhone
+            memberPhone: memberPhone,
+            memberTermsAgree: inputTermsAgree
         }
 
         if(!isMemberIdConfirm) { // memberId Check
@@ -186,6 +185,7 @@ const EnterInfo = ():any => {
                 headers: {'Content-type': 'application/json'}
             }).then((res) => {
                 window.alert("회원가입 완료");
+                window.location.reload();
                 setActiveProgressTab("joinProgress4");
             })
         }
@@ -245,7 +245,6 @@ const EnterInfo = ():any => {
                 </div>
             </div>
             <div>
-                <button onClick={() => setActiveProgressTab("joinProgress2")}>뒤로 가기</button>
                 <button onClick={() => signUpHandler()}>회원 가입</button>
             </div>
         </>

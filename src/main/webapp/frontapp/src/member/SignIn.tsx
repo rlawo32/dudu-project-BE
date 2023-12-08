@@ -4,6 +4,8 @@ import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 
+import {setCookie} from "../Cookie";
+
 const SignInMain = styled.div`
   position: relative;
   height: 100%;
@@ -34,12 +36,35 @@ const SignIn = ():any => {
             headers: {'Content-type': 'application/json'}
         }).then((res) => {
             const responseData = res.data;
-            console.log(responseData);
-            console.log(responseData.data);
             if(responseData.data) {
+                const { grantType, accessToken, refreshToken, refreshTokenExpiresIn } = responseData.data;
+                const expires:Date  = new Date(refreshTokenExpiresIn);
 
+                axios.defaults.headers.common['Authorization'] = `${grantType} ${accessToken}`;
+
+                setCookie('refreshToken', refreshToken, {
+                    path: '/',
+                    // httpOnly: true,
+                    // expires
+                });
             } else {
                 alert('로그인에 실패했습니다.');
+            }
+        })
+    }
+
+    const jwtTest = ():void => {
+        axios({
+            method: "GET",
+            url: "/test1"
+        }).then((res) => {
+            console.log('success !');
+        }).catch((err) => {
+            console.log(err)
+            const errCode:string = err.message.substring(err.message.length-3);
+            
+            if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
+                alert('새로고침을 한번 해주세요');
             }
         })
     }
@@ -61,11 +86,14 @@ const SignIn = ():any => {
                 </div>
                 <div>
                     <div>
-                        <button>카카오</button>
+                        <button onClick={() => window.location.href=process.env.REACT_APP_BASE_URL + "/oauth2/authorization/kakao"}>카카오</button>
                     </div>
                     <div>
-                        <button>네이버</button>
+                        <button onClick={() => window.location.href=process.env.REACT_APP_BASE_URL + "/oauth2/authorization/naver"}>네이버</button>
                     </div>
+
+
+                    <button onClick={() => jwtTest()} style={{marginTop: '200px'}}>test</button>
                 </div>
             </div>
         </SignInMain>

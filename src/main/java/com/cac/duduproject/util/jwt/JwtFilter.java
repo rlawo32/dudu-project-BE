@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("Security Context : " + authentication.getName() + "/ URI : " + requestURI);
+            System.out.println("Security Context : " + authentication.getName() + "\nURI : " + requestURI);
         } else {
             System.out.println("유효한 JWT 토큰이 없습니다, URI : " + requestURI);
         }

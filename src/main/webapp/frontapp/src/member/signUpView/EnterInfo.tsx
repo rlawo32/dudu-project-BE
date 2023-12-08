@@ -110,7 +110,7 @@ const EnterInfo = ():any => {
     const memberPwChkRegex = (data:string):void => {
         const currentData:string = data;
 
-        if(memberPw != currentData) {
+        if(memberPw !== currentData) {
             setMemberPwChkMessage('비밀번호를 다시 확인해주세요.');
             setIsMemberPwChkEffect(false);
             setIsMemberPwConfirm(false);

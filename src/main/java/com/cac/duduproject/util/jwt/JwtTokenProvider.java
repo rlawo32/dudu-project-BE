@@ -1,9 +1,12 @@
 package com.cac.duduproject.util.jwt;
 
+import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
+import com.cac.duduproject.web.dto.CommonResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,10 +37,9 @@ public class JwtTokenProvider implements InitializingBean {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
-        this.accessTokenValidityInMilliseconds = tokenValidityInSeconds; // 86400ms : 1.44m(0.001d), 86400000ms : 1440m(1d)
-        this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 10000; // 86400ms : 1.44m(0.001d), 864000000ms : 14400m(10d)
+        this.accessTokenValidityInMilliseconds = tokenValidityInSeconds * 21; // 86,400ms : 1.44m(0.001d), 1,814,400ms : 30.24m
+        this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 3000; // 86,400ms : 1.44m(0.001d), 259,200,000ms : 4,320m(3d)
     }
-
 
     // 빈이 생성되고 주입을 받은 후에 secret값을 Base64 Decode해서 key 변수에 할당하기 위해
     @Override
@@ -65,56 +67,34 @@ public class JwtTokenProvider implements InitializingBean {
         String refreshToken = "";
 
         if(loginType.equals("SOCIAL")) {
-
             DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
-            Object memberId = defaultOAuth2User.getAttributes().get("memberId");
+            Object memberNo = defaultOAuth2User.getAttributes().get("memberNo");
             Object provider = defaultOAuth2User.getAttributes().get("provider");
 
             accessToken = Jwts.builder()
-                    .setSubject(String.valueOf(memberId))       // payload "sub": "name"
-                    .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_SOCIAL"
-                    .claim("provider", String.valueOf(provider))
-                    .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
-                    .setExpiration(accessExprTime)              // payload "exp": 1516239022 (예시)
+                    .setSubject(String.valueOf(memberNo))
+                    .claim(AUTHORITIES_KEY, authorities)
+                    .signWith(key, SignatureAlgorithm.HS512)
+                    .setExpiration(accessExprTime)
                     .compact();
 
-            // Refresh Token 생성
             refreshToken = Jwts.builder()
-                    .setSubject(String.valueOf(memberId))
+                    .setSubject(String.valueOf(memberNo))
                     .claim(AUTHORITIES_KEY, authorities)
-                    .claim("provider", String.valueOf(provider))
                     .signWith(key, SignatureAlgorithm.HS512)
                     .setExpiration(refreshExprTime)
                     .compact();
         } else if(loginType.equals("COMMON")) {
             accessToken = Jwts.builder()
-                    .setSubject(authentication.getName())       // payload "sub": "name"
-                    .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
+                    .setSubject(authentication.getName())       // payload "sub": memberNo
+                    .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_*"
                     .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                     .setExpiration(accessExprTime)              // payload "exp": 1516239022 (예시)
                     .compact();
 
-            // Refresh Token 생성
             refreshToken = Jwts.builder()
                     .setSubject(authentication.getName())
                     .claim(AUTHORITIES_KEY, authorities)
-                    .signWith(key, SignatureAlgorithm.HS512)
-                    .setExpiration(refreshExprTime)
-                    .compact();
-        } else {
-            accessToken = Jwts.builder()
-                    .setSubject(authentication.getName())       // payload "sub": "name"
-                    .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_SOCIAL"
-                    .claim("provider", loginType)
-                    .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
-                    .setExpiration(accessExprTime)              // payload "exp": 1516239022 (예시)
-                    .compact();
-
-            // Refresh Token 생성
-            refreshToken = Jwts.builder()
-                    .setSubject(authentication.getName())
-                    .claim(AUTHORITIES_KEY, authorities)
-                    .claim("provider", loginType)
                     .signWith(key, SignatureAlgorithm.HS512)
                     .setExpiration(refreshExprTime)
                     .compact();

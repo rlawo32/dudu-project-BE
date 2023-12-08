@@ -64,6 +64,14 @@ public class Member {
     @NotNull
     private Role role;
 
+    @Column(name = "member__attribute_code")
+    @NotBlank
+    private String memberAttributeCode;
+
+    @Column(name = "member_provider")
+    @NotBlank
+    private String memberProvider;
+
     @PrePersist
     public void onPrePersist() {
         this.memberWithdrawYn = "N";
@@ -72,8 +80,8 @@ public class Member {
     }
 
     @Builder
-    public Member(String memberEmail, String memberId, String memberName, String memberPw,
-                  String memberGender, String memberPhone, Role role) {
+    public Member(String memberEmail, String memberId, String memberName, String memberPw, String memberGender,
+                  String memberPhone, Role role, String memberAttributeCode, String memberProvider) {
         this.memberEmail = memberEmail;
         this.memberId = memberId;
         this.memberName = memberName;
@@ -81,6 +89,15 @@ public class Member {
         this.memberGender = memberGender;
         this.memberPhone = memberPhone;
         this.role = role;
+        this.memberAttributeCode = memberAttributeCode;
+        this.memberProvider = memberProvider;
+    }
+
+    public Member infoUpdate(String memberName, String memberProvider) {
+        this.memberName = memberName;
+        this.memberProvider = memberProvider;
+
+        return this;
     }
 
     public String getRoleKey() {

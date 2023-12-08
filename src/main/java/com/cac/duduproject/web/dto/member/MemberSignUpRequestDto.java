@@ -18,7 +18,6 @@ public class MemberSignUpRequestDto {
     private String memberPhone;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
-
         return Member.builder()
                 .memberEmail(memberEmail)
                 .memberId(memberId)
@@ -27,6 +26,8 @@ public class MemberSignUpRequestDto {
                 .memberGender(memberGender)
                 .memberPhone(memberPhone)
                 .role(Role.MEMBER)
+                .memberAttributeCode("-")
+                .memberProvider("COMMON")
                 .build();
     }
 

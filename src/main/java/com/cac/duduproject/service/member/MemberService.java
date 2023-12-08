@@ -7,6 +7,7 @@ import com.cac.duduproject.jpa.repository.member.MemberLogRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.jpa.repository.member.RefreshTokenRepository;
 import com.cac.duduproject.util.jwt.JwtTokenProvider;
+import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
@@ -15,9 +16,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +44,14 @@ public class MemberService {
         }
 
         return CommonResponseDto.setSuccess("Sign Up Success", null);
+    }
+
+    public boolean memberEmailDuplicationChk(String memberEmail) {
+        return memberRepository.existsByMemberEmail(memberEmail);
+    }
+
+    public boolean memberIdDuplicationChk(String memberId) {
+        return memberRepository.existsByMemberId(memberId);
     }
 
     @Transactional
@@ -110,12 +122,40 @@ public class MemberService {
         return CommonResponseDto.setSuccess("Sign In Success", tokenDto);
     }
 
-    public boolean memberEmailDuplicationChk(String memberEmail) {
-        return memberRepository.existsByMemberEmail(memberEmail);
-    }
+    @Transactional
+    public CommonResponseDto<JwtTokenResponseDto> reissue(JwtTokenRequestDto requestDto) {
 
-    public boolean memberIdDuplicationChk(String memberId) {
-        return memberRepository.existsByMemberId(memberId);
+        JwtTokenResponseDto tokenDto = new JwtTokenResponseDto();
+
+        try {
+            // Refresh Token 검증
+            if (!jwtTokenProvider.validateToken(requestDto.getRefreshToken())) {
+                return CommonResponseDto.setFailed("Refresh Token 이 유효하지 않습니다.");
+            } else {
+                // Refresh Token 에서 MemberNo 가져오기
+                Authentication authentication = jwtTokenProvider.getAuthentication(requestDto.getRefreshToken());
+
+                // 저장소에서 MemberNo를 기반으로 Refresh Token 값 가져옴
+                RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+                        .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+                // Refresh Token 일치하는지 검사
+                if (!refreshToken.getValue().equals(requestDto.getRefreshToken())) {
+                    return CommonResponseDto.setFailed("토큰의 유저 정보가 일치하지 않습니다.");
+                } else {
+                    tokenDto = jwtTokenProvider.generateTokenDto(authentication, "COMMON");
+
+                    // 저장소 정보 업데이트
+                    RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
+                    refreshTokenRepository.save(newRefreshToken);
+                }
+            }
+        } catch (Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!!!");
+        }
+
+        // 토큰 발급
+        return CommonResponseDto.setSuccess("Reissue Success", tokenDto);
     }
 
 }

@@ -2,10 +2,12 @@ package com.cac.duduproject.web.controller;
 
 import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.EmailUtil;
+import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +46,21 @@ public class MemberController {
         return memberService.memberEmailDuplicationChk(request.getParameter("memberEmail"));
     }
 
+    @PostMapping("/reissue")
+    public CommonResponseDto<JwtTokenResponseDto> reissue(@RequestBody JwtTokenRequestDto requestDto, HttpServletRequest request) {
+        requestDto.setAccessToken(request.getHeader("Authorization"));
 
+        return memberService.reissue(requestDto);
+    }
+
+    @GetMapping("/test1")
+    public void test1(HttpServletRequest request) {
+
+        Cookie[] ck = request.getCookies();
+        for(int i = 0; ck != null && i < ck.length; i++) {
+            System.out.println(ck[i].getName() + ": " + ck[i].getValue());
+        }
+
+        System.out.println("jwt token test !");
+    }
 }

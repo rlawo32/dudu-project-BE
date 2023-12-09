@@ -108,7 +108,7 @@ const SignIn = ():any => {
                     <button onClick={() => jwtTest()} style={{marginTop: '200px'}}>test</button>
                     <button onClick={() => setIsFindIdModal(true)}>아이디 찾기</button>
                     <button onClick={() => setIsFindPwModal(true)}>비밀번호 찾기</button>
-                    <Link to="/signUp" onClick={() => setActiveProgressTab("joinProgress1")}>test</Link>
+                    <Link to="/signUp" onClick={() => setActiveProgressTab("joinProgress1")}>회원가입</Link>
                 </div>
                 {isFindIdModal ? <FindIdModal setIsFindIdModal={setIsFindIdModal} /> : <div />}
                 {isFindPwModal ? <FindPwModal setIsFindPwModal={setIsFindPwModal} /> : <div />}

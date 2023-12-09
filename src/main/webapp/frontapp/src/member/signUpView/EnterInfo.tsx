@@ -7,34 +7,34 @@ import useJoinProgressStore from "../../stores/useJoinProgressStore";
 const EnterInfo = ():any => {
 
     // 회원가입 값
-    const [memberId, setMemberId] = useState("");
-    const [memberName, setMemberName] = useState("");
-    const [memberPw, setMemberPw] = useState("");
-    const [memberGender, setMemberGender] = useState("");
-    const [memberPhone, setMemberPhone] = useState("");
+    const [memberId, setMemberId] = useState<string>("");
+    const [memberName, setMemberName] = useState<string>("");
+    const [memberPw, setMemberPw] = useState<string>("");
+    const [memberGender, setMemberGender] = useState<string>("");
+    const [memberPhone, setMemberPhone] = useState<string>("");
 
     // 경고 메시지
-    const [memberIdMessage, setMemberIdMessage] = useState("");
-    const [memberNameMessage, setMemberNameMessage] = useState("");
-    const [memberPwMessage, setMemberPwMessage] = useState("");
-    const [memberPwChkMessage, setMemberPwChkMessage] = useState("");
-    const [memberGenderMessage, setMemberGenderMessage] = useState("");
-    const [memberPhoneMessage, setMemberPhoneMessage] = useState("");
+    const [memberIdMessage, setMemberIdMessage] = useState<string>("");
+    const [memberNameMessage, setMemberNameMessage] = useState<string>("");
+    const [memberPwMessage, setMemberPwMessage] = useState<string>("");
+    const [memberPwChkMessage, setMemberPwChkMessage] = useState<string>("");
+    const [memberGenderMessage, setMemberGenderMessage] = useState<string>("");
+    const [memberPhoneMessage, setMemberPhoneMessage] = useState<string>("");
 
     // 유효성 검사
-    const [isMemberIdEffect, setIsMemberIdEffect] = useState(true);
-    const [isMemberNameEffect, setIsMemberNameEffect] = useState(true);
-    const [isMemberPwEffect, setIsMemberPwEffect] = useState(true);
-    const [isMemberPwChkEffect, setIsMemberPwChkEffect] = useState(true);
-    const [isMemberGenderEffect, setIsMemberGenderEffect] = useState(true);
-    const [isMemberPhoneEffect, setIsMemberPhoneEffect] = useState(true);
+    const [isMemberIdEffect, setIsMemberIdEffect] = useState<boolean>(true);
+    const [isMemberNameEffect, setIsMemberNameEffect] = useState<boolean>(true);
+    const [isMemberPwEffect, setIsMemberPwEffect] = useState<boolean>(true);
+    const [isMemberPwChkEffect, setIsMemberPwChkEffect] = useState<boolean>(true);
+    const [isMemberGenderEffect, setIsMemberGenderEffect] = useState<boolean>(true);
+    const [isMemberPhoneEffect, setIsMemberPhoneEffect] = useState<boolean>(true);
 
     // 데이터 검사
-    const [isMemberIdConfirm, setIsMemberIdConfirm] = useState(false);
-    const [isMemberNameConfirm, setIsMemberNameConfirm] = useState(false);
-    const [isMemberPwConfirm, setIsMemberPwConfirm] = useState(false);
-    const [isMemberGenderConfirm, setIsMemberGenderConfirm] = useState(false);
-    const [isMemberPhoneConfirm, setIsMemberPhoneConfirm] = useState(false);
+    const [isMemberIdConfirm, setIsMemberIdConfirm] = useState<boolean>(false);
+    const [isMemberNameConfirm, setIsMemberNameConfirm] = useState<boolean>(false);
+    const [isMemberPwConfirm, setIsMemberPwConfirm] = useState<boolean>(false);
+    const [isMemberGenderConfirm, setIsMemberGenderConfirm] = useState<boolean>(false);
+    const [isMemberPhoneConfirm, setIsMemberPhoneConfirm] = useState<boolean>(false);
 
     const {setActiveProgressTab, inputMemberEmail, inputTermsAgree} = useJoinProgressStore();
 

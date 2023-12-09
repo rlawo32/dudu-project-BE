@@ -53,14 +53,18 @@ public class MemberController {
         return memberService.reissue(requestDto);
     }
 
-    @GetMapping("/test1")
-    public void test1(HttpServletRequest request) {
+    @PostMapping("/findMemberId")
+    public CommonResponseDto<?> findMemberId(@RequestBody MemberSignUpRequestDto requestDto) {
+        return memberService.findMemberId(requestDto);
+    }
 
-        Cookie[] ck = request.getCookies();
-        for(int i = 0; ck != null && i < ck.length; i++) {
-            System.out.println(ck[i].getName() + ": " + ck[i].getValue());
-        }
+    @PostMapping("/entireMemberId")
+    public void entireMemberId(@RequestBody MemberSignUpRequestDto requestDto) {
+        memberService.entireMemberId(requestDto);
+    }
 
-        System.out.println("jwt token test !");
+    @PostMapping("/findMemberPw")
+    public CommonResponseDto<?> findMemberPw(@RequestBody MemberSignUpRequestDto requestDto) {
+        return memberService.findMemberPw(requestDto);
     }
 }

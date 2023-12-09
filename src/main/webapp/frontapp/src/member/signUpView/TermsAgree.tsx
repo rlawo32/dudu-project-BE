@@ -10,9 +10,9 @@ const TermsAgreeView = styled.div`
 
 const TermsAgree = ():any => {
 
-    const [termsAgreeCheck1, setTermsAgreeCheck1] = useState(false);
-    const [termsAgreeCheck2, setTermsAgreeCheck2] = useState(false);
-    const [termsAgreeCheck3, setTermsAgreeCheck3] = useState(false);
+    const [termsAgreeCheck1, setTermsAgreeCheck1] = useState<boolean>(false);
+    const [termsAgreeCheck2, setTermsAgreeCheck2] = useState<boolean>(false);
+    const [termsAgreeCheck3, setTermsAgreeCheck3] = useState<boolean>(false);
 
     const {setActiveProgressTab, setInputTermsAgree} = useJoinProgressStore();
 

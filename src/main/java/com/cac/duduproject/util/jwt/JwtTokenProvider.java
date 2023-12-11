@@ -1,12 +1,9 @@
 package com.cac.duduproject.util.jwt;
 
-import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
-import com.cac.duduproject.web.dto.CommonResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -67,21 +67,6 @@ const SignIn = ():any => {
         })
     }
 
-    const jwtTest = ():void => {
-        axios({
-            method: "GET",
-            url: "/test1"
-        }).then((res) => {
-            console.log('success !');
-        }).catch((err) => {
-            const errCode:string = err.message.substring(err.message.length-3);
-            
-            if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
-                alert('새로고침을 한번 해주세요');
-            }
-        })
-    }
-
     return (
         <SignInMain>
             <HeaderNavigation />
@@ -105,7 +90,6 @@ const SignIn = ():any => {
                         <button onClick={() => window.location.href=process.env.REACT_APP_BASE_URL + "/oauth2/authorization/naver"}>네이버</button>
                     </div>
 
-                    <button onClick={() => jwtTest()} style={{marginTop: '200px'}}>test</button>
                     <button onClick={() => setIsFindIdModal(true)}>아이디 찾기</button>
                     <button onClick={() => setIsFindPwModal(true)}>비밀번호 찾기</button>
                     <Link to="/signUp" onClick={() => setActiveProgressTab("joinProgress1")}>회원가입</Link>

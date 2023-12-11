@@ -100,6 +100,12 @@ public class Member {
         return this;
     }
 
+    public Member passwordUpdate(String memberPw) {
+        this.memberPw = memberPw;
+
+        return this;
+    }
+
     public String getRoleKey() {
         return this.role.getKey();
     }

@@ -8,12 +8,14 @@ import com.cac.duduproject.jpa.repository.member.MemberLogRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.jpa.repository.member.MemberTermsRepository;
 import com.cac.duduproject.jpa.repository.member.RefreshTokenRepository;
+import com.cac.duduproject.util.EmailUtil;
 import com.cac.duduproject.util.jwt.JwtTokenProvider;
 import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -164,4 +166,47 @@ public class MemberService {
         return CommonResponseDto.setSuccess("Reissue Success", tokenDto);
     }
 
+    @Transactional
+    public CommonResponseDto<?> findMemberId(MemberSignUpRequestDto requestDto) {
+        String memberId = "";
+
+        try {
+            Member member = memberRepository.findByMemberNameAndMemberEmail(requestDto.getMemberName(), requestDto.getMemberEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보가 없습니다."));
+
+            memberId = member.getMemberId();
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!!!");
+        }
+        
+        return CommonResponseDto.setSuccess("Find MemberId Success", memberId);
+    }
+
+    @Transactional
+    public void entireMemberId(MemberSignUpRequestDto requestDto) {
+
+        try {
+            Member member = memberRepository.findByMemberNameAndMemberEmail(requestDto.getMemberName(), requestDto.getMemberEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보가 없습니다."));
+
+            EmailUtil.sendEntireMemberId(member.getMemberEmail(), member.getMemberId());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findMemberPw(MemberSignUpRequestDto requestDto) {
+
+        try {
+            Member member = memberRepository.findByMemberEmail(requestDto.getMemberEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보가 없습니다."));
+
+            member.passwordUpdate(passwordEncoder.encode(requestDto.getMemberPw()));
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!!!");
+        }
+        
+        return CommonResponseDto.setSuccess("Find MemberPw Success", null);
+    }
 }

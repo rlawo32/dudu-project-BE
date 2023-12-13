@@ -1,24 +1,48 @@
 import {useRef, useState} from "react";
-import styled from "styled-components";
+import {useDrag} from "react-use-gesture";
 import React from "react";
+import styled from "styled-components";
+import axios from "axios";
 
 import MemberAuth from "../MemberAuth";
-import axios from "axios";
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 
-const FindPwModalView = styled.div`
-  position: relative;
-  height: 400px;
-  width: 400px;
-  background-color: black;
-`;
+import * as Modal from "./Modal.style";
+import {ModalFindView} from "./Modal.style";
+
+
+
 
 interface Props {
     setIsFindPwModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface modalPosition {
+    x: number;
+    y: number;
+}
+
+const FindPwModalView = styled.div<modalPosition>`
+  position: absolute;
+  top: ${(props) => props.y + "px"};
+  left: ${(props) => props.x + "px"};
+  height: 500px;
+  width: 500px;
+  border: 1px solid ${({theme}) => theme.textColor};
+  border-radius: 15px;
+  background-color: ${({theme}) => theme.bgColor};
+`;
+
 const FindPwModal = (props: Props) => {
     const modalRef:any = useRef<any>();
+
+    const [logoPos, setLogoPos] = useState({x:0, y:0})
+    const bindLogoPos = useDrag((params)=>{
+        setLogoPos({
+            x: params.offset[0],
+            y: params.offset[1]
+        })
+    });
 
     const [isMemberEmailCheck, setIsMemberEmailCheck] = useState<boolean>(false);
     const [changePw, setChangePw] = useState<string>("");
@@ -80,20 +104,55 @@ const FindPwModal = (props: Props) => {
     }
 
     return (
-        <FindPwModalView ref={modalRef}>
-
-            <button onClick={() => props.setIsFindPwModal(false)}>끄기</button>
+        <FindPwModalView ref={modalRef} x={logoPos.x} y={logoPos.y}>
+            <Modal.ModalTabBar {...bindLogoPos()} className="chat-drag-design">
+                <button onClick={() => props.setIsFindPwModal(false)}>X</button>
+            </Modal.ModalTabBar>
 
             {
                 isMemberEmailCheck ?
-                    <div style={{color: "white"}}>
-                        <h1>새 비밀번호</h1>
-                        <input type="password" onChange={(e) => changePwRegex(e.target.value)} />
-                        <input type="password" onChange={(e) => changePwChkRegex(e.target.value)} />
-                        <button onClick={() => changePwHandler()}>변경하기</button>
-                    </div>
+                    <Modal.ModalFindView>
+                        <div className="findIdView-box">
+                            <p>
+                                비밀번호 찾기
+                            </p>
+                            <p>
+                                비밀번호를 새롭게 설정하실 수 있습니다.
+                            </p>
+                        </div>
+                        <span></span>
+                        <div className="findIdView-box">
+                            <div>
+                                <div style={{marginTop: "25px"}}>비밀번호 입력</div>
+                                <Modal.ModalInput type="password" onChange={(e) => changePwRegex(e.target.value)}
+                                                  placeholder="비밀번호를 입력해주세요." />
+                            </div>
+                            <div>
+                                <div>비밀번호 확인</div>
+                                <Modal.ModalInput type="password" onChange={(e) => changePwChkRegex(e.target.value)}
+                                                  placeholder="비밀번호 확인을 해주세요." />
+                            </div>
+                            <div>
+                                <Modal.ModalButton onClick={() => props.setIsFindPwModal(false)}>취소하기</Modal.ModalButton>
+                                <Modal.ModalButton onClick={() => changePwHandler()}>변경하기</Modal.ModalButton>
+                            </div>
+                        </div>
+                    </Modal.ModalFindView>
                     :
-                    <MemberAuth setIsMemberEmailCheck={setIsMemberEmailCheck} duplicationChk={false}/>
+                    <Modal.ModalFindView>
+                        <div className="findIdView-box">
+                            <p>
+                                비밀번호 찾기
+                            </p>
+                            <p>
+                                이메일 인증 후 비밀번호를 다시 설정하실 수 있습니다.
+                            </p>
+                        </div>
+                        <span></span>
+                        <div className="findIdView-box">
+                            <MemberAuth setIsMemberEmailCheck={setIsMemberEmailCheck} duplicationChk={false}/>
+                        </div>
+                    </Modal.ModalFindView>
             }
 
         </FindPwModalView>

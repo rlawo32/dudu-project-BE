@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
-import axios from "axios";
-import './styles/App.css';
+import React, {useEffect, useState} from 'react';
 import {Route, Routes} from "react-router-dom";
+import {getCookie, removeCookie, setCookie} from "./Cookie";
+import {ThemeProvider} from "styled-components";
+import axios from "axios";
 
 import MainHome from './MainHome';
 import SignIn from "./member/SignIn";
@@ -10,12 +11,23 @@ import TermsAgree from "./member/signUpView/TermsAgree";
 import EmailAuth from "./member/signUpView/EmailAuth";
 import EnterInfo from "./member/signUpView/EnterInfo";
 import JoinComplete from "./member/signUpView/JoinComplete";
-import {getCookie, removeCookie, setCookie} from "./Cookie";
+
+import {GlobalStyle} from "./styles/GlobalStyles";
+import {darkTheme, lightTheme} from "./styles/theme";
+import useThemeToggleStore from "./stores/useThemeToggleStore";
 
 
 function App() {
 
+    const {themeMode, setThemeMode} = useThemeToggleStore();
+
     useEffect(() => {
+        const localTheme:string|null = window.localStorage.getItem("theme");
+
+        if(localTheme) {
+            setThemeMode(localTheme);
+        }
+
         if(getCookie('refreshToken')) {
             const token:object = {
                 accessToken: axios.defaults.headers.common["Authorization"]?.toString(),
@@ -59,16 +71,20 @@ function App() {
 
   return (
     <>
-      <Routes>
-          <Route path="/" element={<MainHome />} />
-          <Route path="/signIn" element={<SignIn />} />
-          <Route path="/signUp" element={<SignUp />} />
+        <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme } >
+            <GlobalStyle />
 
-          <Route path="/termsAgree" element={<TermsAgree />} />
-          <Route path="/emailAuth" element={<EmailAuth />} />
-          <Route path="/enterInfo" element={<EnterInfo />} />
-          <Route path="/joinComplete" element={<JoinComplete />} />
-      </Routes>
+            <Routes>
+                <Route path="/" element={<MainHome />} />
+                <Route path="/signIn" element={<SignIn />} />
+                <Route path="/signUp" element={<SignUp />} />
+
+                <Route path="/termsAgree" element={<TermsAgree />} />
+                <Route path="/emailAuth" element={<EmailAuth />} />
+                <Route path="/enterInfo" element={<EnterInfo />} />
+                <Route path="/joinComplete" element={<JoinComplete />} />
+            </Routes>
+        </ThemeProvider>
     </>
   );
 }

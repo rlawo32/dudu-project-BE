@@ -18,7 +18,6 @@ public class CorsConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
-//        configuration.setExposedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // 쿠키를 받을 여부
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

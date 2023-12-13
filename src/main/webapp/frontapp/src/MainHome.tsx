@@ -4,6 +4,12 @@ import {setCookie} from "./Cookie";
 import axios from "axios";
 
 import HeaderNavigation from "./navigation/HeaderNavigation";
+import styled from "styled-components";
+
+const TestDiv = styled.div`
+  color: ${({theme}) => theme.textColor};
+  margin-top: 300px;
+`;
 
 const MainHome = ():any => {
 
@@ -35,9 +41,13 @@ const MainHome = ():any => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [easyLoginState])
 
+
     return (
         <div>
             <HeaderNavigation />
+            <TestDiv>
+                HELLO
+            </TestDiv>
         </div>
     )
 }

@@ -1,8 +1,8 @@
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import React from "react";
 
 import ThemeModeToggle from "./ThemeModeToggle";
-import {Link} from "react-router-dom";
 
 const StyledLink:any = styled(Link)`
   text-decoration: none;
@@ -20,6 +20,7 @@ const StyledHeaderNavigation = styled.div`
   width: 100%;
   height: 8%;
   background: ${({theme}) => theme.headerBgColor};
+  z-index: 1;
 `;
 
 const HeaderNavigation = ():any => {

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faCircleCheck as checked } from "@fortawesome/free-solid-svg-icons"
 import { faCircleCheck as unChecked } from "@fortawesome/free-regular-svg-icons"
@@ -6,13 +7,37 @@ import { faCircleCheck as unChecked } from "@fortawesome/free-regular-svg-icons"
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 
 const ProgressMarkBox = styled.div`
-  margin: 150px auto 0;
-  border: 2px solid black;
   height: 50px;
-  width: 600px;
+  width: 680px;
+  margin: 120px auto 0;
+  border: 2px solid ${({theme}) => theme.textColor};
+  border-radius: 20px;
+  font-size: 20px;
   
-  .iconCustom {
-    font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    display: inline;
+    margin: 0 15px 0 15px;
+  }
+  
+  .icon-custom1 {
+    font-size: 25px;
+    margin-right: 5px;
+  }
+
+  .icon-custom2 {
+    font-size: 25px;
+    margin-right: 5px;
+    color: skyblue;
+  }
+  
+  .line-custom {
+    
+    width: 30px;
+    border-top: 1px solid ${({theme}) => theme.textColor};
   }
 `;
 
@@ -22,46 +47,48 @@ const JoinProgressMark = () => {
 
     return (
         <ProgressMarkBox>
-            <span>
+            <div>
                 {
                     activeProgressTab === 'joinProgress2' ||
                     activeProgressTab === 'joinProgress3' ||
                     activeProgressTab === 'joinProgress4' ?
-                        <FontAwesomeIcon icon={checked} className="iconCustom" />
+                        <FontAwesomeIcon icon={checked} className="icon-custom2" />
                         :
-                        <FontAwesomeIcon icon={unChecked} className="iconCustom" />
+                        <FontAwesomeIcon icon={unChecked} className="icon-custom1" />
                 }
-                약관동의
-            </span>
-            <span>
+                <span>약관동의</span>
+            </div>
+            <span className="line-custom" />
+            <div>
                 {
                     activeProgressTab === 'joinProgress3' ||
                     activeProgressTab === 'joinProgress4' ?
-                        <FontAwesomeIcon icon={checked} className="iconCustom" />
+                        <FontAwesomeIcon icon={checked} className="icon-custom2" />
                         :
-                        <FontAwesomeIcon icon={unChecked} className="iconCustom" />
+                        <FontAwesomeIcon icon={unChecked} className="icon-custom1" />
                 }
-                본인확인
-            </span>
-            <span>
+                <span>본인확인</span>
+            </div>
+            <span className="line-custom" />
+            <div>
                 {
                     activeProgressTab === 'joinProgress4' ?
-                        <FontAwesomeIcon icon={checked} className="iconCustom" />
+                        <FontAwesomeIcon icon={checked} className="icon-custom2" />
                         :
-                        <FontAwesomeIcon icon={unChecked} className="iconCustom" />
+                        <FontAwesomeIcon icon={unChecked} className="icon-custom1" />
                 }
-                정보입력
-            </span>
-            <span>
+                <span>정보입력</span>
+            </div>
+            <span className="line-custom" />
+            <div>
                 {
                     activeProgressTab === 'joinProgress4' ?
-                        <FontAwesomeIcon icon={checked} className="iconCustom" />
+                        <FontAwesomeIcon icon={checked} className="icon-custom2" />
                         :
-                        <FontAwesomeIcon icon={unChecked} className="iconCustom" />
+                        <FontAwesomeIcon icon={unChecked} className="icon-custom1" />
                 }
-                가입완료
-            </span>
-
+                <span>가입완료</span>
+            </div>
         </ProgressMarkBox>
     )
 }

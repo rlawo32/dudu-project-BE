@@ -7,13 +7,15 @@ import EmailAuth from "./signUpView/EmailAuth";
 import EnterInfo from "./signUpView/EnterInfo";
 import JoinComplete from "./signUpView/JoinComplete";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
-import {useEffect} from "react";
 
 const JoinProgressView = styled.div`
   position: relative;
-  margin: 50px 250px auto;
-  border: 2px solid black;
-  height: 1000px;
+  height: fit-content;
+  width: fit-content;
+  margin: 50px auto 250px;
+  padding: 5px 10% 40px 10%;
+  border: 2px solid ${({theme}) => theme.textColor};
+  border-radius: 15px;
 `;
 
 const SignUp = ():any => {

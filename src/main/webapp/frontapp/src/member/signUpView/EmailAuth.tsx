@@ -2,6 +2,7 @@ import React, {useState} from "react";
 
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 import MemberAuth from "../MemberAuth";
+import * as Styled from "../SignUp.style";
 
 const EmailAuth = ():any => {
 
@@ -9,14 +10,16 @@ const EmailAuth = ():any => {
     const {setActiveProgressTab} = useJoinProgressStore();
 
     return (
-        <>
+        <Styled.EmailAuthView>
             <h1>이메일 인증</h1>
             <MemberAuth setIsMemberEmailCheck={setIsMemberEmailCheck} duplicationChk={true}/>
 
-            <button onClick={() => setActiveProgressTab("joinProgress1")}>뒤로 가기</button>
-            <button onClick={() => setActiveProgressTab("joinProgress3")}
-                    style={isMemberEmailCheck ? {display: 'inline'} : {display: 'none'}}>다음 단계</button>
-        </>
+            <div className="emailAuth-button">
+                <Styled.SignUpButton onClick={() => setActiveProgressTab("joinProgress1")}>뒤로가기</Styled.SignUpButton>
+                <Styled.SignUpButton onClick={() => setActiveProgressTab("joinProgress3")}
+                                     style={isMemberEmailCheck ? {display: 'inline'} : {display: 'none'}}>다음</Styled.SignUpButton>
+            </div>
+        </Styled.EmailAuthView>
     )
 }
 

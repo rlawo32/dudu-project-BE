@@ -1,6 +1,8 @@
 import React, {useState} from "react";
-import useJoinProgressStore from "../stores/useJoinProgressStore";
 import axios from "axios";
+
+import useJoinProgressStore from "../stores/useJoinProgressStore";
+import * as Styled from "./SignUp.style";
 
 interface Props {
     setIsMemberEmailCheck: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,6 +22,7 @@ const MemberAuth = (props: Props):any => {
     const [memberEmailCodeChkMessage, setMemberEmailCodeChkMessage] = useState<string>("");
     const [isMemberEmailEffect, setIsMemberEmailEffect] = useState<boolean>(true);
     const [isMemberEmailCodeChkEffect, setIsMemberEmailCodeChkEffect] = useState<boolean>(true);
+    const [isMemberEmailSend, setIsMemberEmailSend] = useState<boolean>(false);
 
     const {setInputMemberEmail} = useJoinProgressStore();
 
@@ -73,6 +76,8 @@ const MemberAuth = (props: Props):any => {
                     } else {
                         emailAuthSend();
                     }
+                }).catch((err):void => {
+                    console.log(err.message);
                 })
             } else {
                 emailAuthSend();
@@ -89,6 +94,7 @@ const MemberAuth = (props: Props):any => {
         alert('인증코드를 발송했습니다. 이메일을 확인해주세요.');
         setIsMemberEmailEffect(true);
         setMemberEmailMessage('');
+        setIsMemberEmailSend(true);
 
         axios({
             method: "GET",
@@ -125,18 +131,26 @@ const MemberAuth = (props: Props):any => {
 
     return (
         <div>
-            <input type="text" onChange={(data) => memberEmailRegex(data.target.value)} placeholder="이메일"
-                   style={ isMemberEmailEffect ? {} : {border: '2px solid red'} } />
-            <span style={  isMemberEmailEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberEmailMessage}
-                </span>
-            <button onClick={() => emailAuthSendHandler()}>전송하기</button>
-            <input type="text" onChange={(e) => memberEmailCodeChkRegex(e.target.value)} placeholder="이메일 인증"
-                   style={ isMemberEmailCodeChkEffect ? {} : {border: '2px solid red'} } />
-            <span style={  isMemberEmailCodeChkEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberEmailCodeChkMessage}
-                </span>
-            <button onClick={() => emailAuthCheckHandler()}>확인하기</button>
+            <div style={ {marginBottom: '25px'} }>
+                <div>
+                    <Styled.EmailAuthInput type="text" onChange={(data) => memberEmailRegex(data.target.value)} placeholder="이메일"
+                                           style={ isMemberEmailEffect ? {} : {border: '2px solid red'} } />
+                    <Styled.EmailAuthButton onClick={() => emailAuthSendHandler()}>전송하기</Styled.EmailAuthButton>
+                </div>
+                <div style={  isMemberEmailEffect ? {display:'none'} : {marginLeft:'5px', color:'red', fontSize:'11px'} }>
+                    {memberEmailMessage}
+                </div>
+            </div>
+            <div style={ {marginBottom: '25px'} }>
+                <div style={ isMemberEmailSend ? {display:'block'} : {display:'none'} } >
+                    <Styled.EmailAuthInput type="text" onChange={(e) => memberEmailCodeChkRegex(e.target.value)} placeholder="이메일 인증"
+                                           style={ isMemberEmailCodeChkEffect ? {} : {border: '2px solid red'} } />
+                    <Styled.EmailAuthButton onClick={() => emailAuthCheckHandler()}>인증하기</Styled.EmailAuthButton>
+                </div>
+                <div style={  isMemberEmailCodeChkEffect ? {display:'none'} : {marginLeft:'5px', color:'red', fontSize:'11px'} }>
+                    {memberEmailCodeChkMessage}
+                </div>
+            </div>
         </div>
     )
 }

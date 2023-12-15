@@ -1,71 +1,7 @@
-import styled from "styled-components";
 import {useState} from "react";
 
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
-
-const TermsAgreeView = styled.div`
-  position: relative;
-  height: fit-content;
-  width: fit-content;
-  margin: auto;
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .terms-box {
-    margin-bottom: 40px;
-  }
-  
-  .terms-title {
-    margin-bottom: 10px;
-    font-size: 20px;
-  }
-  
-  .terms-input {
-    
-    label {
-      display: flex;
-      align-items: center;
-    }
-  }
-  
-  input {
-    margin-right: 7px;
-  }
-  
-  textarea {
-    width: 400px;
-    border-radius: 10px;
-    resize: none;
-  }
-  
-  span {
-    font-size: 12px;
-  }
-  
-  .input-custom {
-    color: orangered;
-  }
-  
-  .terms-button {
-    width: fit-content;
-    margin: auto;
-  }
-`;
-
-const SignUpButton = styled.button`
-  border: 1px solid black;
-  border-radius: 7px;
-  width: 150px;
-  padding: 5px 10px 5px 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${({theme}) => theme.headerTextColor};
-  background-color: ${({theme}) => theme.reverseBgColor};
-  cursor: pointer;
-`;
+import * as Styled from "../SignUp.style";
 
 const TermsAgree = ():any => {
 
@@ -91,7 +27,7 @@ const TermsAgree = ():any => {
     }
     
     return (
-        <TermsAgreeView>
+        <Styled.TermsAgreeView>
             <h1>약관 동의</h1>
 
             <div className="terms-box">
@@ -141,9 +77,9 @@ const TermsAgree = ():any => {
             </div>
 
             <div className="terms-button">
-                <SignUpButton onClick={() => termsAgreeHandler()}>다음</SignUpButton>
+                <Styled.SignUpButton onClick={() => termsAgreeHandler()}>다음</Styled.SignUpButton>
             </div>
-        </TermsAgreeView>
+        </Styled.TermsAgreeView>
     )
 }
 

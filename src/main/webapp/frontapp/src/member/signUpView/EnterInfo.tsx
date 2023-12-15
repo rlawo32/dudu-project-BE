@@ -1,7 +1,8 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
+import * as Styled from "../SignUp.style";
 
 
 const EnterInfo = ():any => {
@@ -35,6 +36,10 @@ const EnterInfo = ():any => {
     const [isMemberPwConfirm, setIsMemberPwConfirm] = useState<boolean>(false);
     const [isMemberGenderConfirm, setIsMemberGenderConfirm] = useState<boolean>(false);
     const [isMemberPhoneConfirm, setIsMemberPhoneConfirm] = useState<boolean>(false);
+
+    // 성별 버튼
+    const [isMemberGenderM, setIsMemberGenderM] = useState<boolean>(false);
+    const [isMemberGenderF, setIsMemberGenderF] = useState<boolean>(false);
 
     const {setActiveProgressTab, inputMemberEmail, inputTermsAgree} = useJoinProgressStore();
 
@@ -122,6 +127,14 @@ const EnterInfo = ():any => {
     const memberGenderRegex = (data:string):void => {
         const currentData:string = data;
 
+        if(currentData === 'M') {
+            setIsMemberGenderM(true);
+            setIsMemberGenderF(false);
+        } else {
+            setIsMemberGenderM(false);
+            setIsMemberGenderF(true);
+        }
+
         setMemberGender(currentData);
         setMemberGenderMessage('');
         setIsMemberGenderEffect(true);
@@ -178,76 +191,103 @@ const EnterInfo = ():any => {
             setIsMemberPhoneEffect(false);
             setIsMemberPhoneConfirm(false);
         } else {
-            axios({
-                method: "POST",
-                url: "/member/signUp",
-                data: JSON.stringify(signUpData),
-                headers: {'Content-type': 'application/json'}
-            }).then((res) => {
-                window.alert("회원가입 완료");
-                window.location.reload();
-                setActiveProgressTab("joinProgress4");
-            })
+            // axios({
+            //     method: "POST",
+            //     url: "/member/signUp",
+            //     data: JSON.stringify(signUpData),
+            //     headers: {'Content-type': 'application/json'}
+            // }).then((res) => {
+            //     window.alert("회원가입 완료");
+            //     window.location.reload();
+            //     setActiveProgressTab("joinProgress4");
+            // })
+            setActiveProgressTab("joinProgress4");
         }
     }
 
     return (
-        <>
+        <Styled.EnterInfoView>
+            <h1>정보 입력</h1>
             <div>
-                <div>
-                    <input type="text" value={inputMemberEmail} readOnly={true}/>
+                <div className="input-box">
+                    <span className="input-title">이메일</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="text" value={inputMemberEmail} readOnly={true}/>
+                    </div>
                 </div>
-                <div>
-                    <input type="text" onChange={(data) => memberIdRegex(data.target.value)} placeholder="아이디"
-                           style={ isMemberIdEffect ? {} : {border: '2px solid red'} } onBlur={memberIdDuplicationHandler} />
-                    <span style={  isMemberIdEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberIdMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">아이디</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="text" onChange={(data) => memberIdRegex(data.target.value)} placeholder="아이디"
+                                               style={ isMemberIdEffect ? {} : {border: '2px solid red'} } onBlur={memberIdDuplicationHandler} />
+                        <div style={  isMemberIdEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberIdMessage}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="text" onChange={(data) => memberNameRegex(data.target.value)} placeholder="이름"
-                           style={ isMemberNameEffect ? {} : {border: '2px solid red'} } />
-                    <span style={  isMemberNameEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberNameMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">이름</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="text" onChange={(data) => memberNameRegex(data.target.value)} placeholder="이름"
+                                               style={ isMemberNameEffect ? {} : {border: '2px solid red'} } />
+                        <div style={  isMemberNameEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberNameMessage}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="password" onChange={(e) => memberPwRegex(e.target.value)} placeholder="비밀번호"
-                           style={ isMemberPwEffect ? {} : {border: '2px solid red'} } />
-                    <span style={  isMemberPwEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberPwMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">비밀번호</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="password" onChange={(e) => memberPwRegex(e.target.value)} placeholder="비밀번호"
+                                               style={ isMemberPwEffect ? {} : {border: '2px solid red'} } />
+                        <div style={  isMemberPwEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberPwMessage}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="password" onChange={(e) => memberPwChkRegex(e.target.value)} placeholder="비밀번호 확인"
-                           style={ isMemberPwChkEffect ? {} : {border: '2px solid red'} } />
-                    <span style={  isMemberPwChkEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberPwChkMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">비밀번호 확인</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="password" onChange={(e) => memberPwChkRegex(e.target.value)} placeholder="비밀번호 확인"
+                                               style={ isMemberPwChkEffect ? {} : {border: '2px solid red'} } />
+                        <div style={  isMemberPwChkEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberPwChkMessage}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span style={ isMemberGenderEffect ? {} : {border: '2px solid red'} } >
-                        <button onClick={() => memberGenderRegex("M")}>남자</button>
-                        <button onClick={() => memberGenderRegex("F")}>여자</button>
-                    </span>
-                    <span style={  isMemberGenderEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberGenderMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">성별</span>
+                    <div className="input-text">
+                        <div style={ isMemberGenderEffect ? {} : {border: '2px solid red'} } className="input-gender">
+                            <Styled.EnterInfoButtonM onClick={() => memberGenderRegex("M")}
+                                                    style={isMemberGenderM ? {backgroundColor: 'deepskyblue', fontWeight: 'bold'} : {}}>
+                                남자
+                            </Styled.EnterInfoButtonM>
+                            <Styled.EnterInfoButtonF onClick={() => memberGenderRegex("F")}
+                                                    style={isMemberGenderF ? {backgroundColor: 'deepskyblue', fontWeight: 'bold'} : {}}>
+                                여자
+                            </Styled.EnterInfoButtonF>
+                        </div>
+                        <div style={  isMemberGenderEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberGenderMessage}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span>
-                        <input type="text" onChange={(e) => memberPhoneRegex(e.target.value)} placeholder="전화번호"
-                               style={ isMemberPhoneEffect ? {} : {border: '2px solid red'} } />
-                    </span>
-                    <span style={  isMemberPhoneEffect ? {display:'none'} : {display:'inline', color:'red', fontSize:'13px'} }>
-                        {memberPhoneMessage}
-                    </span>
+                <div className="input-box">
+                    <span className="input-title">전화번호</span>
+                    <div className="input-text">
+                        <Styled.EnterInfoInput type="text" onChange={(e) => memberPhoneRegex(e.target.value)} placeholder="- 없이 입력해주세요."
+                                               style={ isMemberPhoneEffect ? {} : {border: '2px solid red'} } />
+                        <div style={  isMemberPhoneEffect ? {display:'none'} : {display:'block', color:'red', fontSize:'13px', marginLeft:'5px'} }>
+                            {memberPhoneMessage}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <button onClick={() => signUpHandler()}>회원 가입</button>
+            <div className="enterInfo-button">
+                <Styled.SignUpButton onClick={() => signUpHandler()}>회원 가입</Styled.SignUpButton>
             </div>
-        </>
+        </Styled.EnterInfoView>
     )
 }
 

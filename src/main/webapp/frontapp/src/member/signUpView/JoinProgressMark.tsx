@@ -31,7 +31,7 @@ const ProgressMarkBox = styled.div`
   .icon-custom2 {
     font-size: 25px;
     margin-right: 5px;
-    color: skyblue;
+    color: deepskyblue;
   }
   
   .line-custom {

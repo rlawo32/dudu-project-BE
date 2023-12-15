@@ -111,6 +111,24 @@ export const EnterInfoView = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 22px;
+    
+    .input-title {
+      height: 30px;
+      margin-right: 30px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+    
+    .input-text {
+      height: 40px;
+    }
+    
+    .input-gender {
+      border: 2px solid ${({theme}) => theme.textColor};
+      border-radius: 7px;
+      margin-right: 62px;
+    }
   }
   
   .enterInfo-button {
@@ -121,14 +139,51 @@ export const EnterInfoView = styled.div`
 
 export const EnterInfoInput = styled.input`
   display: inline-block;
-  border: 1px solid black;
+  border: 2px solid ${({theme}) => theme.textColor};
   border-radius: 7px;
   width: 200px;
-  padding: 7px 10px 5px 10px;
+  padding: 7px 10px 6px 10px;
   margin: 0 2px 2px 0;
-  font-size: 18px;
+  font-size: 15px;
   color: ${({theme}) => theme.textColor};
   background-color: ${({theme}) => theme.bgColor};
+`;
+
+export const EnterInfoButtonM = styled.button`
+  border: none;
+  border-right: 1px solid ${({theme}) => theme.textColor};
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  width: 80px;
+  padding: 5px 10px 5px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  color: ${({theme}) => theme.textColor};
+  background-color: ${({theme}) => theme.bgColor};
+`;
+
+export const EnterInfoButtonF = styled.button`
+  border: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  width: 80px;
+  padding: 5px 10px 5px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  color: ${({theme}) => theme.textColor};
+  background-color: ${({theme}) => theme.bgColor};
+`;
+
+export const JoinCompleteView = styled.div`
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+  margin: auto;
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
 `;
 
 export const SignUpButton = styled.button`
@@ -136,7 +191,7 @@ export const SignUpButton = styled.button`
   border-radius: 7px;
   width: 150px;
   padding: 5px 10px 5px 10px;
-  margin: 0 5px 0 5px;
+  margin: 15px 5px 0 5px;
   font-size: 20px;
   font-weight: bold;
   color: ${({theme}) => theme.headerTextColor};

@@ -108,13 +108,34 @@ const MemberAuth = (props: Props):any => {
         })
     }
 
-    const emailAuthCheckHandler = ():void => {
+    const emailAuthCheckHandler = async ():Promise<void> => {
 
         if(isMemberEmailCodeChkConfirm) {
             if(memberEmailCode === memberEmailCodeChk) {
-                alert('인증에 성공하였습니다!');
-                props.setIsMemberEmailCheck(true);
-                setInputMemberEmail(memberEmail);
+                if(!props.duplicationChk) {
+                    await axios({
+                        method: "GET",
+                        url: "/member/memberEmailDuplicationChk",
+                        params: {memberEmail: memberEmail}
+                    }).then((res):void => {
+                        if(res.data) {
+                            alert('인증에 성공하였습니다!');
+                            props.setIsMemberEmailCheck(true);
+                        } else {
+                            alert('인증에 성공하였습니다!');
+                            setMemberEmailMessage('가입된 사용자가 없습니다.');
+                            setIsMemberEmailEffect(false);
+                            setIsMemberEmailConfirm(false);
+                            props.setIsMemberEmailCheck(false);
+                        }
+                    }).catch((err):void => {
+                        console.log(err.message);
+                    })
+                } else {
+                    alert('인증에 성공하였습니다!');
+                    props.setIsMemberEmailCheck(true);
+                    setInputMemberEmail(memberEmail);
+                }
             } else {
                 alert('인증번호가 일치하지 않습니다.');
                 setMemberEmailCodeChkMessage('인증번호가 일치하지 않습니다.');

@@ -133,8 +133,8 @@ const FindPwModal = (props: Props) => {
                                                   placeholder="비밀번호 확인을 해주세요." />
                             </div>
                             <div>
-                                <Modal.ModalButton onClick={() => props.setIsFindPwModal(false)}>취소하기</Modal.ModalButton>
-                                <Modal.ModalButton onClick={() => changePwHandler()}>변경하기</Modal.ModalButton>
+                                <Modal.ModalButton onClick={() => props.setIsFindPwModal(false)}>취소</Modal.ModalButton>
+                                <Modal.ModalButton onClick={() => changePwHandler()}>변경</Modal.ModalButton>
                             </div>
                         </div>
                     </Modal.ModalFindView>
@@ -149,7 +149,7 @@ const FindPwModal = (props: Props) => {
                             </p>
                         </div>
                         <span></span>
-                        <div className="findIdView-box">
+                        <div className="findIdView-box" style={{marginTop: "25px"}}>
                             <h3>이메일 인증</h3>
                             <MemberAuth setIsMemberEmailCheck={setIsMemberEmailCheck} duplicationChk={false}/>
                         </div>

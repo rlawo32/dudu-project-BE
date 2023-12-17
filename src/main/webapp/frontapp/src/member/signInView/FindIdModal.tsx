@@ -119,7 +119,7 @@ const FindIdModal = (props: Props) => {
                         <span></span>
                         <div className="findIdView-box">
                             <div>
-                                <div>이름</div>
+                                <div style={{marginTop: "25px"}}>이름</div>
                                 <Modal.ModalInput type="text" onChange={(e) => setFindIdMemberName(e.target.value)} placeholder="이름을 입력해주세요." />
                             </div>
                             <div>

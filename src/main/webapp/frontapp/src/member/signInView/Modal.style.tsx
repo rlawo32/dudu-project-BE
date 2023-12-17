@@ -60,7 +60,6 @@ export const ModalFindView = styled.div`
   span {
     display: block;
     border-top: 1px solid ${({theme}) => theme.textColor};
-    margin-bottom: 25px;
   }
   
   p:nth-child(1) {

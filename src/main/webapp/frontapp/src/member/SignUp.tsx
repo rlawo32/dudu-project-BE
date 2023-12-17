@@ -10,9 +10,9 @@ import useJoinProgressStore from "../stores/useJoinProgressStore";
 
 const JoinProgressView = styled.div`
   position: relative;
-  height: fit-content;
+  height: 100%;
   width: fit-content;
-  margin: 50px auto 250px;
+  margin: 30px auto 50px;
   padding: 5px 10% 40px 10%;
   border: 2px solid ${({theme}) => theme.textColor};
   border-radius: 15px;

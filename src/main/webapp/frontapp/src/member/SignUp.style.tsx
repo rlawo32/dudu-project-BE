@@ -176,9 +176,13 @@ export const EnterInfoButtonF = styled.button`
 
 export const JoinCompleteView = styled.div`
   position: relative;
-  height: fit-content;
-  width: fit-content;
+  height: 500px;
+  width: 1000px;
   margin: auto;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
   h1 {
     text-align: center;

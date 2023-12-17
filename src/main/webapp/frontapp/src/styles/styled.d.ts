@@ -4,10 +4,12 @@ declare module "styled-components" {
     export interface DefaultTheme {
         bgColor: string;
         reverseBgColor: string;
-        headerBgColor: string;
-        headerTextColor: string;
         textColor: string;
         borderColor: string;
+        boxBgColor: string;
+        inputBgColor: string;
         toggleColor: string;
+        headerBgColor: string;
+        headerTextColor: string;
     }
 }

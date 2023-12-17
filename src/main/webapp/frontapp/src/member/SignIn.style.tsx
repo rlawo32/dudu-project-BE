@@ -80,7 +80,7 @@ export const InputBox = styled.div`
   
   .icon-custom {
     position: absolute;
-    top: 25%;
+    top: 20%;
     left: 5%;
     font-size: 35px;
     color: ${({theme}) => theme.textColor};
@@ -89,7 +89,7 @@ export const InputBox = styled.div`
 
 export const SignInInput = styled.input`
   display: block;
-  border: 3px solid ${({theme}) => theme.textColor};
+  border: ${({theme}) => theme.borderColor};
   border-radius: 30px;
   height: 50px;
   width: 420px;
@@ -97,11 +97,11 @@ export const SignInInput = styled.input`
     width: 320px;
     margin: 10px auto;
   }
-  padding: 5px 10px 5px 75px;
+  padding: 5px 10px 3px 75px;
   margin-bottom: 10px;
-  font-size: 29px;
+  font-size: 22px;
   color: ${({theme}) => theme.textColor};
-  background-color: ${({theme}) => theme.bgColor};
+  background-color: ${({theme}) => theme.inputBgColor};
 `;
 
 export const SignInButton = styled.button`

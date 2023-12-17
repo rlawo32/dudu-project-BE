@@ -150,6 +150,7 @@ const FindPwModal = (props: Props) => {
                         </div>
                         <span></span>
                         <div className="findIdView-box">
+                            <h3>이메일 인증</h3>
                             <MemberAuth setIsMemberEmailCheck={setIsMemberEmailCheck} duplicationChk={false}/>
                         </div>
                     </Modal.ModalFindView>

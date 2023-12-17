@@ -60,6 +60,7 @@ export const ModalFindView = styled.div`
   span {
     display: block;
     border-top: 1px solid ${({theme}) => theme.textColor};
+    margin-bottom: 25px;
   }
   
   p:nth-child(1) {
@@ -72,13 +73,13 @@ export const ModalInput = styled.input`
   display: block;
   height: 30px;
   width: 250px;
-  border: 1px solid ${({theme}) => theme.textColor};
+  border: ${({theme}) => theme.borderColor};
   border-radius: 10px;
   padding: 8px 10px 5px 10px;
   margin: 10px auto;
   font-size: 18px;
   color: ${({theme}) => theme.textColor};
-  background-color: ${({theme}) => theme.bgColor};
+  background-color: ${({theme}) => theme.inputBgColor};
 `;
 
 export const ModalButton = styled.button`

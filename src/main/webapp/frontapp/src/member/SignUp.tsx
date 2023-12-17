@@ -14,8 +14,9 @@ const JoinProgressView = styled.div`
   width: fit-content;
   margin: 30px auto 50px;
   padding: 5px 10% 40px 10%;
-  border: 2px solid ${({theme}) => theme.textColor};
+  border: ${({theme}) => theme.borderColor};
   border-radius: 15px;
+  background-color: ${({theme}) => theme.boxBgColor};
 `;
 
 const SignUp = ():any => {

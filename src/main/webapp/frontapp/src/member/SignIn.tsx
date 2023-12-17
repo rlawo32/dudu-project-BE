@@ -80,11 +80,13 @@ const SignIn = ():any => {
                     <h1>로그인</h1>
                     <Styled.InputBox>
                         <FontAwesomeIcon icon={idIcon} className="icon-custom" />
-                        <Styled.SignInInput type="text" onChange={(e) => setLoginMemberId(e.target.value)} />
+                        <Styled.SignInInput type="text" onChange={(e) => setLoginMemberId(e.target.value)}
+                                            placeholder="아이디를 입력해주세요."/>
                     </Styled.InputBox>
                     <Styled.InputBox>
                         <FontAwesomeIcon icon={pwIcon} className="icon-custom" />
-                        <Styled.SignInInput type="password" onChange={(e) => setLoginMemberPw(e.target.value)} />
+                        <Styled.SignInInput type="password" onChange={(e) => setLoginMemberPw(e.target.value)}
+                                            placeholder="비밀번호를 입력해주세요."/>
                     </Styled.InputBox>
 
                     <Styled.SignInButton onClick={() => signInHandler()}>로그인</Styled.SignInButton>

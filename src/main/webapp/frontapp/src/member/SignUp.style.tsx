@@ -72,19 +72,19 @@ export const EmailAuthView = styled.div`
 
 export const EmailAuthInput = styled.input`
   display: inline-block;
-  border: 1px solid black;
+  border: ${({theme}) => theme.borderColor};
   border-radius: 7px;
   width: 200px;
   padding: 7px 10px 5px 10px;
   margin: 0 2px 2px 0;
   font-size: 18px;
   color: ${({theme}) => theme.textColor};
-  background-color: ${({theme}) => theme.bgColor};
+  background-color: ${({theme}) => theme.inputBgColor};
 `;
 
 export const EmailAuthButton = styled.button`
   display: inline-block;
-  border: 1px solid black;
+  border: none;
   border-radius: 7px;
   width: 100px;
   padding: 8px 10px 7px 10px;
@@ -125,7 +125,7 @@ export const EnterInfoView = styled.div`
     }
     
     .input-gender {
-      border: 2px solid ${({theme}) => theme.textColor};
+      border: ${({theme}) => theme.borderColor};
       border-radius: 7px;
       margin-right: 62px;
     }
@@ -139,14 +139,14 @@ export const EnterInfoView = styled.div`
 
 export const EnterInfoInput = styled.input`
   display: inline-block;
-  border: 2px solid ${({theme}) => theme.textColor};
+  border: ${({theme}) => theme.borderColor};
   border-radius: 7px;
   width: 200px;
   padding: 7px 10px 6px 10px;
   margin: 0 2px 2px 0;
   font-size: 15px;
   color: ${({theme}) => theme.textColor};
-  background-color: ${({theme}) => theme.bgColor};
+  background-color: ${({theme}) => theme.inputBgColor};
 `;
 
 export const EnterInfoButtonM = styled.button`
@@ -191,7 +191,7 @@ export const JoinCompleteView = styled.div`
 `;
 
 export const SignUpButton = styled.button`
-  border: 1px solid black;
+  border: none;
   border-radius: 7px;
   width: 150px;
   padding: 5px 10px 5px 10px;

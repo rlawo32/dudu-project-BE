@@ -74,6 +74,8 @@ const EnterInfo = ():any => {
                     setIsMemberIdEffect(true);
                     setMemberIdMessage('');
                 }
+            }).catch((err):void => {
+                console.log(err.message);
             })
         }
     }
@@ -191,17 +193,18 @@ const EnterInfo = ():any => {
             setIsMemberPhoneEffect(false);
             setIsMemberPhoneConfirm(false);
         } else {
-            // axios({
-            //     method: "POST",
-            //     url: "/member/signUp",
-            //     data: JSON.stringify(signUpData),
-            //     headers: {'Content-type': 'application/json'}
-            // }).then((res) => {
-            //     window.alert("회원가입 완료");
-            //     window.location.reload();
-            //     setActiveProgressTab("joinProgress4");
-            // })
-            setActiveProgressTab("joinProgress4");
+            axios({
+                method: "POST",
+                url: "/member/signUp",
+                data: JSON.stringify(signUpData),
+                headers: {'Content-type': 'application/json'}
+            }).then((res) => {
+                window.alert("회원가입 완료");
+                window.location.reload();
+                setActiveProgressTab("joinProgress4");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
         }
     }
 

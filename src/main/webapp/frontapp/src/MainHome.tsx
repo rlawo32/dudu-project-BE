@@ -7,6 +7,7 @@ import HeaderNavigation from "./navigation/HeaderNavigation";
 
 const MainHome = ():any => {
 
+    // 간편로그인 성공 시 생성되는 토큰들을 헤더와 쿠키에 넣어주는 작업
     const [searchParams, setSearchParams] = useSearchParams();
     const [easyLoginState, setEasyLoginState] = useState(false);
 
@@ -34,6 +35,7 @@ const MainHome = ():any => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [easyLoginState])
+    // 간편로그인 성공 시 생성되는 토큰들을 헤더와 쿠키에 넣어주는 작업
 
     return (
         <div>

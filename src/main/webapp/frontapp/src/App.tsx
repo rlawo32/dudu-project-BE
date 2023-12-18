@@ -5,12 +5,15 @@ import {ThemeProvider} from "styled-components";
 import axios from "axios";
 
 import MainHome from './MainHome';
+// member
 import SignIn from "./member/SignIn";
 import SignUp from "./member/SignUp";
 import TermsAgree from "./member/signUpView/TermsAgree";
 import EmailAuth from "./member/signUpView/EmailAuth";
 import EnterInfo from "./member/signUpView/EnterInfo";
 import JoinComplete from "./member/signUpView/JoinComplete";
+// lecture
+import LectureWrite from "./lecture/LectureWrite";
 
 import {GlobalStyle} from "./styles/GlobalStyles";
 import {darkTheme, lightTheme} from "./styles/theme";
@@ -76,13 +79,15 @@ function App() {
 
             <Routes>
                 <Route path="/" element={<MainHome />} />
+
                 <Route path="/signIn" element={<SignIn />} />
                 <Route path="/signUp" element={<SignUp />} />
-
                 <Route path="/termsAgree" element={<TermsAgree />} />
                 <Route path="/emailAuth" element={<EmailAuth />} />
                 <Route path="/enterInfo" element={<EnterInfo />} />
                 <Route path="/joinComplete" element={<JoinComplete />} />
+
+                <Route path="/lectureWrite" element={<LectureWrite />} />
             </Routes>
         </ThemeProvider>
     </>

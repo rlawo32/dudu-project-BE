@@ -30,8 +30,13 @@ const HeaderNavigation = ():any => {
             <StyledLink to="/" style={{marginLeft: '20px'}}>
                 Home
             </StyledLink>
+
             <ThemeModeToggle />
+
             <div style={{marginRight: '20px'}}>
+                <StyledLink to="/lectureWrite" style={{marginRight: '20px'}}>
+                    LectureWrite
+                </StyledLink>
                 <StyledLink to="/signIn" style={{marginRight: '20px'}}>
                     SignIn
                 </StyledLink>

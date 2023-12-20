@@ -8,7 +8,7 @@ import * as Styled from "../SignUp.style";
 
 const JoinComplete = ():any => {
 
-    const {activeProgressTab, setActiveProgressTab} = useJoinProgressStore();
+    const {activeProgressTab} = useJoinProgressStore();
 
     const [xy,setXY]=useState<{x:number, y:number}>({x:0,y:0});
 

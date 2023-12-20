@@ -1,10 +1,7 @@
 import {useEffect, useState} from "react";
+import UseLectureDataStore from "../../stores/useLectureDataStore";
 
-export const lectureRegistration:{lectureTime:string} = {
-    lectureTime: ""
-};
-
-const TimeSelectBox = (props:{onClick:boolean}) => {
+const LectureTimeSelectBox = (props:{onClick:boolean}) => {
 
     const [lectureStartTime, setLectureStartTime] = useState<string>("");
     const [lectureEndTime, setLectureEndTime] = useState<string>("");
@@ -12,6 +9,8 @@ const TimeSelectBox = (props:{onClick:boolean}) => {
 
     // false : am , true : pm
     const [isTimeSlot, setIsTimeSlot] = useState<boolean>(false);
+
+    const {setLectureTimeData} = UseLectureDataStore();
 
     const customTimeSelectBox = ():any[] => {
         const timeArr:any[] = [];
@@ -46,9 +45,9 @@ const TimeSelectBox = (props:{onClick:boolean}) => {
     }
 
     useEffect(() => {
-        lectureRegistration.lectureTime = lectureStartTime + " ~ " + lectureEndTime + " " + "(" + lectureDaysOfWeek + ")";
-        console.log("time component : " + lectureRegistration.lectureTime);
-    }, [props.onClick])
+        setLectureTimeData(lectureStartTime + " ~ " + lectureEndTime + " (" + lectureDaysOfWeek + ")")
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lectureEndTime, lectureDaysOfWeek])
 
     return (
         <span>
@@ -74,4 +73,4 @@ const TimeSelectBox = (props:{onClick:boolean}) => {
     )
 }
 
-export default TimeSelectBox;
+export default LectureTimeSelectBox;

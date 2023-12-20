@@ -2,7 +2,6 @@ import {useState} from "react";
 
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 import * as Styled from "../SignUp.style";
-import ClickConfettiEffect from "../../styles/ClickConfettiEffect";
 
 const TermsAgree = ():any => {
 

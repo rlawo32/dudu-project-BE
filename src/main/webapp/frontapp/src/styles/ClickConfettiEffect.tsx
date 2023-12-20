@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 
 import ReactCanvasConfetti from 'react-canvas-confetti';
 import useJoinProgressStore from "../stores/useJoinProgressStore";
@@ -24,6 +24,7 @@ export default function ClickConfettiEffect(props: Props) {
         });
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => fire(), [props.coordinate]);
 
     const fire = useCallback(() => {

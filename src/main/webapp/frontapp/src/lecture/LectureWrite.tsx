@@ -1,16 +1,18 @@
 import {useEffect, useState} from "react";
 import styled from 'styled-components';
+import UseLectureDataStore from "../stores/useLectureDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
-import * as timeBox from "./writeComponent/TimeSelectBox";
-import {lectureRegistration} from "./writeComponent/TimeSelectBox";
+import * as timeSelectBox from "./writeComponent/LectureTimeSelectBox";
+import * as periodDatePicker from "./writeComponent/LecturePeriodDataPicker";
 
 const LectureWriteView = styled.div`
   position: relative;
   height: 100%;
   width: 700px;
+  padding: 35px;
   margin: 10% auto;
-  border: 1px solid black;
+  border: ${({theme}) => theme.borderColor};
   
   h1 {
     text-align: center;
@@ -21,6 +23,7 @@ const LectureWriteView = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    
   }
 `;
 
@@ -39,13 +42,14 @@ const LectureWrite = () => {
     const [lectureInstitution, setLectureInstitution] = useState<string>("");
     const [lectureContact, setLectureContact] = useState<string>("");
 
-
     const [lectureTimeRegistration, setLectureTimeRegistration] = useState<boolean>(false);
 
+    const {lecturePeriodData, lectureTimeData} = UseLectureDataStore();
+
     useEffect(() => {
-        setLectureTime(timeBox.lectureRegistration.lectureTime);
-        console.log("write component : " + timeBox.lectureRegistration.lectureTime);
-    }, [lectureTimeRegistration])
+        setLecturePeriod(lecturePeriodData);
+        setLectureTime(lectureTimeData);
+    }, [lecturePeriodData, lectureTimeData])
 
     return (
         <LectureWriteView>
@@ -62,11 +66,14 @@ const LectureWrite = () => {
                 <input type="text" onChange={(e) => setLectureInstitution(e.target.value)} placeholder="교육기관" /> {/* selectBox */}
                 <input type="text" onChange={(e) => setLectureContact(e.target.value)} placeholder="문의처" />
 
-
-                <div>
-                    <timeBox.default onClick={lectureTimeRegistration}/>
+                <div className="lecture-datePicker">
+                    <periodDatePicker.default />
+                </div>
+                <div className="lecture-timeSelect">
+                    <timeSelectBox.default onClick={lectureTimeRegistration}/>
                     <button onClick={() => setLectureTimeRegistration(!lectureTimeRegistration)}>등록</button>
                 </div>
+                <button onClick={() => console.log(lectureTime + "/" + lecturePeriod)}>test</button>
             </div>
 
 

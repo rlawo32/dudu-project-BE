@@ -8,8 +8,8 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true, // import 하여 사용할 때 영향 (나중에 확인)
+    "allowSyntheticDefaultImports": true, // import 하여 사용할 때 영향 (나중에 확인)
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

@@ -27,6 +27,7 @@ const MemberAuth = (props: Props):any => {
     const {setInputMemberEmail} = useJoinProgressStore();
 
     const memberEmailRegex = (data:string):void => {
+        // eslint-disable-next-line no-useless-escape
         const regexChk:RegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
         const currentData:string = data;
 

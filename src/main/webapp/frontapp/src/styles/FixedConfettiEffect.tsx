@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 
 import ReactCanvasConfetti from 'react-canvas-confetti';
 import useJoinProgressStore from "../stores/useJoinProgressStore";
@@ -20,6 +20,7 @@ export default function FixedConfettiEffect() {
         });
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => fire(), []);
 
     const fire = useCallback(() => {

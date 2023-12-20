@@ -8,10 +8,6 @@ import MemberAuth from "../MemberAuth";
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 
 import * as Modal from "./Modal.style";
-import {ModalFindView} from "./Modal.style";
-
-
-
 
 interface Props {
     setIsFindPwModal: React.Dispatch<React.SetStateAction<boolean>>;

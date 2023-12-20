@@ -5,11 +5,13 @@ declare module "styled-components" {
         bgColor: string;
         reverseBgColor: string;
         textColor: string;
+        reverseTextColor: string;
         borderColor: string;
         boxBgColor: string;
         inputBgColor: string;
         toggleColor: string;
         headerBgColor: string;
         headerTextColor: string;
+        datePickerSelectColor: string;
     }
 }

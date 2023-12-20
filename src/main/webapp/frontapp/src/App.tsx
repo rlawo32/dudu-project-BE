@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
 import {getCookie, removeCookie, setCookie} from "./Cookie";
 import {ThemeProvider} from "styled-components";
@@ -70,6 +70,7 @@ function App() {
         // else if(axios.defaults.headers.common["Authorization"]?.toString() === undefined) {
         //     alert('재로그인을 해주세요');
         // }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
   return (

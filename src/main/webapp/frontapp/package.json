@@ -29,6 +29,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
+    "dayjs": "^1.11.10",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
     "eslint": "^8.3.0",
@@ -53,6 +54,7 @@
     "react-app-polyfill": "^3.0.0",
     "react-canvas-confetti": "^1.4.0",
     "react-cookie": "^6.1.1",
+    "react-datepicker": "^4.25.0",
     "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
     "react-refresh": "^0.11.0",
@@ -154,5 +156,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^4.19.4"
   }
 }

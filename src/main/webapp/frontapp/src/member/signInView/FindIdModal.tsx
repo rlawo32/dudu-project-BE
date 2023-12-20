@@ -7,7 +7,6 @@ import axios from "axios";
 import * as Modal from "./Modal.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope as emailIcon} from "@fortawesome/free-solid-svg-icons";
-import {ModalFindView} from "./Modal.style";
 
 interface Props {
     setIsFindIdModal: React.Dispatch<React.SetStateAction<boolean>>;

@@ -64,7 +64,7 @@ public class Member {
     @NotNull
     private Role role;
 
-    @Column(name = "member__attribute_code")
+    @Column(name = "member_attribute_code")
     @NotBlank
     private String memberAttributeCode;
 

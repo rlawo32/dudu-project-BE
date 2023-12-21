@@ -12,19 +12,23 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import * as Styled from "../LectureWrite.style";
 
-const LecturePeriodDataPicker = () => {
+const LecturePeriodDataPicker = (props:{type:string}) => {
     dayjs.locale('ko');
 
     const [startDate, setStartDate] = useState<Date>(new Date());
     const [endDate, setEndDate] = useState<Date>(new Date());
 
-    const {setLecturePeriodData} = UseLectureDataStore();
+    const {setLecturePeriodData, setLectureReceptionData} = UseLectureDataStore();
 
     const YEARS:number[] = Array.from({ length: getYear(new Date()) + 1 - (getYear(new Date()) - 1) }, (_, i) => (getYear(new Date()) + 1) - i);
     const MONTHS:string[] = Array.from({ length: 12 }, (_, i) => (i + 1) + "월");
 
     useEffect(() => {
-        setLecturePeriodData(dayjs(startDate).format("YYYY.MM.DD") + " ~ " + dayjs(endDate).format("YYYY.MM.DD"));
+        if(props.type === 'period') {
+            setLecturePeriodData(dayjs(startDate).format("YYYY.MM.DD") + " ~ " + dayjs(endDate).format("YYYY.MM.DD"));
+        } else if(props.type === 'reception') {
+            setLectureReceptionData(dayjs(startDate).format("YYYY.MM.DD") + " ~ " + dayjs(endDate).format("YYYY.MM.DD"));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endDate])
 

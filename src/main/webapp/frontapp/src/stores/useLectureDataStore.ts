@@ -5,6 +5,8 @@ interface lectureDataStore {
     setLectureTimeData: (time: string) => void;
     lecturePeriodData: string;
     setLecturePeriodData: (period: string) => void;
+    lectureReceptionData: string;
+    setLectureReceptionData: (reception: string) => void;
 }
 
 const useLectureDataStore = create<lectureDataStore>((set) => ({
@@ -17,6 +19,11 @@ const useLectureDataStore = create<lectureDataStore>((set) => ({
     setLecturePeriodData: (period:string) =>
         set((state: {lecturePeriodData:string}) => ({
             lecturePeriodData: (state.lecturePeriodData = period),
+        })),
+    lectureReceptionData: "",
+    setLectureReceptionData: (reception:string) =>
+        set((state: {lectureReceptionData:string}) => ({
+            lectureReceptionData: (state.lectureReceptionData = reception),
         })),
 }));
 

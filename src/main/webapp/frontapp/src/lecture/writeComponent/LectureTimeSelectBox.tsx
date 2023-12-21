@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
 import UseLectureDataStore from "../../stores/useLectureDataStore";
 
-const LectureTimeSelectBox = (props:{onClick:boolean}) => {
-
-    const [lectureStartTime, setLectureStartTime] = useState<string>("");
-    const [lectureEndTime, setLectureEndTime] = useState<string>("");
-    const [lectureDaysOfWeek, setLectureDaysOfWeek] = useState<string>("월");
+const LectureTimeSelectBox = () => {
 
     // false : am , true : pm
     const [isTimeSlot, setIsTimeSlot] = useState<boolean>(false);
+
+    const [lectureStartTime, setLectureStartTime] = useState<string>("");
+    const [lectureEndTime, setLectureEndTime] = useState<string>("");
+    const [lectureDaysOfWeek, setLectureDaysOfWeek] = useState<string>("1");
 
     const {setLectureTimeData} = UseLectureDataStore();
 
@@ -35,10 +35,10 @@ const LectureTimeSelectBox = (props:{onClick:boolean}) => {
 
     const customDowSelectBox = ():any[] => {
         const dowArr:any[] = [];
-        const daysOfWeek:string[] = ['월', '화', '수', '목', '금', '토', '일'];
+        const daysOfWeek:string[] = ['일', '월', '화', '수', '목', '금', '토'];
 
         for(let i:number=0; i<daysOfWeek.length; i++) {
-            dowArr.push(<option value={daysOfWeek[i]} key={i}>{daysOfWeek[i]}</option>);
+            dowArr.push(<option value={i+1} key={i}>{daysOfWeek[i]}</option>);
         }
 
         return dowArr;
@@ -48,6 +48,12 @@ const LectureTimeSelectBox = (props:{onClick:boolean}) => {
         setLectureTimeData(lectureStartTime + " ~ " + lectureEndTime + " (" + lectureDaysOfWeek + ")")
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lectureEndTime, lectureDaysOfWeek])
+
+    useEffect(() => {
+        setLectureStartTime(isTimeSlot ? "12:00" : "00:00");
+        setLectureEndTime(isTimeSlot ? "12:00" : "00:00");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isTimeSlot])
 
     return (
         <span>

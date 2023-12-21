@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {setCookie} from "../Cookie";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
@@ -14,6 +14,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser as idIcon, faLock as pwIcon, faComment as kakaoIcon} from "@fortawesome/free-solid-svg-icons";
 
 const SignIn = ():any => {
+    const navigate = useNavigate();
 
     const [loginMemberId, setLoginMemberId] = useState<string>("");
     const [loginMemberPw, setLoginMemberPw] = useState<string>("");
@@ -47,6 +48,8 @@ const SignIn = ():any => {
                     // httpOnly: true,
                     // expires
                 });
+
+                navigate("/");
             } else {
                 alert(responseData.message);
             }

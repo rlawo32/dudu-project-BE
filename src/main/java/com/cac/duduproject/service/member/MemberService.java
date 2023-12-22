@@ -9,10 +9,13 @@ import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.jpa.repository.member.MemberTermsRepository;
 import com.cac.duduproject.jpa.repository.member.RefreshTokenRepository;
 import com.cac.duduproject.util.EmailUtil;
+import com.cac.duduproject.util.Role;
 import com.cac.duduproject.util.jwt.JwtTokenProvider;
 import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
 import com.cac.duduproject.web.dto.CommonResponseDto;
+import com.cac.duduproject.web.dto.lecture.LectureRoomResponseDto;
+import com.cac.duduproject.web.dto.member.MemberListResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +28,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -182,6 +187,7 @@ public class MemberService {
         return CommonResponseDto.setSuccess("Find MemberId Success", memberId);
     }
 
+    // 아이디 전체 이메일 전송
     @Transactional
     public void entireMemberId(MemberSignUpRequestDto requestDto) {
 
@@ -208,5 +214,25 @@ public class MemberService {
         }
         
         return CommonResponseDto.setSuccess("Find MemberPw Success", null);
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findAllMemberList(HttpServletRequest request) {
+        List<MemberListResponseDto> list = new ArrayList<>();
+        try {
+            if(request.getParameter("role").equals("A")) {
+                list = memberRepository.findByRole(Role.ADMIN).stream()
+                        .map(MemberListResponseDto::new)
+                        .collect(Collectors.toList());
+            } else if(request.getParameter("role").equals("M")) {
+                list = memberRepository.findByRole(Role.MEMBER).stream()
+                        .map(MemberListResponseDto::new)
+                        .collect(Collectors.toList());
+            }
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!!!");
+        }
+
+        return CommonResponseDto.setSuccess("Find MemberPw Success", list);
     }
 }

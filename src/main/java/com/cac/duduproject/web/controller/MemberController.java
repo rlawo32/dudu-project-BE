@@ -58,6 +58,7 @@ public class MemberController {
         return memberService.findMemberId(requestDto);
     }
 
+    // 아이디 전체 이메일 전송
     @PostMapping("/entireMemberId")
     public void entireMemberId(@RequestBody MemberSignUpRequestDto requestDto) {
         memberService.entireMemberId(requestDto);

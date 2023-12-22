@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import UseLectureDataStore from "../stores/useLectureDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
+import LectureRoomWrite from "./writeComponent/LectureRoomWrite";
+import LectureSubCategoryWrite from "./writeComponent/LectureSubCategoryWrite";
 import * as timeSelectBox from "./writeComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./writeComponent/LecturePeriodDataPicker";
 
@@ -30,39 +32,64 @@ const LectureWriteView = styled.div`
 
 const LectureWrite = () => {
 
-    const institutionArr:string[] = ['DuDu 문화센터', 'DuDu 복지회관', 'DuDu 청소년수련관', 'DuDu 문화의집', 'DuDu 문화회관'];
-    const lectureRoomArr:string[] = ['LAB1', 'LAB2', 'LAB3', 'LAB4', 'LAB5', 'LAB6', '오픈스튜디오', '수영장', '농구장'];
+    const [lectureTeacherList, setLectureTeacherList] = useState([{
+        memberNo: '',
+        memberName: '',
+        memberPhone: ''
+    }]);
+    const [institutionList, setInstitutionList] = useState([{
+        institutionNo: '',
+        institutionName: '',
+        institutionContact: ''
+    }]);
+    const [lectureRoomList, setLectureRoomList] = useState([{
+        lectureRoomNo: '',
+        lectureInstitutionNo: '',
+        lectureRoomName: '',
+        lectureRoomContact: ''
+    }]);
+    const [lectureMainCategoryList, setLectureMainCategoryList] = useState([{
+        lectureMainCategoryNo: '',
+        lectureMainCategoryName: '',
+        lectureMainCategoryDesc: ''
+    }]);
+    const [lectureSubCategoryList, setLectureSubCategoryList] = useState([{
+        lectureSubCategoryNo: '',
+        lectureMainCategoryNo: '',
+        lectureSubCategoryName: '',
+        lectureSubCategoryDesc: ''
+    }]);
 
+    const [lectureTeacher, setLectureTeacher] = useState<string>("");
     const [lectureName, setLectureName] = useState<string>("");
     const [lecturePeriod, setLecturePeriod] = useState<string>("");
     const [lectureTime, setLectureTime] = useState<string>("");
-    const [lectureRoom, setLectureRoom] = useState<string>(lectureRoomArr[0]);
+    const [lectureRoom, setLectureRoom] = useState<string>(institutionList[0].institutionNo);
     const [lectureCapacity, setLectureCapacity] = useState<number>(0);
     const [lectureFee, setLectureFee] = useState<number>(0);
     const [lectureReceptionPeriod, setLectureReceptionPeriod] = useState<string>("");
     const [lectureDescription, setLectureDescription] = useState<string>("");
-    const [lectureInstitution, setLectureInstitution] = useState<string>(institutionArr[0]);
+    const [lectureInstitution, setLectureInstitution] = useState<string>("1");
+    const [lectureMainCategory, setLectureMainCategory] = useState<string>("1");
+    const [lectureSubCategory, setLectureSubCategory] = useState<string>("");
 
     const {lecturePeriodData, lectureTimeData, lectureReceptionData} = UseLectureDataStore();
 
-    const LECTUREROOM:string[] = Array.from({ length: lectureRoomArr.length}, (_, i) => lectureRoomArr[i]);
-    const INSTITUTION:string[] = Array.from({ length: institutionArr.length }, (_, i) => institutionArr[i]);
-
     const lectureWriteHandler = ():void => {
         const lectureData:object = {
+            memberNo: lectureTeacher,
             lectureName: lectureName,
             lecturePeriod: lecturePeriod,
             lectureTime: lectureTime,
-            lectureRoom: lectureRoom,
+            lectureRoomNo: lectureRoom,
             lectureCapacity: lectureCapacity,
             lectureFee: lectureFee,
             lectureReception: lectureReceptionPeriod,
             lectureDescription: lectureDescription,
-            lectureInstitution: lectureInstitution
+            institutionNo: lectureInstitution,
+            mainCategoryNo: lectureMainCategory,
+            subCategoryNo: lectureSubCategory,
         }
-
-        console.log(lectureData);
-
         axios({
             method: "POST",
             url: "/lecture/write",
@@ -74,6 +101,74 @@ const LectureWrite = () => {
             console.log(err.message);
         })
     }
+
+
+
+    useEffect(() => {
+        const selectDataList = async ():Promise<void> => {
+            await axios({
+                method: "GET",
+                url: "/lecture/lectureTeacherList",
+                params: {role:"A"}
+            }).then((res):void => {
+                setLectureTeacherList(res.data.data);
+                setLectureTeacher(res.data.data[0].memberNo + "");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+            await axios({
+                method: "GET",
+                url: "/lecture/lectureInstitutionList"
+            }).then((res):void => {
+                setInstitutionList(res.data.data);
+                setLectureInstitution(res.data.data[0].institutionNo + "");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+            await axios({
+                method: "GET",
+                url: "/lecture/lectureMainCategoryList"
+            }).then((res):void => {
+                setLectureMainCategoryList(res.data.data);
+                setLectureMainCategory(res.data.data[0].lectureMainCategoryNo + "");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+        }
+        selectDataList().then();
+    }, [])
+
+    useEffect(() => {
+        const selectLectureRoomList = async ():Promise<void> => {
+            await axios({
+                method: "GET",
+                url: "/lecture/lectureRoomList",
+                params: {institutionNo: lectureInstitution}
+            }).then((res):void => {
+                setLectureRoomList(res.data.data);
+                setLectureRoom(res.data.data[0].lectureRoomNo + "");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+        }
+        selectLectureRoomList().then();
+    }, [lectureInstitution])
+
+    useEffect(() => {
+        const selectLectureRoomList = async ():Promise<void> => {
+            await axios({
+                method: "GET",
+                url: "/lecture/lectureSubCategoryList",
+                params: {mainCategoryNo: lectureMainCategory}
+            }).then((res):void => {
+                setLectureSubCategoryList(res.data.data);
+                setLectureSubCategory(res.data.data[0].lectureSubCategoryNo + "");
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+        }
+        selectLectureRoomList().then();
+    }, [lectureMainCategory])
 
     useEffect(() => {
         setLecturePeriod(lecturePeriodData);
@@ -87,15 +182,25 @@ const LectureWrite = () => {
             <h1>강의 작성</h1>
 
             <div className="input-section">
+                <select
+                    value={lectureTeacher}
+                    onChange={(e) => setLectureTeacher(e.target.value)}
+                >
+                    {lectureTeacherList.map((option) => (
+                        <option key={option.memberNo} value={option.memberNo}>
+                            {option.memberName}
+                        </option>
+                    ))}
+                </select>
                 <input type="text" onChange={(e) => setLectureName(e.target.value)} placeholder="강의명" />
                 <div>
                     <select
                         value={lectureRoom}
                         onChange={(e) => setLectureRoom(e.target.value)}
                     >
-                        {LECTUREROOM.map((option:string) => (
-                            <option key={option} value={option}>
-                                {option}
+                        {lectureRoomList.map((option) => (
+                            <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
+                                {option.lectureRoomName}
                             </option>
                         ))}
                     </select>
@@ -108,9 +213,9 @@ const LectureWrite = () => {
                         value={lectureInstitution}
                         onChange={(e) => setLectureInstitution(e.target.value)}
                     >
-                        {INSTITUTION.map((option:string) => (
-                            <option key={option} value={option}>
-                                {option}
+                        {institutionList.map((option) => (
+                            <option key={option.institutionNo} value={option.institutionNo}>
+                                {option.institutionName}
                             </option>
                         ))}
                     </select>
@@ -125,10 +230,35 @@ const LectureWrite = () => {
                 <div className="lecture-datePicker">
                     <periodDatePicker.default type={"reception"} />
                 </div>
+                <div>
+                    <select
+                        value={lectureMainCategory}
+                        onChange={(e) => setLectureMainCategory(e.target.value)}
+                    >
+                        {lectureMainCategoryList.map((option) => (
+                            <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
+                                {option.lectureMainCategoryName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <select
+                        value={lectureSubCategory}
+                        onChange={(e) => setLectureSubCategory(e.target.value)}
+                    >
+                        {lectureSubCategoryList.map((option) => (
+                            <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
+                                {option.lectureSubCategoryName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <button onClick={() => lectureWriteHandler()}>test</button>
             </div>
 
-
+            {/*<LectureRoomWrite institutionNo={lectureInstitution} />*/}
+            {/*<LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>*/}
         </LectureWriteView>
     )
 }

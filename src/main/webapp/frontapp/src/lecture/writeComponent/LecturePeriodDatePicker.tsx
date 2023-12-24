@@ -10,9 +10,9 @@ import dayjs from "dayjs";
 import 'dayjs/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import * as Styled from "../LectureWrite.style";
+import * as Styled from "./LecturePeriodDatePicker.style";
 
-const LecturePeriodDataPicker = (props:{type:string}) => {
+const LecturePeriodDatePicker = (props:{type:string}) => {
     dayjs.locale('ko');
 
     const [startDate, setStartDate] = useState<Date>(new Date());
@@ -129,4 +129,4 @@ const LecturePeriodDataPicker = (props:{type:string}) => {
     )
 }
 
-export default LecturePeriodDataPicker;
+export default LecturePeriodDatePicker;

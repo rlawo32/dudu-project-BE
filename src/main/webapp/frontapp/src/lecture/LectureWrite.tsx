@@ -1,34 +1,14 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import styled from 'styled-components';
 import UseLectureDataStore from "../stores/useLectureDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureRoomWrite from "./writeComponent/LectureRoomWrite";
 import LectureSubCategoryWrite from "./writeComponent/LectureSubCategoryWrite";
 import * as timeSelectBox from "./writeComponent/LectureTimeSelectBox";
-import * as periodDatePicker from "./writeComponent/LecturePeriodDataPicker";
+import * as periodDatePicker from "./writeComponent/LecturePeriodDatePicker";
 
-const LectureWriteView = styled.div`
-  position: relative;
-  height: 100%;
-  width: 700px;
-  padding: 35px;
-  margin: 10% auto;
-  border: ${({theme}) => theme.borderColor};
-  
-  h1 {
-    text-align: center;
-  }
-
-  .input-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
-  }
-`;
+import * as Styled from "./LectureWrite.style";
 
 const LectureWrite = () => {
 
@@ -95,15 +75,14 @@ const LectureWrite = () => {
             url: "/lecture/write",
             data: JSON.stringify(lectureData),
             headers: {'Content-type': 'application/json'}
-        }).then((res) => {
+        }).then((res):void => {
             console.log("작성 성공")
         }).catch((err):void => {
             console.log(err.message);
         })
     }
 
-
-
+    // lectureWriteDataList
     useEffect(() => {
         const selectDataList = async ():Promise<void> => {
             await axios({
@@ -138,6 +117,7 @@ const LectureWrite = () => {
         selectDataList().then();
     }, [])
 
+    // lectureRoomList useEffect
     useEffect(() => {
         const selectLectureRoomList = async ():Promise<void> => {
             await axios({
@@ -154,6 +134,7 @@ const LectureWrite = () => {
         selectLectureRoomList().then();
     }, [lectureInstitution])
 
+    // subCategoryList useEffect
     useEffect(() => {
         const selectLectureRoomList = async ():Promise<void> => {
             await axios({
@@ -170,6 +151,7 @@ const LectureWrite = () => {
         selectLectureRoomList().then();
     }, [lectureMainCategory])
 
+    // datePicker useEffect
     useEffect(() => {
         setLecturePeriod(lecturePeriodData);
         setLectureTime(lectureTimeData);
@@ -177,38 +159,24 @@ const LectureWrite = () => {
     }, [lecturePeriodData, lectureTimeData, lectureReceptionData])
 
     return (
-        <LectureWriteView>
+        <Styled.LectureWriteView>
             <HeaderNavigation />
             <h1>강의 작성</h1>
 
             <div className="input-section">
-                <select
-                    value={lectureTeacher}
-                    onChange={(e) => setLectureTeacher(e.target.value)}
-                >
-                    {lectureTeacherList.map((option) => (
-                        <option key={option.memberNo} value={option.memberNo}>
-                            {option.memberName}
-                        </option>
-                    ))}
-                </select>
-                <input type="text" onChange={(e) => setLectureName(e.target.value)} placeholder="강의명" />
-                <div>
+                <div className="lecture-teacher">
                     <select
-                        value={lectureRoom}
-                        onChange={(e) => setLectureRoom(e.target.value)}
+                        value={lectureTeacher}
+                        onChange={(e) => setLectureTeacher(e.target.value)}
                     >
-                        {lectureRoomList.map((option) => (
-                            <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
-                                {option.lectureRoomName}
+                        {lectureTeacherList.map((option) => (
+                            <option key={option.memberNo} value={option.memberNo}>
+                                {option.memberName}
                             </option>
                         ))}
                     </select>
                 </div>
-                <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)} placeholder="모집정원" step={1} />
-                <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)} placeholder="강의료" step={1000} />
-                <textarea onChange={(e) => setLectureDescription(e.target.value)} placeholder="강의세부내용" />
-                <div>
+                <div className="lecture-institution">
                     <select
                         value={lectureInstitution}
                         onChange={(e) => setLectureInstitution(e.target.value)}
@@ -220,17 +188,19 @@ const LectureWrite = () => {
                         ))}
                     </select>
                 </div>
-
-                <div className="lecture-datePicker">
-                    <periodDatePicker.default type={"period"} />
+                <div className="lecture-room">
+                    <select
+                        value={lectureRoom}
+                        onChange={(e) => setLectureRoom(e.target.value)}
+                    >
+                        {lectureRoomList.map((option) => (
+                            <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
+                                {option.lectureRoomName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-                <div className="lecture-timeSelect">
-                    <timeSelectBox.default />
-                </div>
-                <div className="lecture-datePicker">
-                    <periodDatePicker.default type={"reception"} />
-                </div>
-                <div>
+                <div className="lecture-mainCategory">
                     <select
                         value={lectureMainCategory}
                         onChange={(e) => setLectureMainCategory(e.target.value)}
@@ -242,7 +212,7 @@ const LectureWrite = () => {
                         ))}
                     </select>
                 </div>
-                <div>
+                <div className="lecture-subCategory">
                     <select
                         value={lectureSubCategory}
                         onChange={(e) => setLectureSubCategory(e.target.value)}
@@ -254,12 +224,35 @@ const LectureWrite = () => {
                         ))}
                     </select>
                 </div>
+
+                <div className="lecture-name">
+                    <input type="text" onChange={(e) => setLectureName(e.target.value)} placeholder="강의명" />
+                </div>
+                <div className="lecture-capacity">
+                    <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)} placeholder="모집정원" step={1} />
+                </div>
+                <div className="lecture-fee">
+                    <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)} placeholder="강의료" step={1000} />
+                </div>
+                <div className="lecture-description">
+                    <textarea onChange={(e) => setLectureDescription(e.target.value)} placeholder="강의세부내용" />
+                </div>
+
+                <div className="lecture-datePicker">
+                    <periodDatePicker.default type={"period"} />
+                </div>
+                <div className="lecture-datePicker">
+                    <periodDatePicker.default type={"reception"} />
+                </div>
+                <div className="lecture-timeSelect">
+                    <timeSelectBox.default />
+                </div>
                 <button onClick={() => lectureWriteHandler()}>test</button>
             </div>
 
             {/*<LectureRoomWrite institutionNo={lectureInstitution} />*/}
             {/*<LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>*/}
-        </LectureWriteView>
+        </Styled.LectureWriteView>
     )
 }
 

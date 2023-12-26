@@ -5,6 +5,7 @@ import UseLectureDataStore from "../stores/useLectureDataStore";
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureRoomWrite from "./writeComponent/LectureRoomWrite";
 import LectureSubCategoryWrite from "./writeComponent/LectureSubCategoryWrite";
+import LectureQuillEditor from "./writeComponent/LectureQuillEditor";
 import * as timeSelectBox from "./writeComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./writeComponent/LecturePeriodDatePicker";
 
@@ -247,6 +248,7 @@ const LectureWrite = () => {
                 <div className="lecture-timeSelect">
                     <timeSelectBox.default />
                 </div>
+                <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
                 <button onClick={() => lectureWriteHandler()}>test</button>
             </div>
 

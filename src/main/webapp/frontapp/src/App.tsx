@@ -8,12 +8,13 @@ import MainHome from './MainHome';
 // member
 import SignIn from "./member/SignIn";
 import SignUp from "./member/SignUp";
-import TermsAgree from "./member/signUpView/TermsAgree";
-import EmailAuth from "./member/signUpView/EmailAuth";
-import EnterInfo from "./member/signUpView/EnterInfo";
-import JoinComplete from "./member/signUpView/JoinComplete";
+import TermsAgree from "./member/signUpComponent/TermsAgree";
+import EmailAuth from "./member/signUpComponent/EmailAuth";
+import EnterInfo from "./member/signUpComponent/EnterInfo";
+import JoinComplete from "./member/signUpComponent/JoinComplete";
 // lecture
 import LectureWrite from "./lecture/LectureWrite";
+import LectureList from "./lecture/LectureList";
 
 import {GlobalStyle} from "./styles/GlobalStyles";
 import {darkTheme, lightTheme} from "./styles/theme";
@@ -93,6 +94,7 @@ function App() {
                 <Route path="/joinComplete" element={<JoinComplete />} />
 
                 <Route path="/lectureWrite" element={<LectureWrite />} />
+                <Route path="/lectureList" element={<LectureList />} />
             </Routes>
         </ThemeProvider>
     </>

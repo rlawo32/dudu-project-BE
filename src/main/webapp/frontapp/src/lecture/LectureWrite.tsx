@@ -3,11 +3,11 @@ import axios from "axios";
 import UseLectureDataStore from "../stores/useLectureDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
-import LectureRoomWrite from "./writeComponent/LectureRoomWrite";
-import LectureSubCategoryWrite from "./writeComponent/LectureSubCategoryWrite";
-import LectureQuillEditor from "./writeComponent/LectureQuillEditor";
-import * as timeSelectBox from "./writeComponent/LectureTimeSelectBox";
-import * as periodDatePicker from "./writeComponent/LecturePeriodDatePicker";
+import LectureRoomWrite from "./lectureWriteComponent/LectureRoomWrite";
+import LectureSubCategoryWrite from "./lectureWriteComponent/LectureSubCategoryWrite";
+import LectureQuillEditor from "./lectureWriteComponent/LectureQuillEditor";
+import * as timeSelectBox from "./lectureWriteComponent/LectureTimeSelectBox";
+import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePicker";
 
 import * as Styled from "./LectureWrite.style";
 
@@ -236,19 +236,20 @@ const LectureWrite = () => {
                     <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)} placeholder="강의료" step={1000} />
                 </div>
                 <div className="lecture-description">
-                    <textarea onChange={(e) => setLectureDescription(e.target.value)} placeholder="강의세부내용" />
+                    <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
                 </div>
 
                 <div className="lecture-datePicker">
+                    period :
                     <periodDatePicker.default type={"period"} />
                 </div>
                 <div className="lecture-datePicker">
+                    reception :
                     <periodDatePicker.default type={"reception"} />
                 </div>
                 <div className="lecture-timeSelect">
                     <timeSelectBox.default />
                 </div>
-                <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
                 <button onClick={() => lectureWriteHandler()}>test</button>
             </div>
 

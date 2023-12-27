@@ -28,10 +28,6 @@ public class Lecture {
     @NotBlank
     private String lectureName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_no")
-    private Member member;
-
     @Column(name = "lecture_period")
     @NotEmpty
     private String lecturePeriod;
@@ -44,17 +40,9 @@ public class Lecture {
     @NotEmpty
     private String lectureReception;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecture_room_no")
-    private LectureRoom lectureRoom;
-
     @Column(name = "lecture_capacity")
     @NotNull
     private int lectureCapacity;
-
-    @Column(name = "lecture_division")
-    @NotBlank
-    private String lectureDivision;
 
     @Column(name = "lecture_fee")
     @NotNull
@@ -64,9 +52,29 @@ public class Lecture {
     @NotEmpty
     private String lectureDescription;
 
+    @Column(name = "lecture_division")
+    @NotBlank
+    private String lectureDivision;
+
+    @Column(name = "lecture_state")
+    @NotBlank
+    private String lectureState;
+
+    @Column(name = "lecture_count")
+    @NotBlank
+    private int lectureCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_no")
+    private Member member;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_no")
     private LectureInstitution lectureInstitution;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_room_no")
+    private LectureRoom lectureRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_main_category_no")
@@ -86,20 +94,24 @@ public class Lecture {
     }
 
     @Builder
-    public Lecture(String lectureName, Member member, String lecturePeriod, String lectureTime, String lectureReception,
-                   LectureRoom lectureRoom, int lectureCapacity, String lectureDivision, Long lectureFee, String lectureDescription,
-                   LectureInstitution lectureInstitution, LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory) {
+    public Lecture(String lectureName, String lecturePeriod, String lectureTime, String lectureReception,
+                   int lectureCapacity, Long lectureFee, String lectureDescription,
+                   String lectureDivision, String lectureState, int lectureCount,
+                   Member member, LectureInstitution lectureInstitution, LectureRoom lectureRoom,
+                   LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory) {
         this.lectureName = lectureName;
-        this.member = member;
         this.lecturePeriod = lecturePeriod;
         this.lectureTime = lectureTime;
         this.lectureReception = lectureReception;
-        this.lectureRoom = lectureRoom;
         this.lectureCapacity = lectureCapacity;
-        this.lectureDivision = lectureDivision;
         this.lectureFee = lectureFee;
         this.lectureDescription = lectureDescription;
+        this.lectureDivision = lectureDivision;
+        this.lectureState = lectureState;
+        this.lectureCount = lectureCount;
+        this.member = member;
         this.lectureInstitution = lectureInstitution;
+        this.lectureRoom = lectureRoom;
         this.lectureMainCategory = lectureMainCategory;
         this.lectureSubCategory = lectureSubCategory;
     }

@@ -15,19 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class LectureWriteRequestDto {
 
     private String lectureName;
-    private Long memberNo;
-    private Member member;
     private String lecturePeriod;
     private String lectureTime;
     private String lectureReception;
-    private Long lectureRoomNo;
-    private LectureRoom lectureRoom;
     private int lectureCapacity;
-    private String lectureDivision;
     private Long lectureFee;
     private String lectureDescription;
+
+    //
+    private String lectureDivision;
+    private String lectureState;
+    private int lectureCount;
+
+    //
+    private Long memberNo;
+    private Member member;
     private Long institutionNo;
     private LectureInstitution lectureInstitution;
+    private Long lectureRoomNo;
+    private LectureRoom lectureRoom;
     private Long mainCategoryNo;
     private LectureMainCategory lectureMainCategory;
     private Long subCategoryNo;
@@ -36,16 +42,18 @@ public class LectureWriteRequestDto {
     public Lecture toLecture() {
         return Lecture.builder()
                 .lectureName(lectureName)
-                .member(member)
                 .lecturePeriod(lecturePeriod)
                 .lectureTime(lectureTime)
                 .lectureReception(lectureReception)
-                .lectureRoom(lectureRoom)
                 .lectureCapacity(lectureCapacity)
-                .lectureDivision(lectureDivision)
                 .lectureFee(lectureFee)
                 .lectureDescription(lectureDescription)
+                .lectureDivision(lectureDivision)
+                .lectureState(lectureState)
+                .lectureCount(lectureCount)
+                .member(member)
                 .lectureInstitution(lectureInstitution)
+                .lectureRoom(lectureRoom)
                 .lectureMainCategory(lectureMainCategory)
                 .lectureSubCategory(lectureSubCategory)
                 .build();

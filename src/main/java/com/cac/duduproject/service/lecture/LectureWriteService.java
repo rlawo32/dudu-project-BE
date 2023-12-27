@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,33 +58,27 @@ public class LectureWriteService {
             String period = requestDto.getLecturePeriod();
             String time = requestDto.getLectureTime();
             String reception = requestDto.getLectureReception();
-            // 1=일, 2=월, 3=화, 4=수, 5=목, 6=금, 7=토
-            String dow = time.substring(time.indexOf("(")+1, time.indexOf("(")+2);
+            // 1=월, 2=화, 3=수, 4=목, 5=금, 6=토, 7=일
+            int dow = Integer.parseInt(time.substring(time.indexOf("(")+1, time.indexOf("(")+2));
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-            Date periodStartDate = sdf.parse(period.substring(0, period.indexOf("~")-1));
-            Date periodEndDate = sdf.parse(period.substring(period.indexOf("~")+2));
-            Date receptionStartDate = sdf.parse(reception.substring(0, period.indexOf("~")-1));
-            Date receptionEndDate = sdf.parse(reception.substring(period.indexOf("~")+2));
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-            Calendar periodCalStart = Calendar.getInstance();
-            Calendar periodCalEnd = Calendar.getInstance();
-            periodCalStart.setTime(periodStartDate);
-            periodCalEnd.setTime(periodEndDate);
+            LocalDate now = LocalDate.now();
+            LocalDate periodStartDate = LocalDate.parse(period.substring(0, period.indexOf("~")-1), dtf);
+            LocalDate periodEndDate = LocalDate.parse(period.substring(period.indexOf("~")+2), dtf);
+            LocalDate receptionStartDate = LocalDate.parse(reception.substring(0, period.indexOf("~")-1), dtf);
+            LocalDate receptionEndDate = LocalDate.parse(reception.substring(period.indexOf("~")+2), dtf);
 
             int lectureCount = 0;
 
-            while(periodCalStart.compareTo(periodCalEnd) < 1) {
-                int calDow = periodCalStart.get(Calendar.DAY_OF_WEEK);
-                System.out.println(calDow);
+            while(periodStartDate.compareTo(periodEndDate) < 1) {
+                DayOfWeek dayOfWeek = periodStartDate.getDayOfWeek();
 
-                if(calDow == Integer.parseInt(dow)) {
+                if(dayOfWeek.getValue() == dow) {
                     lectureCount++;
                 }
-                periodCalStart.add(Calendar.DATE, 1);
+                periodStartDate = periodStartDate.plusDays(1);
             }
-
-            Date now = new Date();
 
             if(lectureCount == 1) {
                 requestDto.setLectureDivision("특강");
@@ -92,6 +88,12 @@ public class LectureWriteService {
                 requestDto.setLectureDivision("정기");
             }
             requestDto.setLectureCount(lectureCount);
+
+            if(now.compareTo(receptionStartDate) < 0) {
+                requestDto.setLectureState("접수예정");
+            } else if(now.compareTo(receptionStartDate) >= 0 && now.compareTo(receptionEndDate) <= 0) {
+                requestDto.setLectureState("접수중");
+            }
 
             lectureRepository.save(requestDto.toLecture());
         } catch (Exception e) {

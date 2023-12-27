@@ -61,7 +61,7 @@ public class Lecture {
     private String lectureState;
 
     @Column(name = "lecture_count")
-    @NotBlank
+    @NotNull
     private int lectureCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -91,6 +91,12 @@ public class Lecture {
     @PrePersist
     public void onPrePersist() {
         this.lectureCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
+    }
+
+    public Lecture lectureStateUpdate(String lectureState) {
+        this.lectureState = lectureState;
+
+        return this;
     }
 
     @Builder

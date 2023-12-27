@@ -7,7 +7,6 @@ import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
-import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class LectureService {
+public class LectureWriteService {
 
     private final MemberRepository memberRepository;
     private final LectureRepository lectureRepository;
@@ -56,29 +55,34 @@ public class LectureService {
 
             String period = requestDto.getLecturePeriod();
             String time = requestDto.getLectureTime();
+            String reception = requestDto.getLectureReception();
             // 1=일, 2=월, 3=화, 4=수, 5=목, 6=금, 7=토
             String dow = time.substring(time.indexOf("(")+1, time.indexOf("(")+2);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-            Date startDate = sdf.parse(period.substring(0, period.indexOf("~")-1));
-            Date endDate = sdf.parse(period.substring(period.indexOf("~")+2));
+            Date periodStartDate = sdf.parse(period.substring(0, period.indexOf("~")-1));
+            Date periodEndDate = sdf.parse(period.substring(period.indexOf("~")+2));
+            Date receptionStartDate = sdf.parse(reception.substring(0, period.indexOf("~")-1));
+            Date receptionEndDate = sdf.parse(reception.substring(period.indexOf("~")+2));
 
-            Calendar calStart = Calendar.getInstance();
-            Calendar calEnd = Calendar.getInstance();
-            calStart.setTime(startDate);
-            calEnd.setTime(endDate);
+            Calendar periodCalStart = Calendar.getInstance();
+            Calendar periodCalEnd = Calendar.getInstance();
+            periodCalStart.setTime(periodStartDate);
+            periodCalEnd.setTime(periodEndDate);
 
             int lectureCount = 0;
 
-            while(calStart.compareTo(calEnd) < 1) {
-                int calDow = calStart.get(Calendar.DAY_OF_WEEK);
+            while(periodCalStart.compareTo(periodCalEnd) < 1) {
+                int calDow = periodCalStart.get(Calendar.DAY_OF_WEEK);
                 System.out.println(calDow);
 
                 if(calDow == Integer.parseInt(dow)) {
                     lectureCount++;
                 }
-                calStart.add(Calendar.DATE, 1);
+                periodCalStart.add(Calendar.DATE, 1);
             }
+
+            Date now = new Date();
 
             if(lectureCount == 1) {
                 requestDto.setLectureDivision("특강");
@@ -87,6 +91,7 @@ public class LectureService {
             } else {
                 requestDto.setLectureDivision("정기");
             }
+            requestDto.setLectureCount(lectureCount);
 
             lectureRepository.save(requestDto.toLecture());
         } catch (Exception e) {

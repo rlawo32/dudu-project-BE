@@ -34,6 +34,9 @@ const HeaderNavigation = ():any => {
             <ThemeModeToggle />
 
             <div style={{marginRight: '20px'}}>
+                <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
+                    LectureList
+                </StyledLink>
                 <StyledLink to="/lectureWrite" style={{marginRight: '20px'}}>
                     LectureWrite
                 </StyledLink>

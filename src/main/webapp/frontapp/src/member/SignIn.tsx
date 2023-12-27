@@ -5,11 +5,11 @@ import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
-import FindIdModal from "./signInView/FindIdModal";
-import FindPwModal from "./signInView/FindPwModal";
+import FindIdModal from "./signInComponent/FindIdModal";
+import FindPwModal from "./signInComponent/FindPwModal";
 
 import * as Styled from "./SignIn.style";
-import * as Modal from "./signInView/Modal.style";
+import * as Modal from "./signInComponent/Modal.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser as idIcon, faLock as pwIcon, faComment as kakaoIcon} from "@fortawesome/free-solid-svg-icons";
 

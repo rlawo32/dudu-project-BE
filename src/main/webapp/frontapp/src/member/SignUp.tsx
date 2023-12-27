@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
-import JoinProgressMark from "./signUpView/JoinProgressMark";
-import TermsAgree from "./signUpView/TermsAgree";
-import EmailAuth from "./signUpView/EmailAuth";
-import EnterInfo from "./signUpView/EnterInfo";
-import JoinComplete from "./signUpView/JoinComplete";
+import JoinProgressMark from "./signUpComponent/JoinProgressMark";
+import TermsAgree from "./signUpComponent/TermsAgree";
+import EmailAuth from "./signUpComponent/EmailAuth";
+import EnterInfo from "./signUpComponent/EnterInfo";
+import JoinComplete from "./signUpComponent/JoinComplete";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
 
 const JoinProgressView = styled.div`

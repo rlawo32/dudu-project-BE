@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import UseLectureDataStore from "../../stores/useLectureDataStore";
 
+import * as Styled from "./LectureTimeSelectBox.style";
+
 const LectureTimeSelectBox = () => {
 
     // false : am , true : pm
@@ -90,7 +92,7 @@ const LectureTimeSelectBox = () => {
     }, [isBackTimeSlot])
 
     return (
-        <span>
+        <Styled.LectureDatePickerView>
             <span><button onClick={() => setIsFrontTimeSlot(!isFrontTimeSlot)}>AM/PM</button></span>
             <span>
                 <select onChange={(e) => setLectureStartTime(e.target.value)}>
@@ -110,7 +112,7 @@ const LectureTimeSelectBox = () => {
                     {customDowSelectBox()}
                 </select>
             </span>
-        </span>
+        </Styled.LectureDatePickerView>
     )
 }
 

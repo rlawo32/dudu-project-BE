@@ -3,8 +3,8 @@ import DatePicker from "react-datepicker";
 
 
 export const LectureDatePickerView = styled.div`
-  position: relative;
-  width: 100%;
+  display: inline-block;
+  width: fit-content;
   
   .react-datepicker__tab-loop {
     position: absolute;

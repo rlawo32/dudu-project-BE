@@ -8,17 +8,17 @@ interface Props {
     setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const CustomToolBar = styled.div`
+const CustomQuillEditorView = styled.div`
   
   #toolBar {
-    width: 530px;
+    height: 43px;
+    width: 100%;
+    border: ${({theme}) => theme.borderColor};
+    border-radius: 10px;
     background-color: ${({theme}) => theme.bgColor};
     color: ${({theme}) => theme.textColor};
     font-size: 32px;
-    border: ${({theme}) => theme.borderColor};
-
-    height: 43px;
-
+    
     .ql-picker-label {
       color: ${({theme}) => theme.textColor};
     }
@@ -52,26 +52,26 @@ const CustomToolBar = styled.div`
       top: -10px;
     }
 
-    .ql-align {
-      position: absolute;
-      top: -15px;
-      left: 45px;
-    }
-
     .ql-bold {
       margin-left: 10px;
     }
 
     .ql-color {
       position: absolute;
-      top: -13px;
+      top: -11px;
       left: 10px;
     }
 
     .ql-background {
       position: absolute;
-      top: -15px;
+      top: -13px;
       left: 35px;
+    }
+
+    .ql-align {
+      position: absolute;
+      top: -13px;
+      left: 45px;
     }
 
     .ql-image {
@@ -79,12 +79,15 @@ const CustomToolBar = styled.div`
   }
   
   #quillContent {
-    background-color: ${({theme}) => theme.boxBgColor};
     border: ${({theme}) => theme.borderColor};
-    height: 350px;
+    border-radius: 10px;
+    background-color: ${({theme}) => theme.boxBgColor};
     
     .ql-container {
+      height: 350px;
+      width: 100%;
       border: none;
+      font-size: 30px;
     }
   }
 `;
@@ -123,62 +126,56 @@ const LectureQuillEditor = (props: Props) => {
     }), []);
 
     return (
-        <div>
-            <CustomToolBar>
-                <div id="toolBar">
+        <CustomQuillEditorView>
+            <div id="toolBar">
+                <span className="ql-formats">
+                    <button className="ql-image" />
+                </span>
+                <span className="ql-formats">
+                    <select className="ql-header" defaultValue="7">
+                        <option value="1">Header 1</option>
+                        <option value="2">Header 2</option>
+                        <option value="3">Header 3</option>
+                        <option value="4">Header 4</option>
+                        <option value="5">Header 5</option>
+                        <option value="6">Header 6</option>
+                        <option value="7">Normal</option>
+                    </select>
+                    <select className="ql-font" defaultValue="sans-serif">
+                        <option value="sans-serif">Sans Serif</option>
+                        <option value="serif">Serif</option>
+                        <option value="monospace">Monospace</option>
+                    </select>
+                </span>
                     <span className="ql-formats">
-                        <button className="ql-image" />
-                    </span>
+                    <button className="ql-bold" />
+                    <button className="ql-italic" />
+                    <button className="ql-underline" />
+                    <button className="ql-strike" />
+                    <button className="ql-blockquote" />
+                </span>
                     <span className="ql-formats">
-                        <select className="ql-header" defaultValue="7">
-                            <option value="1">Header 1</option>
-                            <option value="2">Header 2</option>
-                            <option value="3">Header 3</option>
-                            <option value="4">Header 4</option>
-                            <option value="5">Header 5</option>
-                            <option value="6">Header 6</option>
-                            <option value="7">Normal</option>
-                        </select>
-                        <select className="ql-font" defaultValue="sans-serif">
-                            <option value="sans-serif">Sans Serif</option>
-                            <option value="serif">Serif</option>
-                            <option value="monospace">Monospace</option>
-                        </select>
-                    </span>
-                        <span className="ql-formats">
-                        <button className="ql-bold" />
-                        <button className="ql-italic" />
-                        <button className="ql-underline" />
-                        <button className="ql-strike" />
-                        <button className="ql-blockquote" />
-                    </span>
-                        <span className="ql-formats">
-                        <select className="ql-color" />
-                        <select className="ql-background" />
-                    </span>
-                        <span className="ql-formats">
-                        <select className="ql-align" defaultValue="right">
-                            <option className="ql-align-center" value="center" />
-                            <option className="ql-align-right" value="right" />
-                            <option className="ql-align-justify" value="justify" />
-                        </select>
-                    </span>
-                </div>
-
-                <ReactQuill
-                    id="quillContent"
-                    ref={quillRef}
-                    placeholder="Quill Content"
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    onChange={props.setContent}
-                    value={props.content}
-                />
-            </CustomToolBar>
-            <div>
+                    <select className="ql-color" />
+                    <select className="ql-background" />
+                </span>
+                    <span className="ql-formats">
+                    <select className="ql-align" defaultValue="right">
+                        <option className="ql-align-center" value="center" />
+                        <option className="ql-align-right" value="right" />
+                    </select>
+                </span>
             </div>
-        </div>
+
+            <ReactQuill
+                id="quillContent"
+                ref={quillRef}
+                theme="snow"
+                modules={modules}
+                formats={formats}
+                onChange={props.setContent}
+                value={props.content}
+            />
+        </CustomQuillEditorView>
     )
 }
 

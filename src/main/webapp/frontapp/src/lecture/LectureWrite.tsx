@@ -163,95 +163,159 @@ const LectureWrite = () => {
         <Styled.LectureWriteView>
             <HeaderNavigation />
             <h1>강의 작성</h1>
+            <div className="lt-section-select">
+                <div className="lt-position">
+                    <div className="lt-section-title">
+                        장소 선택
+                    </div>
+                    <div className="lt-institution">
+                        <div className="lt-select-title">
+                            지점명
+                        </div>
+                        <select
+                            value={lectureInstitution}
+                            onChange={(e) => setLectureInstitution(e.target.value)}
+                            className="select-institution"
+                        >
+                            {institutionList.map((option) => (
+                                <option key={option.institutionNo} value={option.institutionNo}>
+                                    {option.institutionName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="lt-room">
+                        <div className="lt-select-title">
+                            강의실
+                        </div>
+                        <select
+                            value={lectureRoom}
+                            onChange={(e) => setLectureRoom(e.target.value)}
+                            className="select-room"
+                        >
+                            {lectureRoomList.map((option) => (
+                                <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
+                                    {option.lectureRoomName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div className="lt-category">
+                    <div className="lt-section-title">
+                        카테고리 선택
+                    </div>
+                    <div className="lt-mainCategory">
+                        <div className="lt-select-title">
+                            연령구분
+                        </div>
+                        <select
+                            value={lectureMainCategory}
+                            onChange={(e) => setLectureMainCategory(e.target.value)}
+                            className="select-mainCategory"
+                        >
+                            {lectureMainCategoryList.map((option) => (
+                                <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
+                                    {option.lectureMainCategoryName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="lt-subCategory">
+                        <div className="lt-select-title">
+                            강좌구분
+                        </div>
+                        <select
+                            value={lectureSubCategory}
+                            onChange={(e) => setLectureSubCategory(e.target.value)}
+                            className="select-subCategory"
+                        >
+                            {lectureSubCategoryList.map((option) => (
+                                <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
+                                    {option.lectureSubCategoryName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-            <div className="input-section">
-                <div className="lecture-teacher">
-                    <select
-                        value={lectureTeacher}
-                        onChange={(e) => setLectureTeacher(e.target.value)}
-                    >
-                        {lectureTeacherList.map((option) => (
-                            <option key={option.memberNo} value={option.memberNo}>
-                                {option.memberName}
-                            </option>
-                        ))}
-                    </select>
+            <div className="lt-write-main">
+                <div className="write-main-header">
+                    <div className="lt-name">
+                        <div className="lt-section-title">
+                            강의명
+                        </div>
+                        <input type="text" onChange={(e) => setLectureName(e.target.value)}
+                               className="input-name" placeholder="강의명" />
+                    </div>
+                    <div className="lt-teacher">
+                        <div className="lt-section-title">
+                            강사명
+                        </div>
+                        <select
+                            value={lectureTeacher}
+                            onChange={(e) => setLectureTeacher(e.target.value)}
+                            className="select-teacher"
+                        >
+                            {lectureTeacherList.map((option) => (
+                                <option key={option.memberNo} value={option.memberNo}>
+                                    {option.memberName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="lt-capacity">
+                        <div className="lt-section-title">
+                            모집인원
+                        </div>
+                        <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)}
+                               className="input-capacity" value={lectureCapacity} step={1} />
+                    </div>
                 </div>
-                <div className="lecture-institution">
-                    <select
-                        value={lectureInstitution}
-                        onChange={(e) => setLectureInstitution(e.target.value)}
-                    >
-                        {institutionList.map((option) => (
-                            <option key={option.institutionNo} value={option.institutionNo}>
-                                {option.institutionName}
-                            </option>
-                        ))}
-                    </select>
+                <div className="write-main-body">
+                    <div className="lt-section-title">
+                        세부 내용 작성
+                    </div>
+                    <div className="lt-description">
+                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
+                    </div>
                 </div>
-                <div className="lecture-room">
-                    <select
-                        value={lectureRoom}
-                        onChange={(e) => setLectureRoom(e.target.value)}
-                    >
-                        {lectureRoomList.map((option) => (
-                            <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
-                                {option.lectureRoomName}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="lecture-mainCategory">
-                    <select
-                        value={lectureMainCategory}
-                        onChange={(e) => setLectureMainCategory(e.target.value)}
-                    >
-                        {lectureMainCategoryList.map((option) => (
-                            <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
-                                {option.lectureMainCategoryName}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="lecture-subCategory">
-                    <select
-                        value={lectureSubCategory}
-                        onChange={(e) => setLectureSubCategory(e.target.value)}
-                    >
-                        {lectureSubCategoryList.map((option) => (
-                            <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
-                                {option.lectureSubCategoryName}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            </div>
 
-                <div className="lecture-name">
-                    <input type="text" onChange={(e) => setLectureName(e.target.value)} placeholder="강의명" />
-                </div>
-                <div className="lecture-capacity">
-                    <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)} placeholder="모집정원" step={1} />
-                </div>
-                <div className="lecture-fee">
-                    <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)} placeholder="강의료" step={1000} />
-                </div>
-                <div className="lecture-description">
-                    <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
-                </div>
-
-                <div className="lecture-datePicker">
-                    period :
+            <div className="lt-period">
+                <div className="period-datePicker">
+                    <div className="lt-section-title">
+                        강의기간
+                    </div>
                     <periodDatePicker.default type={"period"} />
                 </div>
-                <div className="lecture-datePicker">
-                    reception :
-                    <periodDatePicker.default type={"reception"} />
-                </div>
-                <div className="lecture-timeSelect">
+                <div className="period-timeSelect">
+                    <div className="lt-section-title">
+                        강의시간
+                    </div>
                     <timeSelectBox.default />
                 </div>
-                <button onClick={() => lectureWriteHandler()}>test</button>
             </div>
+
+            <div className="lt-reception">
+                <div className="reception-datePicker">
+                    <div className="lt-section-title">
+                        접수기간
+                    </div>
+                    <periodDatePicker.default type={"reception"} />
+                </div>
+                <div className="lt-fee">
+                    <div className="lt-section-title">
+                        강의료
+                    </div>
+                    <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)}
+                           className="input-fee" value={lectureFee} step={1000} />
+                </div>
+            </div>
+
+            <button onClick={() => lectureWriteHandler()}>write</button>
+
 
             {/*<LectureRoomWrite institutionNo={lectureInstitution} />*/}
             {/*<LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>*/}

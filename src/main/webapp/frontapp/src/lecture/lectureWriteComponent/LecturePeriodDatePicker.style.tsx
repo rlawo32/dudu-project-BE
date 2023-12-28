@@ -6,6 +6,15 @@ export const LectureDatePickerView = styled.div`
   display: inline-block;
   width: fit-content;
   
+  input {
+    border: 2px solid ${({theme}) => theme.textColor};
+    border-radius: 10px;
+    padding: 7px 4px 7px 4px;
+    font-size: 16px;
+    background-color: ${({theme}) => theme.boxBgColor};
+    color: ${({theme}) => theme.textColor};
+  }
+  
   .react-datepicker__tab-loop {
     position: absolute;
   }

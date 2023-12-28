@@ -94,7 +94,7 @@ export const LectureWriteView = styled.div`
   .lt-write-main input, .lt-section-select input, .lt-fee input {
     border: 2px solid ${({theme}) => theme.textColor};
     border-radius: 10px;
-    padding: 13px 10px 13px 10px;
+    padding: 13px 10px 11px 10px;
     font-size: 20px;
     background-color: ${({theme}) => theme.boxBgColor};
     color: ${({theme}) => theme.textColor};

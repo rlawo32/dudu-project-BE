@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import UseLectureDataStore from "../../stores/useLectureDataStore";
 
 import * as Styled from "./LectureTimeSelectBox.style";
-import {LectureTimeSelectBoxView} from "./LectureTimeSelectBox.style";
 
 const LectureTimeSelectBox = () => {
 
@@ -66,7 +65,7 @@ const LectureTimeSelectBox = () => {
 
     const customDowSelectBox = ():any[] => {
         const dowArr:any[] = [];
-        const daysOfWeek:string[] = ['월', '화', '수', '목', '금', '토', '일'];
+        const daysOfWeek:string[] = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
         for(let i:number=0; i<daysOfWeek.length; i++) {
             dowArr.push(<option value={i+1} key={i}>{daysOfWeek[i]}</option>);
@@ -94,21 +93,35 @@ const LectureTimeSelectBox = () => {
 
     return (
         <Styled.LectureTimeSelectBoxView>
-            <span><button onClick={() => setIsFrontTimeSlot(!isFrontTimeSlot)}>AM/PM</button></span>
+            <span>
+                <button onClick={() => setIsFrontTimeSlot(!isFrontTimeSlot)}>
+                    {
+                        isFrontTimeSlot ? "PM" : "AM"
+                    }
+                </button>
+            </span>
             <span>
                 <select onChange={(e) => setLectureStartTime(e.target.value)}>
                     {frontTimeSelectBox()}
                 </select>
             </span>
-            ~
-            <span><button onClick={() => setIsBackTimeSlot(!isBackTimeSlot)}>AM/PM</button></span>
+            <span className="wave-mark">
+                ~
+            </span>
+            <span>
+                <button onClick={() => setIsBackTimeSlot(!isBackTimeSlot)}>
+                    {
+                        isBackTimeSlot ? "PM" : "AM"
+                    }
+                </button>
+            </span>
             <span>
                 <select onChange={(e) => setLectureEndTime(e.target.value)}>
                     {backTimeSelectBox()}
                 </select>
             </span>
 
-            <span>
+            <span style={{marginLeft: "5px"}}>
                 <select onChange={(e) => setLectureDaysOfWeek(e.target.value)}>
                     {customDowSelectBox()}
                 </select>

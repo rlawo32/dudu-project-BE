@@ -2,33 +2,41 @@ import styled from "styled-components";
 
 export const LectureWriteView = styled.div`
   position: relative;
+  // border: ${({theme}) => theme.borderColor};
+  // border-radius: 20px;
   height: 100%;
-  width: 1500px;
-  padding: 35px;
+  width: fit-content;
+  @media all and (max-width: 860px) {
+    padding: 35px 10px 50px 10px;
+  } 
+  padding: 35px 10% 50px 10%;
   margin: 10% auto;
-  border: ${({theme}) => theme.borderColor};
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   
   h1 {
     text-align: center;
+    margin-bottom: 50px;
   }
-
-  .input-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
+  
+  .wave-mark {
+    font-size: 24px;
+    font-weight: bold;
   }
   
   .lt-section-title {
+    margin-top: 20px;
+    margin-bottom: 3px;
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 3px;
   }
   
   .lt-write-main {
     height: fit-content;
-    width: 1100px;
+    width: fit-content;
     
     .write-main-header {
       
@@ -49,12 +57,12 @@ export const LectureWriteView = styled.div`
     
     .write-main-body {
       height: fit-content;
-      width: 1100px;
+      width: 100%;
     }
   }
   
   select {
-    border: 2px solid ${({theme}) => theme.textColor};
+    border: ${({theme}) => theme.borderColor};
     border-radius: 10px;
     padding: 7px 4px 5px 4px;
     background-color: ${({theme}) => theme.boxBgColor};
@@ -64,35 +72,41 @@ export const LectureWriteView = styled.div`
   }
   
   .lt-select-title {
+    color: orangered;
     margin-bottom: 3px;
   }
   
-  .lt-position {
-
-    .lt-institution {
-      display: inline-block;
-      margin-right: 10px;
-    }
-
-    .lt-room {
-      display: inline-block;
-    }
-  }
-  
-  .lt-category {
+  .lt-section-select {
+    display: flex;
     
-    .lt-mainCategory {
-      display: inline-block;
-      margin-right: 10px;
+    .lt-position {
+      margin-right: 95px;
+
+      .lt-institution {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      .lt-room {
+        display: inline-block;
+      }
     }
 
-    .lt-subCategory {
-      display: inline-block;
+    .lt-category {
+
+      .lt-mainCategory {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      .lt-subCategory {
+        display: inline-block;
+      }
     }
   }
 
   .lt-write-main input, .lt-section-select input, .lt-fee input {
-    border: 2px solid ${({theme}) => theme.textColor};
+    border: ${({theme}) => theme.borderColor};
     border-radius: 10px;
     padding: 13px 10px 11px 10px;
     font-size: 20px;
@@ -103,7 +117,10 @@ export const LectureWriteView = styled.div`
   .input-name {
     display: block;
     height: 10px;
-    width: 600px;
+    @media all and (max-width: 860px) {
+      width: 600px;
+    }
+    width: 700px;
   }
   
   .input-capacity {
@@ -120,7 +137,7 @@ export const LectureWriteView = styled.div`
     
     .period-datePicker {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 50px;
     }
     
     .period-timeSelect {
@@ -129,14 +146,32 @@ export const LectureWriteView = styled.div`
   }
 
   .lt-reception {
+    display: flex;
+    justify-content: space-between;
+    align-items: self-end;
     
     .reception-datePicker {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 50px;
     }
     
     .lt-fee {
       display: inline-block;
+    }
+
+    .lt-write-submit {
+      display: inline-block;
+      
+      button {
+        border: ${({theme}) => theme.borderColor};
+        border-radius: 10px;
+        padding: 13px 10px 11px 10px;
+        background-color: ${({theme}) => theme.reverseBgColor};
+        color: ${({theme}) => theme.reverseTextColor};
+        font-size: 20px;
+        cursor: pointer;
+        
+      }
     }
   }
 `;

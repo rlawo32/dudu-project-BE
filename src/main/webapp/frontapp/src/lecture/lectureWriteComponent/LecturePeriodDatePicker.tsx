@@ -45,7 +45,7 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
                     date, changeMonth, changeYear, decreaseMonth, increaseMonth,
                     prevMonthButtonDisabled, nextMonthButtonDisabled}) => (
                     <Styled.DatePickerHeaderView>
-                        <div>
+                        <div className="select-date">
                             <select
                                 value={getYear(date)}
                                 className="year"
@@ -69,7 +69,7 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
                                 ))}
                             </select>
                         </div>
-                        <div>
+                        <div className="move-date">
                             <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
                                 <FontAwesomeIcon icon={buttonLeft} className="icon-custom" />
                             </button>
@@ -79,7 +79,9 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
                         </div>
                     </Styled.DatePickerHeaderView>
                 )}/>
-            <span>~</span>
+            <span className="wave-mark">
+                ~
+            </span>
             <Styled.DatePickerWrapperView
                 locale={ko}
                 dateFormat="yyyy.MM.dd (eee)"
@@ -91,7 +93,7 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
                                          date, changeMonth, changeYear, decreaseMonth, increaseMonth,
                                          prevMonthButtonDisabled, nextMonthButtonDisabled}) => (
                     <Styled.DatePickerHeaderView>
-                        <div>
+                        <div className="select-date">
                             <select
                                 value={getYear(date)}
                                 className="year"
@@ -115,7 +117,7 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
                                 ))}
                             </select>
                         </div>
-                        <div>
+                        <div className="move-date">
                             <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
                                 <FontAwesomeIcon icon={buttonLeft} className="icon-custom" />
                             </button>

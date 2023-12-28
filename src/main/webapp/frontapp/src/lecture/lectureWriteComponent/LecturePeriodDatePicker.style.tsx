@@ -7,12 +7,17 @@ export const LectureDatePickerView = styled.div`
   width: fit-content;
   
   input {
-    border: 2px solid ${({theme}) => theme.textColor};
+    border: ${({theme}) => theme.borderColor};
     border-radius: 10px;
     padding: 7px 4px 7px 4px;
     font-size: 16px;
     background-color: ${({theme}) => theme.boxBgColor};
     color: ${({theme}) => theme.textColor};
+    
+    &:hover {
+      color: ${({theme}) => theme.headerTextColor};
+      background-color: ${({theme}) => theme.headerBgColor};
+    }
   }
   
   .react-datepicker__tab-loop {
@@ -97,60 +102,66 @@ export const DatePickerWrapperView = styled(DatePicker)`
 
 export const DatePickerHeaderView = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: ${({theme}) => theme.boxBgColor};
   height: 100%;
   margin: 3px 0 3px 0;
-  padding: 0 12px 0 24px;
+  padding: 0 12px 0 12px;
   
-  .month {
-    display: inline;
-    background-color: ${({theme}) => theme.boxBgColor};
-    color: ${({theme}) => theme.textColor};
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+  .select-date {
+    margin-right: 15px;
 
-  .year {
-    display: inline;
-    background-color: ${({theme}) => theme.boxBgColor};
-    color: ${({theme}) => theme.textColor};
-    border: none;
-    padding-right: 3px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  button {
-    width: 27px;
-    height: 27px;
-    padding: 5px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-
-    + button {
-      margin-left: 24px;
-    }
-
-    &:hover {
-      background-color: ${({theme}) => theme.datePickerSelectColor};
-    }
-
-    &:disabled {
-      cursor: default;
+    .month {
+      display: inline;
       background-color: ${({theme}) => theme.boxBgColor};
+      color: ${({theme}) => theme.textColor};
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    
-    .icon-custom {
-      position: relative;
-      top: -4px;
-      left: -4px;
-      font-size: 25px;
+
+    .year {
+      display: inline;
+      background-color: ${({theme}) => theme.boxBgColor};
+      color: ${({theme}) => theme.textColor};
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  .move-date {
+
+    button {
+      width: 17px;
+      height: 17px;
+      padding: 5px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+
+      + button {
+        margin-left: 14px;
+      }
+
+      &:disabled {
+        cursor: default;
+        background-color: ${({theme}) => theme.boxBgColor};
+      }
+
+      .icon-custom {
+        position: relative;
+        top: -4px;
+        left: -4px;
+        font-size: 25px;
+
+        &:hover {
+          border-radius: 50%;
+          background-color: ${({theme}) => theme.datePickerSelectColor};
+        }
+      }
     }
   }
 `;

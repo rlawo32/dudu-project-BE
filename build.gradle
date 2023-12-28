@@ -37,6 +37,9 @@ dependencies {
 	// maria-db
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.0.8'
 
+	// s3 dependency
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 	// spring-security dependency
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'

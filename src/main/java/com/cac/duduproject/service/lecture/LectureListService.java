@@ -1,7 +1,9 @@
 package com.cac.duduproject.service.lecture;
 
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
 import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
 import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
+import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.LectureMainCategoryRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureSubCategoryRepository;
@@ -15,6 +17,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,8 +74,26 @@ public class LectureListService {
     @Scheduled(cron = "0 0 0 * * *")
     public CommonResponseDto<?> schedulerLectureStateUpdate() {
         try {
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
+            List<Lecture> list = lectureRepository.findAllLectureNo();
 
+            for(int i=0; i<list.size(); i++) {
+                String reception = list.get(i).getLectureReception();
+                LocalDate startDate = LocalDate.parse(reception.substring(0, reception.indexOf("~")-1), dtf);
+                LocalDate endDate = LocalDate.parse(reception.substring(reception.indexOf("~")+2), dtf);
+
+                if(now.compareTo(startDate) >= 0 && now.compareTo(endDate) <= 0) {
+                    Lecture lecture = lectureRepository.findById(list.get(i).getLectureNo())
+                            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다."));
+                    lecture.lectureStateUpdate("접수중");
+                } else if(now.compareTo(endDate) > 0) {
+                    Lecture lecture = lectureRepository.findById(list.get(i).getLectureNo())
+                            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다."));
+                    lecture.lectureStateUpdate("접수마감");
+                }
+            }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

@@ -1,7 +1,9 @@
+import React, {useMemo, useRef, useState} from "react";
+import axios from "axios";
+import styled from "styled-components";
+
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-import styled from "styled-components";
-import React, {useMemo, useRef, useState} from "react";
 
 interface Props {
     content: string;
@@ -51,31 +53,6 @@ const CustomQuillEditorView = styled.div`
       position: relative;
       top: -10px;
     }
-
-    .ql-bold {
-      margin-left: 10px;
-    }
-
-    .ql-color {
-      position: absolute;
-      top: -11px;
-      left: 10px;
-    }
-
-    .ql-background {
-      position: absolute;
-      top: -13px;
-      left: 35px;
-    }
-
-    .ql-align {
-      position: absolute;
-      top: -13px;
-      left: 45px;
-    }
-
-    .ql-image {
-    }
   }
   
   #quillContent {
@@ -94,6 +71,65 @@ const CustomQuillEditorView = styled.div`
 
 const LectureQuillEditor = (props: Props) => {
     const quillRef:any = useRef<any>();
+
+    const [previewWriteImgUrlArr, setPreviewWriteImgUrlArr] = useState<string[]>([]);
+    const [previewWriteImgNameArr, setPreviewWriteImgNameArr] = useState<string[]>([]);
+    const [previewWriteImgSize, setPreviewWriteImgSize] = useState<number>(0);
+    const [attachImageArr, setAttachImageArr] = useState([{
+        imgName: '',
+        imgUrl: '',
+        imgSize: 0
+    }]);
+    const [removeImageArr, setRemoveImageArr] = useState<string[]>([]);
+
+    const changeImageHandler = ():void => {
+        const input:HTMLInputElement = document.createElement("input");
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/jpg,image/png,image/jpeg,image/gif");
+        input.setAttribute("multiple", "multiple");
+        input.click();
+
+        input.onchange = async ():Promise<void> => {
+            let file:FileList|null = input.files;
+            const editor:any = quillRef.current.getEditor();
+            const range:any = editor.getSelection();
+
+            let fileSize:number = 0;
+
+            if(file !== null) {
+                const formData:FormData = new FormData();
+
+                for(let i:number=0; i<file.length; i++) {
+                    fileSize += file[i].size;
+                    formData.append('files', file[i]);
+
+                    await axios({
+                        method: "POST",
+                        url: "",
+                        data: formData,
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                    }).then((res):void => {
+                        const imgFileName = res.data.data.imgName;
+                        const imgFileUrl = res.data.data.imgUrl;
+
+                        setPreviewWriteImgUrlArr((prevList:string[]) => [...prevList, imgFileUrl]);
+                        setPreviewWriteImgNameArr((prevList:string[]) => [...prevList, imgFileName]); // imgName 성공시 삭제
+                        setAttachImageArr((prevList) => [...prevList, {
+                            imgName:imgFileName,
+                            imgUrl:imgFileUrl,
+                            imgSize:file !== null ? file[i].size : 0
+                        }]);
+
+
+                        editor.insertEmbed(range.index, 'image', imgFileUrl);
+                        editor.setSelection(range.index + 1);
+                    }).catch((err):void => {
+                        console.log(err.message);
+                    })
+                }
+            }
+        }
+    }
 
     const formats:string[] = [
         "header",
@@ -129,9 +165,6 @@ const LectureQuillEditor = (props: Props) => {
         <CustomQuillEditorView>
             <div id="toolBar">
                 <span className="ql-formats">
-                    <button className="ql-image" />
-                </span>
-                <span className="ql-formats">
                     <select className="ql-header" defaultValue="7">
                         <option value="1">Header 1</option>
                         <option value="2">Header 2</option>
@@ -141,28 +174,41 @@ const LectureQuillEditor = (props: Props) => {
                         <option value="6">Header 6</option>
                         <option value="7">Normal</option>
                     </select>
-                    <select className="ql-font" defaultValue="sans-serif">
-                        <option value="sans-serif">Sans Serif</option>
-                        <option value="serif">Serif</option>
-                        <option value="monospace">Monospace</option>
+                    <select className="ql-size" defaultValue="medium">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                        <option value="huge">Huge</option>
                     </select>
+                    <select className="ql-font" defaultValue="sans-serif" />
                 </span>
-                    <span className="ql-formats">
+                <span className="ql-formats">
                     <button className="ql-bold" />
                     <button className="ql-italic" />
                     <button className="ql-underline" />
                     <button className="ql-strike" />
                     <button className="ql-blockquote" />
                 </span>
-                    <span className="ql-formats">
+
+                <span className="ql-formats">
+                    <button className="ql-list" value="ordered" />
+                    <button className="ql-list" value="bullet" />
+                    <button className="ql-indent" value="-1" />
+                    <button className="ql-indent" value="+1" />
+                </span>
+                <span className="ql-formats">
                     <select className="ql-color" />
                     <select className="ql-background" />
+                    <select className="ql-align" />
                 </span>
-                    <span className="ql-formats">
-                    <select className="ql-align" defaultValue="right">
-                        <option className="ql-align-center" value="center" />
-                        <option className="ql-align-right" value="right" />
-                    </select>
+                <span className="ql-formats">
+                    <button className="ql-link" />
+                    <button className="ql-image" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-formula" />
+                    <button className="ql-code-block" />
+                    <button className="ql-clean" />
                 </span>
             </div>
 

@@ -66,8 +66,8 @@ public class LectureWriteService {
             LocalDate now = LocalDate.now();
             LocalDate periodStartDate = LocalDate.parse(period.substring(0, period.indexOf("~")-1), dtf);
             LocalDate periodEndDate = LocalDate.parse(period.substring(period.indexOf("~")+2), dtf);
-            LocalDate receptionStartDate = LocalDate.parse(reception.substring(0, period.indexOf("~")-1), dtf);
-            LocalDate receptionEndDate = LocalDate.parse(reception.substring(period.indexOf("~")+2), dtf);
+            LocalDate receptionStartDate = LocalDate.parse(reception.substring(0, reception.indexOf("~")-1), dtf);
+            LocalDate receptionEndDate = LocalDate.parse(reception.substring(reception.indexOf("~")+2), dtf);
 
             int lectureCount = 0;
 

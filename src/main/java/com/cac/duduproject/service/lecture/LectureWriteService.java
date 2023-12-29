@@ -31,6 +31,8 @@ public class LectureWriteService {
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
 
+    private final LectureImageService lectureImageService;
+
     @Transactional
     public CommonResponseDto<?> lectureWrite(LectureWriteRequestDto requestDto) {
         try {
@@ -95,7 +97,10 @@ public class LectureWriteService {
                 requestDto.setLectureState("접수중");
             }
 
-            lectureRepository.save(requestDto.toLecture());
+            Long lectureNo = lectureRepository.save(requestDto.toLecture()).getLectureNo();
+
+            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureImage());
+            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureThumbnail());
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

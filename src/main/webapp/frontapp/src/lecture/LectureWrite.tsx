@@ -86,12 +86,7 @@ const LectureWrite = () => {
         imgName:string;
         imgUrl:string;
         imgSize:number;
-    }>({
-        imgType: '',
-        imgName: '',
-        imgUrl: '',
-        imgSize: 0
-    });
+    }[]>([]);
     const [lectureImageArr, setLectureImageArr] = useState<{
         imgType:string;
         imgName:string;
@@ -100,8 +95,6 @@ const LectureWrite = () => {
     }[]>([]);
 
     const {lecturePeriodData, lectureTimeData, lectureReceptionData} = UseLectureDataStore();
-
-    console.log(lectureImageArr)
 
     const changeThumbnailHandler = async(file:FileList|null):Promise<void> => {
         if(file !== null) {
@@ -121,12 +114,12 @@ const LectureWrite = () => {
                 setThumbnailPreviewName(imgFileName);
                 setThumbnailPreviewUrl(imgFileUrl);
 
-                setLectureThumbnail({
+                setLectureThumbnail([{
                     imgType: imgFileType,
                     imgName: imgFileName,
                     imgUrl: imgFileUrl,
                     imgSize: file[0].size
-                });
+                }]);
             }).catch((err):void => {
                 console.log(err.message);
             })
@@ -137,12 +130,7 @@ const LectureWrite = () => {
 
         setThumbnailPreviewName("");
         setThumbnailPreviewUrl("");
-        setLectureThumbnail({
-            imgType: '',
-            imgName: '',
-            imgUrl: '',
-            imgSize: 0
-        });
+        setLectureThumbnail([]);
 
         axios({
             method: "DELETE",
@@ -169,7 +157,8 @@ const LectureWrite = () => {
             institutionNo: lectureInstitution,
             mainCategoryNo: lectureMainCategory,
             subCategoryNo: lectureSubCategory,
-            lectureImage: lectureImageArr
+            lectureImage: lectureImageArr,
+            lectureThumbnail: lectureThumbnail
         }
         axios({
             method: "POST",
@@ -380,7 +369,7 @@ const LectureWrite = () => {
                         세부 내용 작성
                     </div>
                     <div className="lt-description">
-                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} setImage={setLectureImageArr}/>
+                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
                     </div>
                 </div>
 

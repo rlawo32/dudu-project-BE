@@ -22,6 +22,7 @@ public class LectureWriteRequestDto {
     private Long lectureFee;
     private String lectureDescription;
     private List<ImageInsertRequestDto> lectureImage;
+    private List<ImageInsertRequestDto> lectureThumbnail;
 
     //
     private String lectureDivision;

@@ -11,6 +11,12 @@ import 'react-quill/dist/quill.snow.css';
 interface Props {
     content: string;
     setContent: React.Dispatch<React.SetStateAction<string>>;
+    Image: {
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }[];
     setImage: React.Dispatch<React.SetStateAction<{
         imgType:string;
         imgName:string;

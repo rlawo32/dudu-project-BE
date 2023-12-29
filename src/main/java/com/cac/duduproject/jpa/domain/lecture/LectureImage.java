@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 @NoArgsConstructor
 @Entity
 @Getter
@@ -23,7 +21,7 @@ public class LectureImage {
     @Column(name = "lecture_image_no")
     private Long lectureImageNo;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_no")
     private Lecture lecture;
 

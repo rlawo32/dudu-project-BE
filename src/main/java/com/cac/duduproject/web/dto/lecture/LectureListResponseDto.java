@@ -1,8 +1,11 @@
 package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureImage;
 import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class LectureListResponseDto {
@@ -16,6 +19,7 @@ public class LectureListResponseDto {
     //
     private String lectureState;
     private int lectureCount;
+    private String lectureThumbnail;
 
     public LectureListResponseDto(Lecture lecture) {
         this.lectureNo = lecture.getLectureNo();
@@ -24,5 +28,12 @@ public class LectureListResponseDto {
         this.lectureTeacherName = lecture.getMember().getMemberName();
         this.lectureTime = lecture.getLectureTime();
         this.lectureFee = lecture.getLectureFee();
+        this.lectureState = lecture.getLectureState();
+        this.lectureCount = lecture.getLectureCount();
+        for(int i=0; i<lecture.getLectureImages().size(); i++) {
+            if(lecture.getLectureImages().get(i).getLectureImageType().equals("T")) {
+                this.lectureThumbnail = lecture.getLectureImages().get(i).getLectureImageUrl();
+            }
+        }
     }
 }

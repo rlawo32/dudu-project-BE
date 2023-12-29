@@ -17,9 +17,26 @@ const LectureListView = styled.div`
 
 const LectureList = () => {
 
-    const [lectureList, setLectureList] = useState([{
+    const [lectureList, setLectureList] = useState<{
+        lectureNo:number;
+        lectureName:string;
+        lectureDivision:string;
+        lectureTeacher:string;
+        lectureTime:string;
+        lectureFee:number;
+        lectureState:string;
+        lectureCount:number;
+        lectureThumbnail:string;
+    }[]>([{
         lectureNo: 0,
         lectureName: '',
+        lectureDivision: '',
+        lectureTeacher: '',
+        lectureTime: '',
+        lectureFee: 0,
+        lectureState: '',
+        lectureCount: 0,
+        lectureThumbnail: ''
     }]);
 
     const [mainCategoryNo, setMainCategoryNo] = useState<number>(0);

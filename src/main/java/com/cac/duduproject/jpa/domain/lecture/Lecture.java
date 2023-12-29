@@ -2,6 +2,7 @@ package com.cac.duduproject.jpa.domain.lecture;
 
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.util.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -48,7 +51,7 @@ public class Lecture {
     @NotNull
     private Long lectureFee;
 
-    @Column(name = "lecture_description")
+    @Column(name = "lecture_description", columnDefinition = "TEXT")
     @NotEmpty
     private String lectureDescription;
 
@@ -83,6 +86,10 @@ public class Lecture {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_sub_category_no")
     private LectureSubCategory lectureSubCategory;
+
+    @OneToMany(mappedBy = "lecture")
+    @JsonIgnore
+    private List<LectureImage> lectureImages = new ArrayList<>();
 
     @Column(name = "lecture_created_date")
     @NotBlank

@@ -41,6 +41,8 @@ public class LectureListService {
             System.out.println("메인 : " + mainCategoryNo);
             System.out.println("서브 : " + subCategoryNo);
 
+            List<Lecture> lecture = lectureRepository.findAll();
+
             if(mainCategoryNo < 1) {
                 list = lectureRepository.findAll().stream()
                         .map(LectureListResponseDto::new)
@@ -62,8 +64,6 @@ public class LectureListService {
                             .collect(Collectors.toList());
                 }
             }
-
-
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

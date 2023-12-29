@@ -1,8 +1,10 @@
 package com.cac.duduproject.web.controller;
 
+import com.cac.duduproject.service.lecture.LectureImageService;
 import com.cac.duduproject.service.lecture.LectureListService;
 import com.cac.duduproject.service.lecture.LectureWriteService;
 import com.cac.duduproject.service.member.MemberService;
+import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.LectureRoomRequestDto;
 import com.cac.duduproject.web.dto.lecture.LectureSubCategoryRequestDto;
@@ -10,6 +12,7 @@ import com.cac.duduproject.web.dto.lecture.LectureWriteRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,7 +21,9 @@ public class LectureController {
 
     private final LectureWriteService lectureWriteService;
     private final LectureListService lectureListService;
+    private final LectureImageService lectureImageService;
     private final MemberService memberService;
+    private final ImageUploadUtil imageUploadUtil;
 
     @PostMapping("/write")
     public CommonResponseDto<?> lectureWrite(@RequestBody LectureWriteRequestDto requestDto) {
@@ -64,4 +69,15 @@ public class LectureController {
     public CommonResponseDto<?> lectureList(HttpServletRequest request) {
         return lectureListService.findAllLectureList(request);
     }
+
+    @PostMapping("/lectureUploadImage")
+    public CommonResponseDto<?> lectureUploadImage(@RequestPart("files") MultipartFile multipartFile) {
+        return lectureImageService.lectureImageUploadS3(multipartFile);
+    }
+
+    @DeleteMapping("/lectureDeleteImage")
+    public void lectureDeleteImage(HttpServletRequest request) {
+        imageUploadUtil.ImageDeleteS3(request);
+    }
+
 }

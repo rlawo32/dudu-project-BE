@@ -2,12 +2,12 @@ package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.jpa.domain.member.Member;
-import com.cac.duduproject.util.Role;
-import com.cac.duduproject.web.dto.member.MemberTermsAgreeRequestDto;
+import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +21,7 @@ public class LectureWriteRequestDto {
     private int lectureCapacity;
     private Long lectureFee;
     private String lectureDescription;
+    private List<ImageInsertRequestDto> lectureImage;
 
     //
     private String lectureDivision;

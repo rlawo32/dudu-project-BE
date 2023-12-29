@@ -2,8 +2,13 @@ package com.cac.duduproject.service.lecture;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureImage;
+import com.cac.duduproject.jpa.repository.lecture.LectureImageRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
+import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,12 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class LectureImageService {
+
+    private final LectureRepository lectureRepository;
+    private final LectureImageRepository lectureImageRepository;
 
     private final AmazonS3 s3Client;
     private final ImageUploadUtil imageUploadUtil;
@@ -52,4 +61,38 @@ public class LectureImageService {
         }
         return CommonResponseDto.setSuccess("LectureImage Upload Success! ", result);
     }
+
+    @Transactional
+    public void lectureImageInsert(Long lectureNo, List<ImageInsertRequestDto> requestDto) {
+        try {
+            Lecture lecture = lectureRepository.findById(lectureNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. lectureNo : " + lectureNo));
+
+            for(int i=0; i<requestDto.size(); i++) {
+                String lectureImageType= requestDto.get(i).getImgType();
+                String lectureImageName = requestDto.get(i).getImgName();
+                String lectureImageUrl = requestDto.get(i).getImgUrl();
+                Long lectureImageSize = requestDto.get(i).getImgSize();
+                String originName = lectureImageName.substring(lectureImageName.lastIndexOf("_")+1);
+                String customName = lectureImageName.substring(lectureImageName.lastIndexOf("/")+1);
+                String urlName = lectureImageUrl;
+                String extension = lectureImageName.substring(lectureImageName.lastIndexOf(".")+1);
+
+                LectureImage lectureImage = LectureImage.builder()
+                        .lectureImageType(lectureImageType)
+                        .lecture(lecture)
+                        .lectureImageOrigin(originName)
+                        .lectureImageCustom(customName)
+                        .lectureImageUrl(urlName)
+                        .lectureImageExtension(extension)
+                        .lectureImageSize(lectureImageSize)
+                        .build();
+
+                lectureImageRepository.save(lectureImage);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

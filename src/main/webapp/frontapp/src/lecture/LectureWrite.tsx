@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import UseLectureDataStore from "../stores/useLectureDataStore";
 
@@ -9,32 +9,56 @@ import LectureQuillEditor from "./lectureWriteComponent/LectureQuillEditor";
 import * as timeSelectBox from "./lectureWriteComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePicker";
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureWrite.style";
 
 const LectureWrite = () => {
 
-    const [lectureTeacherList, setLectureTeacherList] = useState([{
+    const [lectureTeacherList, setLectureTeacherList] = useState<{
+        memberNo:string;
+        memberName:string;
+        memberPhone:string;
+    }[]>([{
         memberNo: '',
         memberName: '',
         memberPhone: ''
     }]);
-    const [institutionList, setInstitutionList] = useState([{
+    const [institutionList, setInstitutionList] = useState<{
+        institutionNo:string;
+        institutionName:string;
+        institutionContact:string;
+    }[]>([{
         institutionNo: '',
         institutionName: '',
         institutionContact: ''
     }]);
-    const [lectureRoomList, setLectureRoomList] = useState([{
+    const [lectureRoomList, setLectureRoomList] = useState<{
+        lectureRoomNo:string;
+        lectureInstitutionNo:string;
+        lectureRoomName:string;
+        lectureRoomContact:string;
+    }[]>([{
         lectureRoomNo: '',
         lectureInstitutionNo: '',
         lectureRoomName: '',
         lectureRoomContact: ''
     }]);
-    const [lectureMainCategoryList, setLectureMainCategoryList] = useState([{
+    const [lectureMainCategoryList, setLectureMainCategoryList] = useState<{
+        lectureMainCategoryNo:string;
+        lectureMainCategoryName:string;
+        lectureMainCategoryDesc:string;
+    }[]>([{
         lectureMainCategoryNo: '',
         lectureMainCategoryName: '',
         lectureMainCategoryDesc: ''
     }]);
-    const [lectureSubCategoryList, setLectureSubCategoryList] = useState([{
+    const [lectureSubCategoryList, setLectureSubCategoryList] = useState<{
+        lectureSubCategoryNo:string;
+        lectureMainCategoryNo:string;
+        lectureSubCategoryName:string;
+        lectureSubCategoryDesc:string;
+    }[]>([{
         lectureSubCategoryNo: '',
         lectureMainCategoryNo: '',
         lectureSubCategoryName: '',
@@ -54,7 +78,82 @@ const LectureWrite = () => {
     const [lectureMainCategory, setLectureMainCategory] = useState<string>("1");
     const [lectureSubCategory, setLectureSubCategory] = useState<string>("");
 
+    const [thumbnailPreviewName, setThumbnailPreviewName] = useState<string>("");
+    const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState<string>("");
+    const [thumbnailPreviewSize, setThumbnailPreviewSize] = useState<number>(0);
+    const [lectureThumbnail, setLectureThumbnail] = useState<{
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }>({
+        imgType: '',
+        imgName: '',
+        imgUrl: '',
+        imgSize: 0
+    });
+    const [lectureImageArr, setLectureImageArr] = useState<{
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }[]>([]);
+
     const {lecturePeriodData, lectureTimeData, lectureReceptionData} = UseLectureDataStore();
+
+    console.log(lectureImageArr)
+
+    const changeThumbnailHandler = async(file:FileList|null):Promise<void> => {
+        if(file !== null) {
+            const formData:FormData = new FormData();
+            formData.append('files', file[0]);
+
+            await axios({
+                method: "POST",
+                url: "/lecture/lectureUploadImage",
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then((res):void => {
+                const imgFileType:string = "T";
+                const imgFileName:string = res.data.data.imgName;
+                const imgFileUrl:string = res.data.data.imgUrl;
+
+                setThumbnailPreviewName(imgFileName);
+                setThumbnailPreviewUrl(imgFileUrl);
+
+                setLectureThumbnail({
+                    imgType: imgFileType,
+                    imgName: imgFileName,
+                    imgUrl: imgFileUrl,
+                    imgSize: file[0].size
+                });
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+        }
+    }
+
+    const deleteThumbnailHandler = (thumbnailName:string):void => {
+
+        setThumbnailPreviewName("");
+        setThumbnailPreviewUrl("");
+        setLectureThumbnail({
+            imgType: '',
+            imgName: '',
+            imgUrl: '',
+            imgSize: 0
+        });
+
+        axios({
+            method: "DELETE",
+            url: '/lecture/lectureDeleteImage',
+            params: {imageFileName: thumbnailName}
+        }).then((res):void => {
+
+        }).catch((err):void => {
+            console.log(err.message);
+        })
+    }
 
     const lectureWriteHandler = ():void => {
         const lectureData:object = {
@@ -70,6 +169,7 @@ const LectureWrite = () => {
             institutionNo: lectureInstitution,
             mainCategoryNo: lectureMainCategory,
             subCategoryNo: lectureSubCategory,
+            lectureImage: lectureImageArr
         }
         axios({
             method: "POST",
@@ -162,88 +262,86 @@ const LectureWrite = () => {
     return (
         <Styled.LectureWriteView>
             <HeaderNavigation />
-            <h1>강의 작성</h1>
 
             <div className="input-view">
-                <div className="lt-section-select">
-                    <div className="lt-position">
-                        <div className="lt-section-title">
-                            장소 선택
-                        </div>
-                        <div className="lt-institution">
-                            <div className="lt-select-title">
-                                지점명
+                <div className="lt-input-header">
+                    <div className="header-left-view">
+                        <div className="lt-section-select">
+                            <div className="lt-category">
+                                <div className="lt-section-title">
+                                    카테고리 선택
+                                </div>
+                                <div className="lt-mainCategory">
+                                    <div className="lt-select-title">
+                                        연령구분
+                                    </div>
+                                    <select
+                                        value={lectureMainCategory}
+                                        onChange={(e) => setLectureMainCategory(e.target.value)}
+                                        className="select-mainCategory"
+                                    >
+                                        {lectureMainCategoryList.map((option) => (
+                                            <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
+                                                {option.lectureMainCategoryName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="lt-subCategory">
+                                    <div className="lt-select-title">
+                                        강좌구분
+                                    </div>
+                                    <select
+                                        value={lectureSubCategory}
+                                        onChange={(e) => setLectureSubCategory(e.target.value)}
+                                        className="select-subCategory"
+                                    >
+                                        {lectureSubCategoryList.map((option) => (
+                                            <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
+                                                {option.lectureSubCategoryName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            <select
-                                value={lectureInstitution}
-                                onChange={(e) => setLectureInstitution(e.target.value)}
-                                className="select-institution"
-                            >
-                                {institutionList.map((option) => (
-                                    <option key={option.institutionNo} value={option.institutionNo}>
-                                        {option.institutionName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="lt-room">
-                            <div className="lt-select-title">
-                                강의실
+                            <div className="lt-position">
+                                <div className="lt-section-title">
+                                    장소 선택
+                                </div>
+                                <div className="lt-institution">
+                                    <div className="lt-select-title">
+                                        지점명
+                                    </div>
+                                    <select
+                                        value={lectureInstitution}
+                                        onChange={(e) => setLectureInstitution(e.target.value)}
+                                        className="select-institution"
+                                    >
+                                        {institutionList.map((option) => (
+                                            <option key={option.institutionNo} value={option.institutionNo}>
+                                                {option.institutionName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="lt-room">
+                                    <div className="lt-select-title">
+                                        강의실
+                                    </div>
+                                    <select
+                                        value={lectureRoom}
+                                        onChange={(e) => setLectureRoom(e.target.value)}
+                                        className="select-room"
+                                    >
+                                        {lectureRoomList.map((option) => (
+                                            <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
+                                                {option.lectureRoomName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            <select
-                                value={lectureRoom}
-                                onChange={(e) => setLectureRoom(e.target.value)}
-                                className="select-room"
-                            >
-                                {lectureRoomList.map((option) => (
-                                    <option key={option.lectureRoomNo} value={option.lectureRoomNo}>
-                                        {option.lectureRoomName}
-                                    </option>
-                                ))}
-                            </select>
                         </div>
-                    </div>
-                    <div className="lt-category">
-                        <div className="lt-section-title">
-                            카테고리 선택
-                        </div>
-                        <div className="lt-mainCategory">
-                            <div className="lt-select-title">
-                                연령구분
-                            </div>
-                            <select
-                                value={lectureMainCategory}
-                                onChange={(e) => setLectureMainCategory(e.target.value)}
-                                className="select-mainCategory"
-                            >
-                                {lectureMainCategoryList.map((option) => (
-                                    <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
-                                        {option.lectureMainCategoryName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="lt-subCategory">
-                            <div className="lt-select-title">
-                                강좌구분
-                            </div>
-                            <select
-                                value={lectureSubCategory}
-                                onChange={(e) => setLectureSubCategory(e.target.value)}
-                                className="select-subCategory"
-                            >
-                                {lectureSubCategoryList.map((option) => (
-                                    <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
-                                        {option.lectureSubCategoryName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="lt-write-main">
-                    <div className="write-main-header">
                         <div className="lt-name">
                             <div className="lt-section-title">
                                 강좌명
@@ -251,39 +349,44 @@ const LectureWrite = () => {
                             <input type="text" onChange={(e) => setLectureName(e.target.value)}
                                    className="input-name" placeholder="강좌명" />
                         </div>
-                        <div className="lt-teacher">
-                            <div className="lt-section-title">
-                                강사명
-                            </div>
-                            <select
-                                value={lectureTeacher}
-                                onChange={(e) => setLectureTeacher(e.target.value)}
-                                className="select-teacher"
-                            >
-                                {lectureTeacherList.map((option) => (
-                                    <option key={option.memberNo} value={option.memberNo}>
-                                        {option.memberName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="lt-capacity">
-                            <div className="lt-section-title">
-                                인원
-                            </div>
-                            <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)}
-                                   className="input-capacity" value={lectureCapacity} step={1} />
-                        </div>
                     </div>
-                    <div className="write-main-body">
-                        <div className="lt-section-title">
-                            세부 내용 작성
-                        </div>
-                        <div className="lt-description">
-                            <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} />
+                    <div className="header-right-view">
+                        <div className="lt-thumbnail">
+                            <div className="lt-section-title">
+                                대표 이미지 설정
+                            </div>
+                            <input type="file" id="attach-thumbnail" accept="image/jpg,image/png,image/jpeg"
+                                   onChange={(e) => changeThumbnailHandler(e.target.files)}/>
+                            {
+                                thumbnailPreviewUrl.length > 0 ?
+                                    <div className="attach-thumbnail">
+                                        <img src={thumbnailPreviewUrl} alt="썸네일 이미지" className="thumbnail-image" />
+                                        <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
+                                            deleteThumbnailHandler(thumbnailPreviewName)} className="thumbnail-image-delete"/>
+                                    </div>
+                                    :
+                                    <label htmlFor={"attach-thumbnail"}>
+                                        <div className="attach-input">
+                                            <FontAwesomeIcon icon={imagePlus} className="icon-custom" />
+                                        </div>
+                                    </label>
+                            }
                         </div>
                     </div>
                 </div>
+
+                <div className="lt-write-content">
+                    <div className="lt-section-title">
+                        세부 내용 작성
+                    </div>
+                    <div className="lt-description">
+                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} setImage={setLectureImageArr}/>
+                    </div>
+                </div>
+
+                {/*<div>*/}
+                {/*    <input type="file" />*/}
+                {/*</div>*/}
 
                 <div className="lt-period">
                     <div className="period-datePicker">
@@ -297,6 +400,22 @@ const LectureWrite = () => {
                             강의시간 설정
                         </div>
                         <timeSelectBox.default />
+                    </div>
+                    <div className="lt-teacher">
+                        <div className="lt-section-title">
+                            강사명
+                        </div>
+                        <select
+                            value={lectureTeacher}
+                            onChange={(e) => setLectureTeacher(e.target.value)}
+                            className="select-teacher"
+                        >
+                            {lectureTeacherList.map((option) => (
+                                <option key={option.memberNo} value={option.memberNo}>
+                                    {option.memberName}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
@@ -316,6 +435,16 @@ const LectureWrite = () => {
                                    className="input-fee" value={lectureFee} step={1000} />
                             <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
                                 원
+                            </span>
+                        </div>
+                        <div className="lt-capacity">
+                            <div className="lt-section-title">
+                                인원
+                            </div>
+                            <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)}
+                                   className="input-capacity" value={lectureCapacity} step={1} />
+                            <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
+                                명
                             </span>
                         </div>
                     </span>

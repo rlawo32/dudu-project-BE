@@ -1,6 +1,9 @@
-import React, {useMemo, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleXmark as attachDelete} from "@fortawesome/free-solid-svg-icons";
 
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
@@ -8,6 +11,12 @@ import 'react-quill/dist/quill.snow.css';
 interface Props {
     content: string;
     setContent: React.Dispatch<React.SetStateAction<string>>;
+    setImage: React.Dispatch<React.SetStateAction<{
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }[]>>;
 }
 
 const CustomQuillEditorView = styled.div`
@@ -67,25 +76,59 @@ const CustomQuillEditorView = styled.div`
       font-size: 30px;
     }
   }
+  
+  .write-image-attach {
+    margin-top: 10px;
+    padding: 5px 10px 5px 10px;
+    border: ${({theme}) => theme.borderColor};
+    border-radius: 10px;
+    
+    .write-image-attach-header {
+      margin-bottom: 10px;
+    }
+    
+    .write-image-attach-body {
+      
+      .write-attach-item {
+        position: relative;
+        
+        .write-attach-image {
+          height: 100px;
+          width: 100px;
+          margin-right: 3px;
+          border: ${({theme}) => theme.borderColor};
+          border-radius: 20px;
+        }
+        
+        .write-attach-delete {
+          position: absolute;
+          top: -81px;
+          left: 83px;
+          color: orangered;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 `;
 
 const LectureQuillEditor = (props: Props) => {
     const quillRef:any = useRef<any>();
 
-    const [previewWriteImgUrlArr, setPreviewWriteImgUrlArr] = useState<string[]>([]);
-    const [previewWriteImgNameArr, setPreviewWriteImgNameArr] = useState<string[]>([]);
-    const [previewWriteImgSize, setPreviewWriteImgSize] = useState<number>(0);
-    const [attachImageArr, setAttachImageArr] = useState([{
-        imgName: '',
-        imgUrl: '',
-        imgSize: 0
-    }]);
-    const [removeImageArr, setRemoveImageArr] = useState<string[]>([]);
+    const [previewWriteImgUrlArr, setPreviewWriteImgUrlArr] = useState<string[]>([]); // 미리보기를 위한 state
+    const [previewWriteImgNameArr, setPreviewWriteImgNameArr] = useState<string[]>([]); // 삭제를 위한 state
+    const [previewWriteImgSize, setPreviewWriteImgSize] = useState<number>(0); // 업로드한 이미지 용량 state
+    const [attachImageArr, setAttachImageArr] = useState<{
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }[]>([]);
 
     const changeImageHandler = ():void => {
         const input:HTMLInputElement = document.createElement("input");
         input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/jpg,image/png,image/jpeg,image/gif");
+        input.setAttribute("accept", "image/jpg,image/png,image/jpeg");
         input.setAttribute("multiple", "multiple");
         input.click();
 
@@ -93,73 +136,120 @@ const LectureQuillEditor = (props: Props) => {
             let file:FileList|null = input.files;
             const editor:any = quillRef.current.getEditor();
             const range:any = editor.getSelection();
-
             let fileSize:number = 0;
 
             if(file !== null) {
-                const formData:FormData = new FormData();
-
                 for(let i:number=0; i<file.length; i++) {
                     fileSize += file[i].size;
+                    const formData:FormData = new FormData();
                     formData.append('files', file[i]);
 
                     await axios({
                         method: "POST",
-                        url: "",
+                        url: "/lecture/lectureUploadImage",
                         data: formData,
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }).then((res):void => {
-                        const imgFileName = res.data.data.imgName;
-                        const imgFileUrl = res.data.data.imgUrl;
+                        const imgFileType:string = "L";
+                        const imgFileName:string = res.data.data.imgName;
+                        const imgFileUrl:string = res.data.data.imgUrl;
 
                         setPreviewWriteImgUrlArr((prevList:string[]) => [...prevList, imgFileUrl]);
-                        setPreviewWriteImgNameArr((prevList:string[]) => [...prevList, imgFileName]); // imgName 성공시 삭제
+                        setPreviewWriteImgNameArr((prevList:string[]) => [...prevList, imgFileName]);
                         setAttachImageArr((prevList) => [...prevList, {
-                            imgName:imgFileName,
-                            imgUrl:imgFileUrl,
-                            imgSize:file !== null ? file[i].size : 0
+                            imgType: imgFileType,
+                            imgName: imgFileName,
+                            imgUrl: imgFileUrl,
+                            imgSize: file !== null ? file[i].size : 0
                         }]);
-
-
                         editor.insertEmbed(range.index, 'image', imgFileUrl);
                         editor.setSelection(range.index + 1);
                     }).catch((err):void => {
                         console.log(err.message);
                     })
                 }
+                setPreviewWriteImgSize(prevList => prevList + fileSize);
             }
         }
     }
 
+    const attachImageArray = ():any[] => {
+        let result:any[] = [];
+        for (let i:number=0; i<previewWriteImgUrlArr.length; i++) {
+            result.push(
+                <span key={i} className="write-attach-item">
+                    <img key={i} src={previewWriteImgUrlArr[i]} alt="업로드 이미지" className="write-attach-image" />
+                    <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
+                        attachImageDelete(previewWriteImgUrlArr[i])} className="write-attach-delete"/>
+                </span>);
+        }
+        return result;
+    }
+
+    const attachImageSize = ():string => {
+        let result:string;
+        let sizeName:string[] = ["KB", "MB"];
+        let imageSize:number = previewWriteImgSize / 1024;
+
+        if(parseFloat(imageSize.toFixed(1)) < 1000) {
+            result = imageSize.toFixed(1) + sizeName[0];
+        } else {
+            imageSize = imageSize / 1024;
+            result = imageSize.toFixed(2) + sizeName[1];
+        }
+        return result;
+    }
+
+    const attachImageDelete = async (url:string):Promise<void> => {
+        let removeImgSize:number = 0;
+        let removeImgName:string = "";
+
+        for (let i:number = 0; i < attachImageArr.length; i++) {
+            if (attachImageArr[i].imgUrl === url) {
+                removeImgSize = attachImageArr[i].imgSize;
+                removeImgName = attachImageArr[i].imgName;
+            }
+        }
+        setPreviewWriteImgUrlArr(previewWriteImgUrlArr.filter((value:string) => value !== url));
+        setPreviewWriteImgSize(previewWriteImgSize - removeImgSize);
+        setAttachImageArr(attachImageArr.filter((value) => value.imgUrl !== url))
+
+        const removeImg:Element|null = document.querySelector('img[src="' + url + '"]');
+
+        if(removeImg !== null) {
+            removeImg.remove();
+        }
+        await axios({
+            method: "DELETE",
+            url: '/lecture/lectureDeleteImage',
+            params: {imageFileName: removeImgName}
+        }).then((res):void => {
+
+        }).catch((err):void => {
+            console.log(err.message);
+        })
+    }
+
     const formats:string[] = [
-        "header",
-        "font",
-        "size",
-        "bold",
-        "italic",
-        "underline",
-        "align",
-        "strike",
-        "script",
-        "blockquote",
-        "background",
-        "list",
-        "bullet",
-        "indent",
-        "link",
-        "image",
-        "color",
-        "code-block",
+        "header", "size", "font",
+        "bold", "italic", "underline", "strike", "blockquote",
+        "list", "bullet", "indent", "link", "image",
+        "color", "background", "align",
+        "script", "code-block", "clean"
     ];
 
     const modules:{} = useMemo(() => ({
         toolbar: {
             container: "#toolBar",
-            // handlers: {
-            //     image: changeImageHandler
-            // }
+            handlers: {
+                image: changeImageHandler
+            }
         },
     }), []);
+
+    useEffect(() => {
+        props.setImage(attachImageArr);
+    }, [attachImageArr])
 
     return (
         <CustomQuillEditorView>
@@ -221,6 +311,17 @@ const LectureQuillEditor = (props: Props) => {
                 onChange={props.setContent}
                 value={props.content}
             />
+
+            <div className="write-image-attach" style={ previewWriteImgUrlArr.length > 0 ? {display: 'block'} : {display: 'none'} }>
+                <div className="write-image-attach-header">
+                    <span>이미지 첨부</span>
+                    <span style={{marginLeft: '10px'}}>{attachImageArray().length} 개</span>
+                    <span style={{marginLeft: '10px'}}>({attachImageSize()} / 50.00MB)</span>
+                </div>
+                <div className="write-image-attach-body">
+                    {attachImageArray()}
+                </div>
+            </div>
         </CustomQuillEditorView>
     )
 }

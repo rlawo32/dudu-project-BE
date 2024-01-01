@@ -92,7 +92,9 @@ const LectureList = () => {
                                 <span className="span-ltInstitution">{lectures.lectureInstitution}</span>
                             </div>
                             <div className="lt-list-title">
-                                {lectures.lectureTitle}
+                                <p>
+                                    {lectures.lectureTitle}
+                                </p>
                             </div>
                             <div className="lt-list-division">
                                 <span className="span-line">{lectures.lectureDivision}&nbsp;&nbsp;</span>

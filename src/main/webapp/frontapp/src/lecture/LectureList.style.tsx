@@ -28,8 +28,10 @@ export const LectureListView = styled.div`
       width: 272px;
       margin: 30px 3px 0 0;
       padding: 5px;
+      cursor: pointer;
 
       .lt-list-image {
+        border-radius: 10px;
         overflow: hidden;
 
         img {
@@ -39,6 +41,8 @@ export const LectureListView = styled.div`
           border-radius: 10px;
           object-fit: cover;
           vertical-align: top;
+
+          transition: transform .4s ease;
         }
       }   
       
@@ -68,13 +72,25 @@ export const LectureListView = styled.div`
       
       .lt-list-title {
         min-height: 42px;
-        margin-top: 5px;
-        font-size: 17px;
-        font-weight: 900;
+        
+        p {
+          margin: 10px 0 0 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
+          word-break: keep-all;
+          line-height: 1.5;
+          font-size: 17px;
+          font-weight: 900;
+          
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
       }
       
       .lt-list-division {
-        margin-top: 5px;
+        margin-top: 6px;
         font-size: 14px;
         font-weight: 700;
       }
@@ -97,6 +113,11 @@ export const LectureListView = styled.div`
         margin-top: 3px;
         font-size: 14px;
         font-weight: 700;
+      }
+      
+      &:hover img {
+        transform: scale(1.1);
+        transition: transform .4s ease;
       }
     }
   }

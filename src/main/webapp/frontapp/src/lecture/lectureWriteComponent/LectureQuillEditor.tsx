@@ -149,6 +149,7 @@ const LectureQuillEditor = (props: Props) => {
                     fileSize += file[i].size;
                     const formData:FormData = new FormData();
                     formData.append('files', file[i]);
+                    formData.append('type', 'L');
 
                     await axios({
                         method: "POST",
@@ -186,7 +187,7 @@ const LectureQuillEditor = (props: Props) => {
                 <span key={i} className="write-attach-item">
                     <img key={i} src={previewWriteImgUrlArr[i]} alt="업로드 이미지" className="write-attach-image" />
                     <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
-                        attachImageDelete(previewWriteImgUrlArr[i])} className="write-attach-delete"/>
+                        attachImageDelete(previewWriteImgUrlArr[i], "L")} className="write-attach-delete"/>
                 </span>);
         }
         return result;
@@ -206,7 +207,7 @@ const LectureQuillEditor = (props: Props) => {
         return result;
     }
 
-    const attachImageDelete = async (url:string):Promise<void> => {
+    const attachImageDelete = async (url:string, deleteType:string):Promise<void> => {
         let removeImgSize:number = 0;
         let removeImgName:string = "";
 
@@ -225,10 +226,14 @@ const LectureQuillEditor = (props: Props) => {
         if(removeImg !== null) {
             removeImg.remove();
         }
+        const deleteObj:object = {
+            imageFileName: removeImgName,
+            type: deleteType
+        }
         await axios({
             method: "DELETE",
             url: '/lecture/lectureDeleteImage',
-            params: {imageFileName: removeImgName}
+            params: deleteObj
         }).then((res):void => {
 
         }).catch((err):void => {

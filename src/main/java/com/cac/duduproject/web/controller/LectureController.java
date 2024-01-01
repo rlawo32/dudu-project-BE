@@ -71,8 +71,8 @@ public class LectureController {
     }
 
     @PostMapping("/lectureUploadImage")
-    public CommonResponseDto<?> lectureUploadImage(@RequestPart("files") MultipartFile multipartFile) {
-        return lectureImageService.lectureImageUploadS3(multipartFile);
+    public CommonResponseDto<?> lectureUploadImage(@RequestPart("files") MultipartFile multipartFile, @RequestPart("type") String type) {
+        return lectureImageService.lectureImageUploadS3(multipartFile, type);
     }
 
     @DeleteMapping("/lectureDeleteImage")

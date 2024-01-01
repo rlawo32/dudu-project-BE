@@ -50,7 +50,6 @@ const LectureList = () => {
                url: '/lecture/lectureList',
                params: paging
            }).then((res):void => {
-               console.log(res.data.data);
                setLectureList(res.data.data);
            }).catch((err):void => {
                console.log(err.message);

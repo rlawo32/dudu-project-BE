@@ -1,6 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck as check} from "@fortawesome/free-solid-svg-icons";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface Props {
     mainCategoryNo:number;
@@ -8,18 +16,94 @@ interface Props {
 }
 
 const TabLectureSubCategory = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-bottom: 1px solid darkgray;
+  
+  .sc-list {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 36px;
+      
+    .sc-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 30px;
+      text-align: center;
+      cursor: pointer;
+        
+      .sc-item-image {
+        position: relative;
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        font-size: 25px;
+        font-weight: 500;
+        background-color: lightgrey;
+        text-align: center;
+
+        .sc-item-cover {
+          display: none;
+        }
+        
+        img {
+          height: 100%;
+          width: 100%;
+          border: none;
+          object-fit: cover;
+        }
+      }
+      
+      .sc-item-name {
+        font-size: 18px;
+        font-weight: 500;
+      }
+      
+      .scBtn-active {
+
+        .sc-item-cover {
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+          background: rgba(255,127,0,0.7);
+        }
+        
+        .sc-item-name {
+          font-weight: 900;
+        }
+      }
+    }
+  }
 `;
 
 const LectureSubCategoryView = (props: Props) => {
+    const scBtn:any = useRef<any>([]);
 
-    const [lectureSubCategoryData, setLectureSubCategoryData] = useState([{
+    const [lectureSubCategoryData, setLectureSubCategoryData] = useState<{
+        lectureSubCategoryNo:number;
+        lectureMainCategoryNo:number;
+        lectureSubCategoryName:string;
+        lectureSubCategoryDesc:string;
+        lectureSubCategoryThumbnail:string;
+    }[]>([{
         lectureSubCategoryNo: 0,
         lectureMainCategoryNo: 0,
         lectureSubCategoryName: '',
-        lectureSubCategoryDesc: ''
+        lectureSubCategoryDesc: '',
+        lectureSubCategoryThumbnail: ''
     }]);
 
     const tabSubCategory = ():any[] => {
@@ -27,14 +111,47 @@ const LectureSubCategoryView = (props: Props) => {
 
         for(let i:number=0; i<=lectureSubCategoryData.length; i++) {
             if(i === 0) {
-                result.push(<div key={i} onClick={() => props.setSubCategoryNo(i)}>전체</div>);
+                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i)}
+                                         className="sc-item">
+                    <div ref={btn => (scBtn.current[i] = btn)}>
+                        <div className="sc-item-image">
+                            ALL
+                            <div className="sc-item-cover">
+                                <FontAwesomeIcon icon={check} />
+                            </div>
+                        </div>
+                        <div className="sc-item-name">전체</div>
+                    </div>
+                </SwiperSlide>);
             } else {
-                result.push(<div key={i} onClick={() => props.setSubCategoryNo(lectureSubCategoryData[i-1].lectureSubCategoryNo)}>
-                    {lectureSubCategoryData[i-1].lectureSubCategoryName}
-                </div>);
+                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(lectureSubCategoryData[i-1].lectureSubCategoryNo)}
+                                         className="sc-item">
+                    <div ref={btn => (scBtn.current[i] = btn)}>
+                        <div className="sc-item-image">
+                            <img src={lectureSubCategoryData[i-1].lectureSubCategoryThumbnail} alt="카테고리 이미지" />
+                            <div className="sc-item-cover">
+                                <FontAwesomeIcon icon={check} />
+                            </div>
+                        </div>
+                        <div className="sc-item-name">
+                            {lectureSubCategoryData[i-1].lectureSubCategoryName}
+                        </div>
+                    </div>
+                </SwiperSlide>);
             }
         }
         return result;
+    }
+
+    const onClickSubCategory = (idx:number):void => {
+        props.setSubCategoryNo(idx);
+        scBtn.current[idx].className += 'scBtn-active';
+
+        for(let i:number=0; i<scBtn.current.length; i++) {
+            if(i !== idx) {
+                scBtn.current[i].className = scBtn.current[i].className.replace('scBtn-active', '');
+            }
+        }
     }
 
     useEffect(() => {
@@ -51,15 +168,50 @@ const LectureSubCategoryView = (props: Props) => {
                 })
             }
             lectureCategoryData().then();
+            scBtn.current[0].className = scBtn.current[0].className.replace('scBtn-active', '');
+            scBtn.current[0].className += 'scBtn-active';
         } else {
             setLectureSubCategoryData([]);
         }
     }, [props.mainCategoryNo])
 
+    useEffect(() => {
+    }, [])
+
     return (
         <TabLectureSubCategory>
 
-            {props.mainCategoryNo != 0 ? tabSubCategory() : <></>}
+            <Swiper className="sc-list"
+                    modules={[Navigation, Pagination]}
+                    speed={1000}
+                    slidesPerView={2}
+                    spaceBetween={10}
+                    navigation
+                    pagination={{ clickable: true }}
+                    breakpoints={{
+                        500: {
+                            slidesPerView: 3,
+                            spaceBetween: 10
+                        },
+                        900: {
+                            slidesPerView: 4,
+                            spaceBetween: 10
+                        },
+                        1100: {
+                            slidesPerView: 6,
+                            spaceBetween: 10
+                        },
+                        1400: {
+                            slidesPerView: 7,
+                            spaceBetween: 10
+                        },
+                        1650: {
+                            slidesPerView: 9,
+                            spaceBetween: 10
+                        }
+                    }}>
+                {tabSubCategory()}
+            </Swiper>
 
         </TabLectureSubCategory>
     )

@@ -37,7 +37,18 @@ public class ImageUploadUtil {
 
     public void ImageDeleteS3(HttpServletRequest request) {
         try {
-            s3Client.deleteObject(new DeleteObjectRequest(bucketName + "/previewImage", request.getParameter("imageFileName")));
+            String type = request.getParameter("type");
+            String deleteDir = "";
+
+            if(type.equals("T")) {
+                deleteDir = "/lectureThumbnailImage";
+            } else if(type.equals("L")) {
+                deleteDir = "/lectureContentImage";
+            } else if(type.equals("C")) {
+                deleteDir = "/lectureCategoryImage";
+            }
+
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName + deleteDir, request.getParameter("imageFileName")));
         } catch(Exception e) {
             e.printStackTrace();
         }

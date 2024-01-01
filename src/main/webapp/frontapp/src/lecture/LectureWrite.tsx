@@ -60,11 +60,13 @@ const LectureWrite = () => {
         lectureMainCategoryNo:string;
         lectureSubCategoryName:string;
         lectureSubCategoryDesc:string;
+        lectureSubCategoryThumbnail:string;
     }[]>([{
         lectureSubCategoryNo: '',
         lectureMainCategoryNo: '',
         lectureSubCategoryName: '',
-        lectureSubCategoryDesc: ''
+        lectureSubCategoryDesc: '',
+        lectureSubCategoryThumbnail: ''
     }]);
 
     const [lectureTeacher, setLectureTeacher] = useState<string>("");
@@ -102,6 +104,7 @@ const LectureWrite = () => {
         if(file !== null) {
             const formData:FormData = new FormData();
             formData.append('files', file[0]);
+            formData.append('type', 'T');
 
             await axios({
                 method: "POST",
@@ -128,16 +131,19 @@ const LectureWrite = () => {
         }
     }
 
-    const deleteThumbnailHandler = (thumbnailName:string):void => {
-
+    const deleteThumbnailHandler = (thumbnailName:string, deleteType:string):void => {
         setThumbnailPreviewName("");
         setThumbnailPreviewUrl("");
         setLectureThumbnail([]);
 
+        const deleteObj:object = {
+            imageFileName: thumbnailName,
+            type: deleteType
+        }
         axios({
             method: "DELETE",
             url: '/lecture/lectureDeleteImage',
-            params: {imageFileName: thumbnailName}
+            params: deleteObj
         }).then((res):void => {
 
         }).catch((err):void => {
@@ -355,7 +361,7 @@ const LectureWrite = () => {
                                     <div className="attach-thumbnail">
                                         <img src={thumbnailPreviewUrl} alt="썸네일 이미지" className="thumbnail-image" />
                                         <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
-                                            deleteThumbnailHandler(thumbnailPreviewName)} className="thumbnail-image-delete"/>
+                                            deleteThumbnailHandler(thumbnailPreviewName, "T")} className="thumbnail-image-delete"/>
                                     </div>
                                     :
                                     <label htmlFor={"attach-thumbnail"}>
@@ -447,7 +453,7 @@ const LectureWrite = () => {
                 </div>
             </div>
             {/*<LectureRoomWrite institutionNo={lectureInstitution} />*/}
-            {/*<LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>*/}
+            <LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>
         </Styled.LectureWriteView>
     )
 }

@@ -28,7 +28,11 @@ const TabLectureMainCategory = styled.div`
 const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React.SetStateAction<number>>;}) => {
     const mcBtn:any = useRef<any>([]);
 
-    const [lectureMainCategoryData, setLectureMainCategoryData] = useState([{
+    const [lectureMainCategoryData, setLectureMainCategoryData] = useState<{
+        lectureMainCategoryNo:number;
+        lectureMainCategoryName:string;
+        lectureMainCategoryDesc:string;
+    }[]>([{
         lectureMainCategoryNo: 0,
         lectureMainCategoryName: '',
         lectureMainCategoryDesc: ''
@@ -39,10 +43,10 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
 
         for(let i:number=0; i<=lectureMainCategoryData.length; i++) {
             if(i === 0) {
-                result.push(<div key={i} onClick={() => mainCategoryOnClick(i)}
+                result.push(<div key={i} onClick={() => onClickMainCategory(i)}
                                  className="mc-item" ref={btn => (mcBtn.current[i] = btn)}>전체</div>);
             } else {
-                result.push(<div key={i} onClick={() => mainCategoryOnClick(lectureMainCategoryData[i-1].lectureMainCategoryNo)}
+                result.push(<div key={i} onClick={() => onClickMainCategory(lectureMainCategoryData[i-1].lectureMainCategoryNo)}
                                  className="mc-item" ref={btn => (mcBtn.current[i] = btn)}>
                     {lectureMainCategoryData[i-1].lectureMainCategoryName}</div>);
             }
@@ -50,7 +54,7 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
         return result;
     }
 
-    const mainCategoryOnClick = (idx:number):void => {
+    const onClickMainCategory = (idx:number):void => {
         props.setMainCategoryNo(idx);
         mcBtn.current[idx].className += ' mcBtn-active';
 

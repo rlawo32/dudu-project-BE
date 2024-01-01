@@ -16,7 +16,7 @@ public class LectureSubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lecture_sub_category_no")
-    private Long lectureMainCategoryNo;
+    private Long lectureSubCategoryNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_main_category_no")
@@ -24,16 +24,22 @@ public class LectureSubCategory {
 
     @Column(name = "lecture_sub_category_name")
     @NotEmpty
-    private String lectureMainCategoryName;
+    private String lectureSubCategoryName;
 
     @Column(name = "lecture_sub_category_desc")
     @NotBlank
-    private String lectureMainCategoryDesc;
+    private String lectureSubCategoryDesc;
+
+    @Column(name = "lecture_sub_category_thumbnail")
+    @NotBlank
+    private String lectureSubCategoryThumbnail;
 
     @Builder
-    public LectureSubCategory(LectureMainCategory lectureMainCategory, String lectureMainCategoryName, String lectureMainCategoryDesc) {
+    public LectureSubCategory(LectureMainCategory lectureMainCategory, String lectureSubCategoryName,
+                              String lectureSubCategoryDesc, String lectureSubCategoryThumbnail) {
         this.lectureMainCategory = lectureMainCategory;
-        this.lectureMainCategoryName = lectureMainCategoryName;
-        this.lectureMainCategoryDesc = lectureMainCategoryDesc;
+        this.lectureSubCategoryName = lectureSubCategoryName;
+        this.lectureSubCategoryDesc = lectureSubCategoryDesc;
+        this.lectureSubCategoryThumbnail = lectureSubCategoryThumbnail;
     }
 }

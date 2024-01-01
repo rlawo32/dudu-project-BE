@@ -36,7 +36,7 @@ public class LectureImageService {
     private String bucketName;
 
     @Transactional
-    public CommonResponseDto<?> lectureImageUploadS3(MultipartFile files) {
+    public CommonResponseDto<?> lectureImageUploadS3(MultipartFile files, String type) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -44,13 +44,22 @@ public class LectureImageService {
             //동일한 사진을 업로드 하였을 때 사진이 덮어씌워지는 것을 방지하기 위함
             UUID uuid = UUID.randomUUID();
             String imageFileName = uuid + "_" + files.getOriginalFilename();
+            String uploadDir = "";
+
+            if(type.equals("T")) {
+                uploadDir = "/lectureThumbnailImage";
+            } else if(type.equals("L")) {
+                uploadDir = "/lectureContentImage";
+            } else if(type.equals("C")) {
+                uploadDir = "/lectureCategoryImage";
+            }
 
             File file = imageUploadUtil.convertMultiPartFileToFile(files);
 
-            s3Client.putObject(new PutObjectRequest(bucketName + "/previewImage", imageFileName, file));
+            s3Client.putObject(new PutObjectRequest(bucketName + uploadDir, imageFileName, file));
             file.delete();
 
-            URL url = s3Client.getUrl(bucketName + "/previewImage", imageFileName);
+            URL url = s3Client.getUrl(bucketName + uploadDir, imageFileName);
             String urlText = "" + url;
 
             result.put("imgName", imageFileName);

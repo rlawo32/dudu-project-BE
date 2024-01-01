@@ -8,7 +8,9 @@ interface Props {
 }
 
 const TabLectureSubCategory = styled.div`
-  border: 2px solid red;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const LectureSubCategoryView = (props: Props) => {
@@ -25,11 +27,11 @@ const LectureSubCategoryView = (props: Props) => {
 
         for(let i:number=0; i<=lectureSubCategoryData.length; i++) {
             if(i === 0) {
-                result.push(<li key={i} onClick={() => props.setSubCategoryNo(i)}>전체</li>);
+                result.push(<div key={i} onClick={() => props.setSubCategoryNo(i)}>전체</div>);
             } else {
-                result.push(<li key={i} onClick={() => props.setSubCategoryNo(lectureSubCategoryData[i-1].lectureSubCategoryNo)}>
+                result.push(<div key={i} onClick={() => props.setSubCategoryNo(lectureSubCategoryData[i-1].lectureSubCategoryNo)}>
                     {lectureSubCategoryData[i-1].lectureSubCategoryName}
-                </li>);
+                </div>);
             }
         }
         return result;
@@ -57,9 +59,7 @@ const LectureSubCategoryView = (props: Props) => {
     return (
         <TabLectureSubCategory>
 
-            <ul>
-                {tabSubCategory()}
-            </ul>
+            {props.mainCategoryNo != 0 ? tabSubCategory() : <></>}
 
         </TabLectureSubCategory>
     )

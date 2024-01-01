@@ -1,12 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 
 const TabLectureMainCategory = styled.div`
-  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid darkgray;
+  
+  .mc-item {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    padding: 2% 5px 2% 5px;
+    margin: 0 25px 0 25px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .mcBtn-active {
+    border-bottom: 3px solid ${({theme}) => theme.textColor};
+  }
 `;
 
 const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React.SetStateAction<number>>;}) => {
+    const mcBtn:any = useRef<any>([]);
 
     const [lectureMainCategoryData, setLectureMainCategoryData] = useState([{
         lectureMainCategoryNo: 0,
@@ -19,14 +39,26 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
 
         for(let i:number=0; i<=lectureMainCategoryData.length; i++) {
             if(i === 0) {
-                result.push(<li key={i} onClick={() => props.setMainCategoryNo(i)}>전체</li>);
+                result.push(<div key={i} onClick={() => mainCategoryOnClick(i)}
+                                 className="mc-item" ref={btn => (mcBtn.current[i] = btn)}>전체</div>);
             } else {
-                result.push(<li key={i} onClick={() => props.setMainCategoryNo(lectureMainCategoryData[i-1].lectureMainCategoryNo)}>
-                    {lectureMainCategoryData[i-1].lectureMainCategoryName}
-                </li>);
+                result.push(<div key={i} onClick={() => mainCategoryOnClick(lectureMainCategoryData[i-1].lectureMainCategoryNo)}
+                                 className="mc-item" ref={btn => (mcBtn.current[i] = btn)}>
+                    {lectureMainCategoryData[i-1].lectureMainCategoryName}</div>);
             }
         }
         return result;
+    }
+
+    const mainCategoryOnClick = (idx:number):void => {
+        props.setMainCategoryNo(idx);
+        mcBtn.current[idx].className += ' mcBtn-active';
+
+        for(let i:number=0; i<mcBtn.current.length; i++) {
+            if(i !== idx) {
+                mcBtn.current[i].className = mcBtn.current[i].className.replace(' mcBtn-active', '');
+            }
+        }
     }
 
     useEffect(() => {
@@ -41,14 +73,13 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
             })
         }
         lectureCategoryData().then();
+        mcBtn.current[0].className += ' mcBtn-active';
     }, [])
 
     return (
         <TabLectureMainCategory>
 
-            <ul>
-                {tabMainCategory()}
-            </ul>
+            {tabMainCategory()}
 
         </TabLectureMainCategory>
     )

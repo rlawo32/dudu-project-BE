@@ -65,7 +65,12 @@ const LectureList = () => {
             <HeaderNavigation />
 
             <LectureMainCategoryView setMainCategoryNo={setMainCategoryNo}/>
-            <LectureSubCategoryView mainCategoryNo={mainCategoryNo} setSubCategoryNo={setSubCategoryNo}/>
+            {
+                mainCategoryNo !== 0 ?
+                    <LectureSubCategoryView mainCategoryNo={mainCategoryNo} setSubCategoryNo={setSubCategoryNo}/>
+                    :
+                    <></>
+            }
 
             <div className="lt-list-box">
                 {lectureList.map((lectures) => {

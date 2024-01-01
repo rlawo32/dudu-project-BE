@@ -31,7 +31,7 @@ const LectureTimeSelectBox = () => {
                 timeArr.push(<option value={'0'+i+':30'} key={i+.5}>0{i}:30</option>);
             } else {
                 timeArr.push(<option value={i+':00'} key={i}>{i}:00</option>);
-                if(i != ((12+pm2) - 1)) {
+                if(i !== ((12+pm2) - 1)) {
                     timeArr.push(<option value={i+':30'} key={i+.5}>{i}:30</option>);
                 }
             }
@@ -55,7 +55,7 @@ const LectureTimeSelectBox = () => {
                 timeArr.push(<option value={'0'+i+':30'} key={i+.5}>0{i}:30</option>);
             } else {
                 timeArr.push(<option value={i+':00'} key={i}>{i}:00</option>);
-                if(i != ((12+pm2) - 1)) {
+                if(i !== ((12+pm2) - 1)) {
                     timeArr.push(<option value={i+':30'} key={i+.5}>{i}:30</option>);
                 }
             }

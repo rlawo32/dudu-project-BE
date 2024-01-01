@@ -95,7 +95,7 @@ export const LectureWriteView = styled.div`
           }
         }
 
-        .lt-name {
+        .lt-title {
 
         }
       }
@@ -115,11 +115,12 @@ export const LectureWriteView = styled.div`
           width: 160px;
           border: ${({theme}) => theme.borderColor};
           border-radius: 10px;
+          overflow: hidden;
           
           .thumbnail-image {
             height: 150px;
             width: 160px;
-            border-radius: 10px;
+            object-fit: cover;
           }
           
           .thumbnail-image-delete {
@@ -154,13 +155,13 @@ export const LectureWriteView = styled.div`
   .header-left-view input, .lt-capacity input, .lt-fee input {
     border: ${({theme}) => theme.borderColor};
     border-radius: 10px;
-    padding: 13px 10px 11px 10px;
+    padding: 13px 10px 13px 10px;
     font-size: 20px;
     background-color: ${({theme}) => theme.boxBgColor};
     color: ${({theme}) => theme.textColor};
   }
   
-  .input-name {
+  .input-title {
     display: block;
     height: 10px;
     @media all and (max-width: 860px) {

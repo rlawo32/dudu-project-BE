@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LectureWriteRequestDto {
 
-    private String lectureName;
+    private String lectureTitle;
     private String lecturePeriod;
     private String lectureTime;
     private String lectureReception;
@@ -26,8 +26,8 @@ public class LectureWriteRequestDto {
 
     //
     private String lectureDivision;
-    private String lectureState;
     private int lectureCount;
+    private LectureState lectureState;
 
     //
     private Long memberNo;
@@ -43,7 +43,7 @@ public class LectureWriteRequestDto {
 
     public Lecture toLecture() {
         return Lecture.builder()
-                .lectureName(lectureName)
+                .lectureTitle(lectureTitle)
                 .lecturePeriod(lecturePeriod)
                 .lectureTime(lectureTime)
                 .lectureReception(lectureReception)
@@ -51,13 +51,13 @@ public class LectureWriteRequestDto {
                 .lectureFee(lectureFee)
                 .lectureDescription(lectureDescription)
                 .lectureDivision(lectureDivision)
-                .lectureState(lectureState)
                 .lectureCount(lectureCount)
                 .member(member)
                 .lectureInstitution(lectureInstitution)
                 .lectureRoom(lectureRoom)
                 .lectureMainCategory(lectureMainCategory)
                 .lectureSubCategory(lectureSubCategory)
+                .lectureState(lectureState)
                 .build();
     }
 }

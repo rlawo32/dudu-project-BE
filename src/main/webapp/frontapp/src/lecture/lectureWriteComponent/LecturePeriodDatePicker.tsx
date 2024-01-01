@@ -25,9 +25,9 @@ const LecturePeriodDatePicker = (props:{type:string}) => {
 
     useEffect(() => {
         if(props.type === 'period') {
-            setLecturePeriodData(dayjs(startDate).format("YYYY.MM.DD") + " ~ " + dayjs(endDate).format("YYYY.MM.DD"));
+            setLecturePeriodData(dayjs(startDate).format("YYYY.MM.DD") + "~" + dayjs(endDate).format("YYYY.MM.DD"));
         } else if(props.type === 'reception') {
-            setLectureReceptionData(dayjs(startDate).format("YYYY.MM.DD") + " ~ " + dayjs(endDate).format("YYYY.MM.DD"));
+            setLectureReceptionData(dayjs(startDate).format("YYYY.MM.DD") + "~" + dayjs(endDate).format("YYYY.MM.DD"));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endDate])

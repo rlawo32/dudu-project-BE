@@ -75,7 +75,7 @@ const LectureTimeSelectBox = () => {
     }
 
     useEffect(() => {
-        setLectureTimeData(lectureStartTime + " ~ " + lectureEndTime + " (" + lectureDaysOfWeek + ")")
+        setLectureTimeData(lectureStartTime + "~" + lectureEndTime + " (" + lectureDaysOfWeek + ")")
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lectureStartTime, lectureEndTime, lectureDaysOfWeek])
 

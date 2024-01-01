@@ -79,7 +79,7 @@ const CustomQuillEditorView = styled.div`
       height: 350px;
       width: 100%;
       border: none;
-      font-size: 30px;
+      font-size: 25px;
     }
   }
   

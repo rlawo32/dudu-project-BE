@@ -1,9 +1,6 @@
 package com.cac.duduproject.service.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
-import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
-import com.cac.duduproject.jpa.domain.lecture.LectureRoom;
-import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
+import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
@@ -30,6 +27,7 @@ public class LectureWriteService {
     private final LectureRoomRepository lectureRoomRepository;
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
+    private final LectureStateRepository lectureStateRepository;
 
     private final LectureImageService lectureImageService;
 
@@ -66,10 +64,10 @@ public class LectureWriteService {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
             LocalDate now = LocalDate.now();
-            LocalDate periodStartDate = LocalDate.parse(period.substring(0, period.indexOf("~")-1), dtf);
-            LocalDate periodEndDate = LocalDate.parse(period.substring(period.indexOf("~")+2), dtf);
-            LocalDate receptionStartDate = LocalDate.parse(reception.substring(0, reception.indexOf("~")-1), dtf);
-            LocalDate receptionEndDate = LocalDate.parse(reception.substring(reception.indexOf("~")+2), dtf);
+            LocalDate periodStartDate = LocalDate.parse(period.substring(0, period.indexOf("~")), dtf);
+            LocalDate periodEndDate = LocalDate.parse(period.substring(period.indexOf("~")+1), dtf);
+            LocalDate receptionStartDate = LocalDate.parse(reception.substring(0, reception.indexOf("~")), dtf);
+            LocalDate receptionEndDate = LocalDate.parse(reception.substring(reception.indexOf("~")+1), dtf);
 
             int lectureCount = 0;
 
@@ -92,9 +90,13 @@ public class LectureWriteService {
             requestDto.setLectureCount(lectureCount);
 
             if(now.compareTo(receptionStartDate) < 0) {
-                requestDto.setLectureState("접수예정");
+                LectureState lectureState = lectureStateRepository.findById(1L)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
+                requestDto.setLectureState(lectureState);
             } else if(now.compareTo(receptionStartDate) >= 0 && now.compareTo(receptionEndDate) <= 0) {
-                requestDto.setLectureState("접수중");
+                LectureState lectureState = lectureStateRepository.findById(2L)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
+                requestDto.setLectureState(lectureState);
             }
 
             Long lectureNo = lectureRepository.save(requestDto.toLecture()).getLectureNo();

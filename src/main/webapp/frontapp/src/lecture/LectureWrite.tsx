@@ -12,8 +12,10 @@ import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePick
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureWrite.style";
+import {useNavigate} from "react-router-dom";
 
 const LectureWrite = () => {
+    const navigate = useNavigate();
 
     const [lectureTeacherList, setLectureTeacherList] = useState<{
         memberNo:string;
@@ -66,7 +68,7 @@ const LectureWrite = () => {
     }]);
 
     const [lectureTeacher, setLectureTeacher] = useState<string>("");
-    const [lectureName, setLectureName] = useState<string>("");
+    const [lectureTitle, setLectureTitle] = useState<string>("");
     const [lecturePeriod, setLecturePeriod] = useState<string>("");
     const [lectureTime, setLectureTime] = useState<string>("");
     const [lectureRoom, setLectureRoom] = useState<string>(institutionList[0].institutionNo);
@@ -146,7 +148,7 @@ const LectureWrite = () => {
     const lectureWriteHandler = ():void => {
         const lectureData:object = {
             memberNo: lectureTeacher,
-            lectureName: lectureName,
+            lectureTitle: lectureTitle,
             lecturePeriod: lecturePeriod,
             lectureTime: lectureTime,
             lectureRoomNo: lectureRoom,
@@ -166,7 +168,9 @@ const LectureWrite = () => {
             data: JSON.stringify(lectureData),
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
-            console.log("작성 성공")
+            alert("작성 성공");
+
+            navigate("/");
         }).catch((err):void => {
             console.log(err.message);
         })
@@ -335,8 +339,8 @@ const LectureWrite = () => {
                             <div className="lt-section-title">
                                 강좌명
                             </div>
-                            <input type="text" onChange={(e) => setLectureName(e.target.value)}
-                                   className="input-name" placeholder="강좌명" />
+                            <input type="text" onChange={(e) => setLectureTitle(e.target.value)}
+                                   className="input-title" placeholder="강좌명" />
                         </div>
                     </div>
                     <div className="header-right-view">

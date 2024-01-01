@@ -27,9 +27,9 @@ public class Lecture {
     @Column(name = "lecture_no")
     private Long lectureNo;
 
-    @Column(name = "lecture_name")
+    @Column(name = "lecture_title")
     @NotBlank
-    private String lectureName;
+    private String lectureTitle;
 
     @Column(name = "lecture_period")
     @NotEmpty
@@ -47,6 +47,10 @@ public class Lecture {
     @NotNull
     private int lectureCapacity;
 
+    @Column(name = "lecture_current_person")
+    @NotNull
+    private int lectureCurrentPerson;
+
     @Column(name = "lecture_fee")
     @NotNull
     private Long lectureFee;
@@ -58,10 +62,6 @@ public class Lecture {
     @Column(name = "lecture_division")
     @NotBlank
     private String lectureDivision;
-
-    @Column(name = "lecture_state")
-    @NotBlank
-    private String lectureState;
 
     @Column(name = "lecture_count")
     @NotNull
@@ -87,6 +87,10 @@ public class Lecture {
     @JoinColumn(name = "lecture_sub_category_no")
     private LectureSubCategory lectureSubCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_state_no")
+    private LectureState lectureState;
+
     @OneToMany(mappedBy = "lecture")
     @JsonIgnore
     private List<LectureImage> lectureImages = new ArrayList<>();
@@ -97,22 +101,23 @@ public class Lecture {
 
     @PrePersist
     public void onPrePersist() {
+        this.lectureCurrentPerson = 0;
         this.lectureCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
     }
 
-    public Lecture lectureStateUpdate(String lectureState) {
-        this.lectureState = lectureState;
-
+    public Lecture lectureCurrentPersonUpdate() {
+        this.lectureCurrentPerson += 1;
         return this;
     }
 
     @Builder
-    public Lecture(String lectureName, String lecturePeriod, String lectureTime, String lectureReception,
-                   int lectureCapacity, Long lectureFee, String lectureDescription,
-                   String lectureDivision, String lectureState, int lectureCount,
+    public Lecture(String lectureTitle, String lecturePeriod, String lectureTime, String lectureReception,
+                   int lectureCapacity, Long lectureFee, String lectureDescription, String lectureDivision,
+                   int lectureCount,
                    Member member, LectureInstitution lectureInstitution, LectureRoom lectureRoom,
-                   LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory) {
-        this.lectureName = lectureName;
+                   LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory,
+                   LectureState lectureState) {
+        this.lectureTitle = lectureTitle;
         this.lecturePeriod = lecturePeriod;
         this.lectureTime = lectureTime;
         this.lectureReception = lectureReception;
@@ -120,12 +125,12 @@ public class Lecture {
         this.lectureFee = lectureFee;
         this.lectureDescription = lectureDescription;
         this.lectureDivision = lectureDivision;
-        this.lectureState = lectureState;
         this.lectureCount = lectureCount;
         this.member = member;
         this.lectureInstitution = lectureInstitution;
         this.lectureRoom = lectureRoom;
         this.lectureMainCategory = lectureMainCategory;
         this.lectureSubCategory = lectureSubCategory;
+        this.lectureState = lectureState;
     }
 }

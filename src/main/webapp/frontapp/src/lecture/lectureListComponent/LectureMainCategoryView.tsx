@@ -56,6 +56,7 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
 
     const onClickMainCategory = (idx:number):void => {
         props.setMainCategoryNo(idx);
+        mcBtn.current[idx].className = mcBtn.current[idx].className.replace(' mcBtn-active', '');
         mcBtn.current[idx].className += ' mcBtn-active';
 
         for(let i:number=0; i<mcBtn.current.length; i++) {

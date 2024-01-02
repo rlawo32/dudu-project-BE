@@ -24,7 +24,8 @@ const TabLectureSubCategory = styled.div`
   .sc-list {
     height: 100%;
     width: 100%;
-    margin-bottom: 36px;
+    margin-bottom: 15px;
+    padding: 10px 0 45px 0;
       
     .sc-item {
       display: flex;
@@ -48,7 +49,6 @@ const TabLectureSubCategory = styled.div`
         overflow: hidden;
 
         font-size: 25px;
-        font-weight: 500;
         background-color: lightgrey;
         text-align: center;
 
@@ -124,7 +124,7 @@ const LectureSubCategoryView = (props: Props) => {
                     </div>
                 </SwiperSlide>);
             } else {
-                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(lectureSubCategoryData[i-1].lectureSubCategoryNo)}
+                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i)}
                                          className="sc-item">
                     <div ref={btn => (scBtn.current[i] = btn)}>
                         <div className="sc-item-image">
@@ -145,9 +145,10 @@ const LectureSubCategoryView = (props: Props) => {
 
     const onClickSubCategory = (idx:number):void => {
         props.setSubCategoryNo(idx);
+        scBtn.current[idx].className = scBtn.current[idx].className.replace('scBtn-active', '');
         scBtn.current[idx].className += 'scBtn-active';
 
-        for(let i:number=0; i<scBtn.current.length; i++) {
+        for(let i:number=0; i<=lectureSubCategoryData.length; i++) {
             if(i !== idx) {
                 scBtn.current[i].className = scBtn.current[i].className.replace('scBtn-active', '');
             }
@@ -156,6 +157,9 @@ const LectureSubCategoryView = (props: Props) => {
 
     useEffect(() => {
         if(props.mainCategoryNo > 0) {
+            for(let i:number=0; i<lectureSubCategoryData.length; i++) {
+                scBtn.current[i].className = scBtn.current[i].className.replace('scBtn-active', '');
+            }
             const lectureCategoryData = async ():Promise<void> => {
                 await axios({
                     method: "GET",

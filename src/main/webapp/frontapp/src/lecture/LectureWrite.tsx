@@ -175,7 +175,6 @@ const LectureWrite = () => {
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
             alert("작성 성공");
-
             navigate("/");
         }).catch((err):void => {
             console.log(err.message);

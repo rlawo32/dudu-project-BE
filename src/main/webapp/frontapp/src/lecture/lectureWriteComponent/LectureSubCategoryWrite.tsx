@@ -4,6 +4,7 @@ import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 
 const LectureScWriteView = styled.div`
   
@@ -55,6 +56,7 @@ const LectureScWriteView = styled.div`
     }
 `;
 const LectureSubCategoryWrite = (props:{mainCategoryNo:string}) => {
+    const navigate = useNavigate();
 
     const [insertLectureSubCategoryName, setInsertLectureSubCategoryName] = useState<string>("");
     const [insertLectureSubCategoryDesc, setInsertLectureSubCategoryDesc] = useState<string>("");
@@ -136,6 +138,7 @@ const LectureSubCategoryWrite = (props:{mainCategoryNo:string}) => {
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
             console.log(res.data);
+            navigate("/");
         }).catch((err):void => {
             console.log(err.message);
         })

@@ -20,7 +20,7 @@ const StyledHeaderNavigation = styled.div`
   width: 100%;
   height: 8%;
   background: ${({theme}) => theme.headerBgColor};
-  z-index: 1;
+  z-index: 2;
 `;
 
 const HeaderNavigation = ():any => {
@@ -34,6 +34,9 @@ const HeaderNavigation = ():any => {
             <ThemeModeToggle />
 
             <div style={{marginRight: '20px'}}>
+                <StyledLink to="/lectureEventWrite" style={{marginRight: '20px'}}>
+                    LectureEventWrite
+                </StyledLink>
                 <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
                     LectureList
                 </StyledLink>

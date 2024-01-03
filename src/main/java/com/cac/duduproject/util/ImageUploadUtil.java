@@ -46,6 +46,8 @@ public class ImageUploadUtil {
                 deleteDir = "/lectureContentImage";
             } else if(type.equals("C")) {
                 deleteDir = "/lectureCategoryImage";
+            } else if(type.equals("E")) {
+                deleteDir = "/lectureEventImage";
             }
 
             s3Client.deleteObject(new DeleteObjectRequest(bucketName + deleteDir, request.getParameter("imageFileName")));

@@ -87,11 +87,8 @@ const LectureSubCategoryWrite = (props:{mainCategoryNo:string}) => {
                 const imgFileName:string = res.data.data.imgName;
                 const imgFileUrl:string = res.data.data.imgUrl;
 
-                console.log(res.data.data)
-
                 setCategoryThumbnailName(imgFileName);
                 setCategoryThumbnailUrl(imgFileUrl);
-
                 setCategoryThumbnail([{
                     imgType: imgFileType,
                     imgName: imgFileName,
@@ -137,7 +134,6 @@ const LectureSubCategoryWrite = (props:{mainCategoryNo:string}) => {
             data: JSON.stringify(subCategoryData),
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
-            console.log(res.data);
             navigate("/");
         }).catch((err):void => {
             console.log(err.message);

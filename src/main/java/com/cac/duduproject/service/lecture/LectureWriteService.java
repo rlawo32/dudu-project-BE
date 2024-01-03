@@ -6,7 +6,6 @@ import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +25,7 @@ public class LectureWriteService {
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
     private final LectureStateRepository lectureStateRepository;
+    private final LectureEventRepository lectureEventRepository;
 
     private final LectureImageService lectureImageService;
 
@@ -110,19 +108,6 @@ public class LectureWriteService {
     }
 
     @Transactional
-    public CommonResponseDto<?> findAllLectureInstitution() {
-        List<LectureInstitutionResponseDto> list = new ArrayList<>();
-        try {
-            list = lectureInstitutionRepository.findAll().stream()
-                    .map(LectureInstitutionResponseDto::new)
-                    .collect(Collectors.toList());
-        } catch(Exception e) {
-            return CommonResponseDto.setFailed("Data Base Error!");
-        }
-        return CommonResponseDto.setSuccess("LectureInstitution List", list);
-    }
-
-    @Transactional
     public CommonResponseDto<?> insertLectureRoom(LectureRoomRequestDto requestDto) {
 
         try {
@@ -136,36 +121,6 @@ public class LectureWriteService {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
         return CommonResponseDto.setSuccess("Insert Success", null);
-    }
-
-    @Transactional
-    public CommonResponseDto<?> findAllLectureRoom(HttpServletRequest request) {
-        List<LectureRoomResponseDto> list = new ArrayList<>();
-        try {
-            Long institutionNo = Long.valueOf(request.getParameter("institutionNo"));
-            LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + institutionNo));
-
-            list = lectureRoomRepository.findAllByLectureInstitution(lectureInstitution).stream()
-                    .map(LectureRoomResponseDto::new)
-                    .collect(Collectors.toList());
-        } catch(Exception e) {
-            return CommonResponseDto.setFailed("Data Base Error!");
-        }
-        return CommonResponseDto.setSuccess("LectureRoom List", list);
-    }
-
-    @Transactional
-    public CommonResponseDto<?> findAllLectureMainCategory() {
-        List<LectureMainCategoryResponseDto> list = new ArrayList<>();
-        try {
-            list = lectureMainCategoryRepository.findAll().stream()
-                    .map(LectureMainCategoryResponseDto::new)
-                    .collect(Collectors.toList());
-        } catch(Exception e) {
-            return CommonResponseDto.setFailed("Data Base Error!");
-        }
-        return CommonResponseDto.setSuccess("LectureMainCategory List", list);
     }
 
     @Transactional
@@ -185,19 +140,27 @@ public class LectureWriteService {
     }
 
     @Transactional
-    public CommonResponseDto<?> findAllLectureSubCategory(HttpServletRequest request) {
-        List<LectureSubCategoryResponseDto> list = new ArrayList<>();
+    public CommonResponseDto<?> insertLectureEvent(LectureEventRequestDto requestDto) {
         try {
-            Long mainCategoryNo = Long.valueOf(request.getParameter("mainCategoryNo"));
-            LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + mainCategoryNo));
+            LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
+            requestDto.setLectureInstitution(lectureInstitution);
 
-            list = lectureSubCategoryRepository.findAllByLectureMainCategory(lectureMainCategory).stream()
-                    .map(LectureSubCategoryResponseDto::new)
-                    .collect(Collectors.toList());
+            Long lectureEventNo = lectureEventRepository.save(requestDto.toLectureEvent()).getLectureEventNo();
+
+            LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureEventNo));
+
+            for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
+                Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
+                Lecture lecture = lectureRepository.findById(lectureNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+
+                lecture.lectureEventUpdate(lectureEvent);
+            }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("LectureSubCategory List", list);
+        return CommonResponseDto.setSuccess("Insert Success", null);
     }
 }

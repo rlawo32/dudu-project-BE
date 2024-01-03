@@ -2,6 +2,11 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 
+interface Props {
+    institutionNo:number;
+    setMainCategoryNo: React.Dispatch<React.SetStateAction<number>>;
+}
+
 const TabLectureMainCategory = styled.div`
   display: flex;
   justify-content: center;
@@ -15,7 +20,7 @@ const TabLectureMainCategory = styled.div`
     padding: 2% 5px 2% 5px;
     margin: 0 25px 0 25px;
     text-align: center;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
     cursor: pointer;
   }
@@ -25,7 +30,7 @@ const TabLectureMainCategory = styled.div`
   }
 `;
 
-const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React.SetStateAction<number>>;}) => {
+const LectureMainCategoryView = (props: Props) => {
     const mcBtn:any = useRef<any>([]);
 
     const [lectureMainCategoryData, setLectureMainCategoryData] = useState<{
@@ -78,8 +83,17 @@ const LectureMainCategoryView = (props: {setMainCategoryNo: React.Dispatch<React
             })
         }
         lectureCategoryData().then();
+        mcBtn.current[0].className = mcBtn.current[0].className.replace(' mcBtn-active', '');
         mcBtn.current[0].className += ' mcBtn-active';
     }, [])
+
+    useEffect(() => {
+        props.setMainCategoryNo(0);
+        for(let i:number=0; i<mcBtn.current.length; i++) {
+            mcBtn.current[i].className = mcBtn.current[i].className.replace(' mcBtn-active', '');
+        }
+        mcBtn.current[0].className += ' mcBtn-active';
+    }, [props.institutionNo])
 
     return (
         <TabLectureMainCategory>

@@ -44,7 +44,7 @@ public class LectureImageService {
             //동일한 사진을 업로드 하였을 때 사진이 덮어씌워지는 것을 방지하기 위함
             UUID uuid = UUID.randomUUID();
             String imageFileName = uuid + "_" + files.getOriginalFilename();
-            String uploadDir = "";
+            String uploadDir = "*";
 
             if(type.equals("T")) {
                 uploadDir = "/lectureThumbnailImage";
@@ -52,6 +52,8 @@ public class LectureImageService {
                 uploadDir = "/lectureContentImage";
             } else if(type.equals("C")) {
                 uploadDir = "/lectureCategoryImage";
+            } else if(type.equals("E")) {
+                uploadDir = "/lectureEventImage";
             }
 
             File file = imageUploadUtil.convertMultiPartFileToFile(files);

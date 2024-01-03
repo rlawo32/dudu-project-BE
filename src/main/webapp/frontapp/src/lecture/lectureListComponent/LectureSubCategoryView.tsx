@@ -65,7 +65,7 @@ const TabLectureSubCategory = styled.div`
       }
       
       .sc-item-name {
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 500;
       }
       
@@ -111,7 +111,7 @@ const LectureSubCategoryView = (props: Props) => {
 
         for(let i:number=0; i<=lectureSubCategoryData.length; i++) {
             if(i === 0) {
-                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i)}
+                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i, 0)}
                                          className="sc-item">
                     <div ref={btn => (scBtn.current[i] = btn)}>
                         <div className="sc-item-image">
@@ -124,7 +124,7 @@ const LectureSubCategoryView = (props: Props) => {
                     </div>
                 </SwiperSlide>);
             } else {
-                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i)}
+                result.push(<SwiperSlide key={i} onClick={() => onClickSubCategory(i, lectureSubCategoryData[i-1].lectureSubCategoryNo)}
                                          className="sc-item">
                     <div ref={btn => (scBtn.current[i] = btn)}>
                         <div className="sc-item-image">
@@ -143,8 +143,8 @@ const LectureSubCategoryView = (props: Props) => {
         return result;
     }
 
-    const onClickSubCategory = (idx:number):void => {
-        props.setSubCategoryNo(idx);
+    const onClickSubCategory = (idx:number, subNo:number):void => {
+        props.setSubCategoryNo(subNo);
         scBtn.current[idx].className = scBtn.current[idx].className.replace('scBtn-active', '');
         scBtn.current[idx].className += 'scBtn-active';
 
@@ -172,15 +172,13 @@ const LectureSubCategoryView = (props: Props) => {
                 })
             }
             lectureCategoryData().then();
+            props.setSubCategoryNo(0);
             scBtn.current[0].className = scBtn.current[0].className.replace('scBtn-active', '');
             scBtn.current[0].className += 'scBtn-active';
         } else {
             setLectureSubCategoryData([]);
         }
     }, [props.mainCategoryNo])
-
-    useEffect(() => {
-    }, [])
 
     return (
         <TabLectureSubCategory>

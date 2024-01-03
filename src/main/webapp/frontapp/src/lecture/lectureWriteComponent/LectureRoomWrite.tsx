@@ -19,7 +19,7 @@ const LectureRoomWrite = (props:{institutionNo:string}) => {
             data: JSON.stringify(roomData),
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
-            console.log(res.data);
+
         }).catch((err):void => {
             console.log(err.message);
         })

@@ -235,7 +235,7 @@ const LectureWrite = () => {
 
     // subCategoryList useEffect
     useEffect(() => {
-        const selectLectureRoomList = async ():Promise<void> => {
+        const selectLectureSubCategoryList = async ():Promise<void> => {
             await axios({
                 method: "GET",
                 url: "/lecture/lectureSubCategoryList",
@@ -247,7 +247,7 @@ const LectureWrite = () => {
                 console.log(err.message);
             })
         }
-        selectLectureRoomList().then();
+        selectLectureSubCategoryList().then();
     }, [lectureMainCategory])
 
     // datePicker useEffect
@@ -452,7 +452,7 @@ const LectureWrite = () => {
                 </div>
             </div>
             {/*<LectureRoomWrite institutionNo={lectureInstitution} />*/}
-            <LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>
+            {/*<LectureSubCategoryWrite mainCategoryNo={lectureMainCategory}/>*/}
         </Styled.LectureWriteView>
     )
 }

@@ -1,0 +1,140 @@
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import styled from "styled-components";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import {Autoplay, Navigation, Pagination} from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import {useNavigate} from "react-router-dom";
+
+const LectureEventView = styled.div`
+  position: relative;
+  
+  .les-list {
+    padding-bottom: 50px;
+    
+    .les-item {
+      position: relative;
+      height: 380px;
+      width: 550px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      
+      .les-item-image {
+        height: 100%;
+        width: 100%;
+        
+        img {
+          height: 100%;
+          width: 100%;
+          border: none;
+          border-radius: 10px;
+          object-fit: cover;
+          vertical-align: top;
+        }
+      }
+      
+      .les-item-text {
+        width: 100%;
+        position: absolute;
+        top: 83%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        
+        .les-item-name {
+          margin-bottom: 10px;
+          font-size: 26px;
+        }
+
+        .les-item-desc {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+`;
+
+const LectureEventSwiperView = (props : {institutionNo:number;}) => {
+    const navigate = useNavigate();
+
+    const [lectureEventList, setLectureEventList] = useState<{
+        lectureEventNo:number;
+        lectureInstitutionNo:number;
+        lectureEventName:string;
+        lectureEventDesc:string;
+        lectureEventThumbnail:string;
+    }[]>([{
+        lectureEventNo: 0,
+        lectureInstitutionNo: 0,
+        lectureEventName: '',
+        lectureEventDesc: '',
+        lectureEventThumbnail: ''
+    }]);
+
+    const lectureEventSwiper = ():any[] => {
+        let result:any[] = [];
+
+        for(let i:number=0; i<lectureEventList.length; i++) {
+            result.push(<SwiperSlide key={lectureEventList[i].lectureEventNo} className="les-item"
+                                     onClick={() => navigate("/lectureEventList/" + lectureEventList[i].lectureEventNo,
+                                         { state: {institutionNo: props.institutionNo, eventNo: lectureEventList[i].lectureEventNo}})}>
+                <div className="les-item-image">
+                    <img src={lectureEventList[i].lectureEventThumbnail} alt="이벤트 이미지" />
+                </div>
+                <div className="les-item-text">
+                    <div className="les-item-name">
+                        {lectureEventList[i].lectureEventName}
+                    </div>
+                    <div className="les-item-desc">
+                        {lectureEventList[i].lectureEventDesc}
+                    </div>
+                </div>
+            </SwiperSlide>);
+        }
+        return result;
+    }
+
+    useEffect(() => {
+        const lectureList = async () => {
+            await axios({
+                method: "GET",
+                url: '/lecture/lectureEventList',
+                params: {institutionNo: props.institutionNo, lectureEventNo: 0}
+            }).then((res):void => {
+                setLectureEventList(res.data.data);
+            }).catch((err):void => {
+                console.log(err.message);
+            });
+        }
+        lectureList().then();
+    }, [props.institutionNo])
+
+    return (
+        <LectureEventView>
+
+            <Swiper className="les-list"
+                    modules={[Navigation, Pagination, Autoplay]}
+                    speed={1000}
+                    slidesPerView={2}
+                    spaceBetween={10}
+                    navigation
+                    pagination={{ clickable: true }}
+                    autoplay={{
+                        delay: 4000,
+                        disableOnInteraction: false
+                    }}
+                    breakpoints={{
+
+                    }}>
+                {lectureEventSwiper()}
+            </Swiper>
+
+        </LectureEventView>
+    )
+}
+
+export default LectureEventSwiperView;

@@ -15,6 +15,8 @@ import JoinComplete from "./member/signUpComponent/JoinComplete";
 // lecture
 import LectureWrite from "./lecture/LectureWrite";
 import LectureList from "./lecture/LectureList";
+import LectureEventWrite from "./lecture/lectureWriteComponent/LectureEventWrite";
+import LectureEventListView from "./lecture/lectureListComponent/LectureEventListView";
 
 import {GlobalStyle} from "./styles/GlobalStyles";
 import {darkTheme, lightTheme} from "./styles/theme";
@@ -95,6 +97,8 @@ function App() {
 
                 <Route path="/lectureWrite" element={<LectureWrite />} />
                 <Route path="/lectureList" element={<LectureList />} />
+                <Route path="/lectureEventWrite" element={<LectureEventWrite />} />
+                <Route path="/lectureEventList/:eventNo" element={<LectureEventListView />} />
             </Routes>
         </ThemeProvider>
     </>

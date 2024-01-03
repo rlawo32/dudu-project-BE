@@ -91,6 +91,10 @@ public class Lecture {
     @JoinColumn(name = "lecture_state_no")
     private LectureState lectureState;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_event_no")
+    private LectureEvent lectureEvent;
+
     @OneToMany(mappedBy = "lecture")
     @JsonIgnore
     private List<LectureImage> lectureImages = new ArrayList<>();
@@ -103,6 +107,11 @@ public class Lecture {
     public void onPrePersist() {
         this.lectureCurrentPerson = 0;
         this.lectureCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
+    }
+
+    public Lecture lectureEventUpdate(LectureEvent lectureEvent) {
+        this.lectureEvent = lectureEvent;
+        return this;
     }
 
     public Lecture lectureCurrentPersonUpdate() {

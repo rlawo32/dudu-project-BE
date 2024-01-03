@@ -2,8 +2,6 @@ import styled from "styled-components";
 
 export const LectureListView = styled.div`
   position: relative;
-  margin: 10% auto;
-  padding: 0 20% 0 20%;
   
   .span-line { // 수직 custom border 생성
     position: relative;
@@ -18,107 +16,88 @@ export const LectureListView = styled.div`
     }
   }
   
-  .lt-list-box {
-    display: flex;
-    flex-wrap: wrap;
-    width: fit-content;
+  .lt-list-header {
+    flex-direction: column;
+    margin: 5% auto 0;
+    padding: 0 18% 0 18%;
+    text-align: center;
     
-    .lt-list-item {
+    .custom-selectBox {
+      position: relative;
       height: fit-content;
-      width: 272px;
-      margin: 30px 3px 0 0;
-      padding: 5px;
-      cursor: pointer;
+      width: fit-content;
+      margin: 0 auto 35px;
+      outline: none;
+      display: flex;
+      justify-content: center;
+      
+      .select-btn {
+        margin: 40px auto 0;
+        height: fit-content;
+        width: fit-content;
+        color: ${({theme}) => theme.textColor};
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
-      .lt-list-image {
-        border-radius: 10px;
+      .select-arrow {
+        display: inline-block;
+        margin-left: 15px;
+        transition: all .4s linear;
+      }
+
+      ul.select-list {
+        position: absolute;
+        top: 105%;
+        height: 0;
+        width: 300px;
+        margin: 10px auto 0;
+        padding: 0;
+        border: none;
+        border-radius: 15px;
         overflow: hidden;
+        background: ${({theme}) => theme.boxBgColor};
+        color: ${({theme}) => theme.textColor};
+        text-align: center;
+        cursor: pointer;
+        z-index: 2;
+        user-select: none;
+        list-style:none;
+        transition: all 0.3s ease-in;
+      }
+      
+      ul.select-list li {
+        padding: 7px 10px 7px 10px;
+        font-size: 20px;
+        line-height: 1.4em;
+        transition: all 0.3s ease-in;
+      }
+      
+      // ul.select-list li:hover {
+      //   padding: 5px;
+      //   background: ${({theme}) => theme.boxBgColor};
+      //   color: ${({theme}) => theme.textColor};
+      // }
 
-        img {
-          height: 250px;
-          width: 100%;
-          border: none;
-          border-radius: 10px;
-          object-fit: cover;
-          vertical-align: top;
+      .select-list.show-list {
+        padding: 15px 5px 15px 5px;
+        height: 210px;
+      }
 
-          transition: transform .4s ease;
-        }
-      }   
-      
-      .lt-list-state {
-        margin-top: 10px;
-        font-size: 12px;
-        
-        .span-ltState {
-          border: none;
-          border-radius: 10px;
-          margin-right: 6px;
-          padding: 3px 7px 3px 7px;
-          font-size: 13px;
-          font-weight: bold;
-        }
-        
-        .span-ltInstitution {
-          border: none;
-          border-radius: 10px;
-          padding: 3px 7px 3px 7px;
-          font-size: 13px;
-          font-weight: bold;
-          background-color: lightgray;
-          color: black;
-        }
+      .select-arrow.show-list {
+        transform: rotate(180deg);
       }
       
-      .lt-list-title {
-        min-height: 42px;
-        
-        p {
-          margin: 10px 0 0 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: normal;
-          word-break: keep-all;
-          line-height: 1.5;
-          font-size: 17px;
-          font-weight: 900;
-          
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-        }
-      }
-      
-      .lt-list-division {
-        margin-top: 6px;
-        font-size: 14px;
-        font-weight: 700;
-      }
-      
-      .lt-list-time {
-        margin-top: 3px;
-        font-size: 14px;
-        font-weight: 500;
-        
-        .icon-custom {
-          margin-right: 4px;
-        }
-        
-        span {
-          margin-right: 4px;
-        }
-      }
-      
-      .lt-list-fee {
-        margin-top: 3px;
-        font-size: 14px;
-        font-weight: 700;
-      }
-      
-      &:hover img {
-        transform: scale(1.1);
-        transition: transform .4s ease;
+      .si-active {
+        font-weight: bold;
       }
     }
+  }
+
+  .lt-list-main {
+    position: relative;
+    margin: 3% auto;
+    padding: 0 20% 0 20%;
   }
 `;

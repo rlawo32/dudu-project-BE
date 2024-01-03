@@ -35,6 +35,7 @@ public class LectureListResponseDto {
         for(int i=0; i<lecture.getLectureImages().size(); i++) {
             if(lecture.getLectureImages().get(i).getLectureImageType().equals("T")) {
                 this.lectureThumbnail = lecture.getLectureImages().get(i).getLectureImageUrl();
+                break;
             }
         }
     }

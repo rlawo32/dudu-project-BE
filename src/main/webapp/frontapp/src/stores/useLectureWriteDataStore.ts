@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface lectureDataStore {
+interface lectureWriteDataStore {
     lectureTimeData: string;
     setLectureTimeData: (time: string) => void;
     lecturePeriodData: string;
@@ -9,7 +9,7 @@ interface lectureDataStore {
     setLectureReceptionData: (reception: string) => void;
 }
 
-const useLectureDataStore = create<lectureDataStore>((set) => ({
+const useLectureWriteDataStore = create<lectureWriteDataStore>((set) => ({
     lectureTimeData: "",
     setLectureTimeData: (time:string) =>
         set((state: {lectureTimeData:string}) => ({
@@ -27,5 +27,5 @@ const useLectureDataStore = create<lectureDataStore>((set) => ({
         })),
 }));
 
-export default useLectureDataStore;
-export type {lectureDataStore};
+export default useLectureWriteDataStore;
+export type {lectureWriteDataStore};

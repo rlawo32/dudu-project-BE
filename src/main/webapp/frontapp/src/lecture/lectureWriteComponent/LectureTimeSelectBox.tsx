@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import UseLectureDataStore from "../../stores/useLectureDataStore";
+import UseLectureDataStore from "../../stores/useLectureWriteDataStore";
 
 import * as Styled from "./LectureTimeSelectBox.style";
 

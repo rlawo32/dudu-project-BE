@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import UseLectureDataStore from "../../stores/useLectureDataStore";
+import UseLectureDataStore from "../../stores/useLectureWriteDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleRight as buttonRight, faCircleLeft as buttonLeft} from "@fortawesome/free-solid-svg-icons";

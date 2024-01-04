@@ -1,7 +1,16 @@
 import styled from "styled-components";
 
-export const LectureListView = styled.div`
+export const LectureListView = styled.div<{$isShow:boolean}>`
   position: relative;
+  padding-top: 4%;
+  
+  .lt-list-view {
+    opacity: ${({$isShow}) => $isShow ? "0.5" : "1"};
+  }
+  
+  .header-navigation {
+    pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
+  }
   
   .span-line { // 수직 custom border 생성
     position: relative;
@@ -18,9 +27,9 @@ export const LectureListView = styled.div`
   
   .lt-list-header {
     flex-direction: column;
-    margin: 5% auto 0;
     padding: 0 18% 0 18%;
     text-align: center;
+    pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
     
     .custom-selectBox {
       position: relative;
@@ -99,5 +108,31 @@ export const LectureListView = styled.div`
     position: relative;
     margin: 3% auto;
     padding: 0 20% 0 20%;
+    pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
+    
+    .lt-list-tool {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      
+      .tool-left {
+
+        .tool-total {
+          display: inline-block;
+        }
+      }
+
+      .tool-right {
+
+        .tool-search {
+          display: inline-block;
+        }
+
+        .tool-sort {
+          display: inline-block;
+        }
+      }
+    }
   }
 `;

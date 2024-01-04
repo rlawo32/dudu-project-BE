@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import UseLectureDataStore from "../stores/useLectureDataStore";
+import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureRoomWrite from "./lectureWriteComponent/LectureRoomWrite";

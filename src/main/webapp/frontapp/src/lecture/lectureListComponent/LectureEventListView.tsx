@@ -31,14 +31,14 @@ const LectureEventList = styled.div`
   
 `;
 
-const LectureEventMainView = styled.div<{ url:string }>`
+const LectureEventMainView = styled.div<{ $url:string }>`
   position: relative;
   height: 380px;
   overflow: hidden;
   
   .le-header-bg {
     height: 100%;
-    background-image: url("${({url}) => url}");
+    background-image: url("${({$url}) => $url}");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -162,7 +162,7 @@ const LectureEventListView = () => {
         <LectureEventList>
             <HeaderNavigation />
 
-            <LectureEventMainView url={lectureEventOne.lectureEventThumbnail}>
+            <LectureEventMainView $url={lectureEventOne.lectureEventThumbnail}>
                 <div className="le-header-bg">
 
                 </div>

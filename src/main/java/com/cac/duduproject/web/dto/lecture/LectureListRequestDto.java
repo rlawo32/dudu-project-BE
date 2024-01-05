@@ -15,11 +15,11 @@ public class LectureListRequestDto {
     private Long mainCategoryNo;
     private Long subCategoryNo;
     private String searchText;
-    private List<divisionItemList> searchDivision;
+    private List<DivisionItemList> searchDivision;
     private Long searchState;
 
     @Data
-    public static class divisionItemList {
+    public static class DivisionItemList {
         private String dvItem;
     }
 

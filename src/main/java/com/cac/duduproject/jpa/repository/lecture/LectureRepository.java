@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface LectureRepository extends JpaRepository<Lecture, Long> {
+public interface LectureRepository extends JpaRepository<Lecture, Long>, LectureRepositoryCustom {
 
     @Query("SELECT l.lectureNo, l.lectureReception FROM Lecture l")
     List<Lecture> findAllLectureNoAndLectureReception();

@@ -99,9 +99,7 @@ public class LectureListService {
             String searchText = requestDto.getSearchText();
 
             String searchDivision = "";
-            if(requestDto.getSearchDivision().size() > 0) {
-                searchDivision = requestDto.getSearchDivision().get(0).getDvItem();
-            }
+            List<LectureListRequestDto.DivisionItemList> searchDivision1 = requestDto.getSearchDivision();
             Long searchState = requestDto.getSearchState();
 
             System.out.println(searchText);
@@ -110,6 +108,15 @@ public class LectureListService {
 
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
+
+            if(searchDivision1.size() > 0) {
+                list = lectureRepository.findBySearch
+                                (lectureInstitution, searchText, searchDivision1).stream()
+                        .map(LectureListResponseDto::new)
+                        .collect(Collectors.toList());
+
+                return CommonResponseDto.setSuccess("LectureInstitution List", list);
+            }
 
             if(mainCategoryNo < 1 && searchState < 1) { // Main=0 State=0 Sub=0
                 list.addAll(lectureRepository.findAllBySearch(lectureInstitution, searchText, searchDivision).stream()

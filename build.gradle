@@ -51,6 +51,12 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation 'javax.xml.bind:jaxb-api:2.3.0' // java 버전에 따른 JAXV API 제거로 인한 의존성 추가
+
+	// QueryDSL Implementation
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 war {
@@ -61,3 +67,19 @@ war {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+/*QueryDSL Build Options*/
+def querydslDir = "src/main/generated"
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+clean.doLast {
+	file(querydslDir).deleteDir()
+}
+//

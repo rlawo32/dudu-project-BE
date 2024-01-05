@@ -6,10 +6,7 @@ import com.cac.duduproject.service.lecture.LectureWriteService;
 import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureEventRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureRoomRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureSubCategoryRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureWriteRequestDto;
+import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -66,9 +63,9 @@ public class LectureController {
         return memberService.findAllMemberList(request);
     }
 
-    @GetMapping("/lectureList")
-    public CommonResponseDto<?> lectureList(HttpServletRequest request) {
-        return lectureListService.findAllLectureList(request);
+    @PostMapping("/lectureList")
+    public CommonResponseDto<?> lectureList(@RequestBody LectureListRequestDto requestDto) {
+        return lectureListService.findAllLectureList(requestDto);
     }
 
     @PostMapping("/insertLectureEvent")
@@ -84,6 +81,11 @@ public class LectureController {
     @GetMapping("/lectureEventList")
     public CommonResponseDto<?> lectureEventList(HttpServletRequest request) {
         return lectureListService.findAllLectureEvent(request);
+    }
+
+    @GetMapping("/lectureStateList")
+    public CommonResponseDto<?> lectureStateList() {
+        return lectureListService.findAllLectureState();
     }
 
     @PostMapping("/lectureUploadImage")

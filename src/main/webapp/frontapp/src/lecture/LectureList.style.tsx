@@ -110,29 +110,5 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
     padding: 0 20% 0 20%;
     pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
     
-    .lt-list-tool {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-      
-      .tool-left {
-
-        .tool-total {
-          display: inline-block;
-        }
-      }
-
-      .tool-right {
-
-        .tool-search {
-          display: inline-block;
-        }
-
-        .tool-sort {
-          display: inline-block;
-        }
-      }
-    }
   }
 `;

@@ -6,6 +6,7 @@ import LectureEventSwiperView from "./lectureListComponent/LectureEventSwiperVie
 import LectureMainCategoryView from "./lectureListComponent/LectureMainCategoryView";
 import LectureSubCategoryView from "./lectureListComponent/LectureSubCategoryView";
 import LectureListBoxView from "./lectureListComponent/LectureListBoxView";
+import LectureListToolView from "./lectureListComponent/LectureListToolView";
 import LectureSearchBoxView from "./lectureListComponent/LectureSearchBoxView";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -56,15 +57,16 @@ const LectureList = () => {
     const [subCategoryNo, setSubCategoryNo] = useState<number>(0);
     const [isSelectBoxShow, setIsSelectBoxShow] = useState<boolean>(false);
     const [isSearchBoxShow, setIsSearchBoxShow] = useState<boolean>(false);
-    const [isSearchBoxAction, setIsSearchBoxAction] = useState<boolean>(false);
 
-    const {searchText} = useLectureSearchDataStore();
+    const {searchButton, searchText, ltDivisionArr, ltState} = useLectureSearchDataStore();
 
     const paging:object = {
         institutionNo: institutionNo,
         mainCategoryNo: mainCategoryNo,
         subCategoryNo: subCategoryNo,
-        searchText: searchText
+        searchText: searchText,
+        searchDivision: ltDivisionArr,
+        searchState: ltState
     }
 
     const customInstitutionSelectBox = ():any => {
@@ -112,9 +114,10 @@ const LectureList = () => {
     useEffect(() => {
         const lectureList = async () => {
            await axios({
-               method: "GET",
+               method: "POST",
                url: '/lecture/lectureList',
-               params: paging
+               data: JSON.stringify(paging),
+               headers: {'Content-type': 'application/json'}
            }).then((res):void => {
                setLectureList(res.data.data);
            }).catch((err):void => {
@@ -122,7 +125,7 @@ const LectureList = () => {
            });
         }
         lectureList().then();
-    }, [institutionNo, mainCategoryNo, subCategoryNo, isSearchBoxAction])
+    }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton])
 
     useEffect(() => {
         setMainCategoryNo(0);
@@ -141,7 +144,7 @@ const LectureList = () => {
 
     return (
         <Styled.LectureListView $isShow={isSearchBoxShow}>
-            <LectureSearchBoxView isShow={isSearchBoxShow} isAction={isSearchBoxAction} isSetAction={setIsSearchBoxAction}/>
+            <LectureSearchBoxView isShow={isSearchBoxShow} />
             <div className="lt-list-view" onClick={() => {setIsSearchBoxShow(false)}}>
                 <div className="header-navigation">
                     <HeaderNavigation />
@@ -170,27 +173,7 @@ const LectureList = () => {
                             :
                             <></>
                     }
-                    <div className="lt-list-tool">
-                        <div className="tool-left">
-                            <div className="tool-total">
-                                <span style={{fontSize: "13px", fontWeight: "bold"}}>{lectureList.length}개</span>
-                                <span style={{fontSize: "13px"}}>의강좌</span>
-                            </div>
-                        </div>
-                        <div className="tool-rigth">
-                            <div className="tool-search">
-                                <button onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsSearchBoxShow(true)}}>
-                                    <FontAwesomeIcon icon={search} className="icon-custom" />
-                                    상세검색
-                                </button>
-                            </div>
-                            <div className="tool-sort">
-
-                            </div>
-                        </div>
-                    </div>
+                    <LectureListToolView ltCount={lectureList.length} isSetBoxShow={setIsSearchBoxShow}/>
                     <LectureListBoxView lectureList={lectureList}/>
                 </div>
             </div>

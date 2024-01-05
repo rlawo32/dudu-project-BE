@@ -4,7 +4,7 @@ export const lightTheme = {
     textColor: "#333333",
     reverseTextColor: "#DEDEDE",
     borderColor: "3px solid #333333",
-    boxBgColor: "#f9f9f9",
+    boxBgColor: "#DCDCDC",
     inputBgColor: "#f9f9f9",
     toggleColor: "#cbb5dc",
     headerBgColor: "rgba(0,0,0, 0.8)",

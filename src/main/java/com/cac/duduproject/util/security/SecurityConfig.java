@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .requestMatchers("/member/**").permitAll()
                 .requestMatchers("/lecture/lectureList", "/lecture/lectureMainCategoryList",
                         "/lecture/lectureSubCategoryList", "/lecture/lectureInstitutionList",
-                        "/lecture/lectureEventList", "/lecture/lectureEventOne").permitAll()
+                        "/lecture/lectureEventList", "/lecture/lectureEventOne", "/lecture/lectureStateList").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()
 

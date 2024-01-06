@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
+import useLectureSearchDataStore from "../../stores/useLectureSearchDataStore";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch as search, faXmark as deleteBtn} from "@fortawesome/free-solid-svg-icons";
-import useLectureSearchDataStore from "../../stores/useLectureSearchDataStore";
 
 interface Props {
     ltCount: number;
@@ -13,8 +14,8 @@ interface Props {
 const LectureListTool = styled.div<{
     $isInventory:boolean;
     $searchText:string;
-    $searchDivision:string;
-    $searchState:number;
+    $searchDivision:{dvItem:string}[];
+    $searchState:{stItem:number; stName:string}[];
 }>`
   position: relative;
   
@@ -46,14 +47,14 @@ const LectureListTool = styled.div<{
   .lt-search-inventory {
     height: ${({$isInventory}) => $isInventory ? 
             ({$searchText}) => $searchText !== "" ? "60px" : 
-                    ({$searchDivision}) => $searchDivision !== "" ? "60px" :
-                            ({$searchState}) => $searchState !== 0 ? "60px" : 0 : 0};
+                    ({$searchDivision}) => $searchDivision.length !== 0 ? "60px" :
+                            ({$searchState}) => $searchState.length !== 0 ? "60px" : 0 : 0};
     width: 100%;
     box-sizing: border-box; // padding 값을 줄 때 부모 영역을 벗어나는 문제를 해결
     padding: ${({$isInventory}) => $isInventory ? 
             ({$searchText}) => $searchText !== "" ? "15px 20px" :
-                    ({$searchDivision}) => $searchDivision !== "" ? "15px 20px" :
-                            ({$searchState}) => $searchState !== 0 ? "15px 20px" : 0 : 0};
+                    ({$searchDivision}) => $searchDivision.length !== 0 ? "15px 20px" :
+                            ({$searchState}) => $searchState.length !== 0 ? "15px 20px" : 0 : 0};
     margin-top: 10px;
     border: none;
     border-radius: 15px;
@@ -64,6 +65,7 @@ const LectureListTool = styled.div<{
     align-items: center;
     
     .inventory-item {
+      display: inline-block;
       height: fit-content;
       width: fit-content;
       padding: 5px 10px;
@@ -85,12 +87,12 @@ const LectureListTool = styled.div<{
     }
     .inventory-item.item-searchDivision {
       display: ${({$isInventory}) => $isInventory ?
-              ({$searchDivision}) => $searchDivision !== "" ?
+              ({$searchDivision}) => $searchDivision.length !== 0 ?
                       "block" : "none" : "none"};
     }
     .inventory-item.item-searchState {
       display: ${({$isInventory}) => $isInventory ?
-              ({$searchState}) => $searchState !== 0 ?
+              ({$searchState}) => $searchState.length !== 0 ?
                       "block" : "none" : "none"};
     }
   }
@@ -102,15 +104,15 @@ const LectureListToolView = (props : Props) => {
 
     const {searchButton, setSearchButton, searchText, setSearchText,
         ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
-        ltState, setLtState} = useLectureSearchDataStore();
+        ltStateArr, setLtStateArr, removeLtStateArr} = useLectureSearchDataStore();
 
     useEffect(() => {
         setIsSearchInventory(true);
     }, [searchButton])
 
     return (
-        <LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={""}
-                         $searchState={ltState}>
+        <LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={ltDivisionArr}
+                         $searchState={ltStateArr}>
             <div className="lt-list-tool">
                 <div className="tool-left">
                     <div className="tool-total">
@@ -140,20 +142,28 @@ const LectureListToolView = (props : Props) => {
                                          onClick={() => {setSearchText(""); setSearchButton(!searchButton)}}/>
                     </span>
                 </div>
-                <div className="inventory-item item-searchDivision">
-                    <span></span>
-                    <span>
-                        <FontAwesomeIcon icon={deleteBtn} className="icon-custom"
-                                         onClick={() => {setSearchButton(!searchButton)}}/>
-                    </span>
-                </div>
-                <div className="inventory-item item-searchState">
-                    <span>{ltState}</span>
-                    <span>
-                        <FontAwesomeIcon icon={deleteBtn} className="icon-custom"
-                                         onClick={() => {setLtState(0); setSearchButton(!searchButton)}}/>
-                    </span>
-                </div>
+                {
+                    ltDivisionArr.map((item) => (
+                        <div key={item.dvItem} className="inventory-item item-searchDivision">
+                            <span>{item.dvItem}</span>
+                            <span>
+                                <FontAwesomeIcon icon={deleteBtn} className="icon-custom"
+                                                 onClick={() => {removeLtDivisionArr(item.dvItem); setSearchButton(!searchButton)}}/>
+                            </span>
+                        </div>
+                    ))
+                }
+                {
+                    ltStateArr.map((item) => (
+                        <div key={item.stItem} className="inventory-item item-searchState">
+                            <span>{item.stName}</span>
+                            <span>
+                                <FontAwesomeIcon icon={deleteBtn} className="icon-custom"
+                                                 onClick={() => {removeLtStateArr(item.stItem); setSearchButton(!searchButton)}}/>
+                            </span>
+                        </div>
+                    ))
+                }
             </div>
         </LectureListTool>
     )

@@ -8,11 +8,11 @@ import LectureSubCategoryView from "./lectureListComponent/LectureSubCategoryVie
 import LectureListBoxView from "./lectureListComponent/LectureListBoxView";
 import LectureListToolView from "./lectureListComponent/LectureListToolView";
 import LectureSearchBoxView from "./lectureListComponent/LectureSearchBoxView";
+import useLectureSearchDataStore from "../stores/useLectureSearchDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown as arrow, faSearch as search} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureList.style";
-import useLectureSearchDataStore from "../stores/useLectureSearchDataStore";
 
 const LectureList = () => {
     const selectBox:any = useRef<any>();
@@ -58,7 +58,7 @@ const LectureList = () => {
     const [isSelectBoxShow, setIsSelectBoxShow] = useState<boolean>(false);
     const [isSearchBoxShow, setIsSearchBoxShow] = useState<boolean>(false);
 
-    const {searchButton, searchText, ltDivisionArr, ltState} = useLectureSearchDataStore();
+    const {searchButton, searchText, ltDivisionArr, ltStateArr} = useLectureSearchDataStore();
 
     const paging:object = {
         institutionNo: institutionNo,
@@ -66,7 +66,7 @@ const LectureList = () => {
         subCategoryNo: subCategoryNo,
         searchText: searchText,
         searchDivision: ltDivisionArr,
-        searchState: ltState
+        searchState: ltStateArr
     }
 
     const customInstitutionSelectBox = ():any => {

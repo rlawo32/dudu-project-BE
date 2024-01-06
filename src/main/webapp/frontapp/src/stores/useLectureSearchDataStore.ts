@@ -1,19 +1,16 @@
 import { create } from "zustand";
 
-interface divisionArr {
-    dvItem: string;
-}
-
 interface lectureSearchDataStore {
     searchButton: boolean;
     setSearchButton: (text: boolean) => void;
     searchText: string;
     setSearchText: (text: string) => void;
-    ltDivisionArr: divisionArr[];
-    setLtDivisionArr: (dvItem: string) => void;
+    ltDivisionArr: {idx:number; dvItem:string}[];
+    setLtDivisionArr: (idx: number, dvItem: string) => void;
     removeLtDivisionArr: (rmItem: string) => void;
-    ltState: number;
-    setLtState: (item: number) => void;
+    ltStateArr: {idx:number; stItem:number; stName:string}[];
+    setLtStateArr: (idx: number, stItem: number, stName:string) => void;
+    removeLtStateArr: (rmItem: number) => void;
 }
 
 const useLectureSearchDataStore = create<lectureSearchDataStore>((set) => ({
@@ -28,18 +25,22 @@ const useLectureSearchDataStore = create<lectureSearchDataStore>((set) => ({
             searchText: (state.searchText = text),
         })),
     ltDivisionArr: [],
-    setLtDivisionArr: (dvItem: string) =>
+    setLtDivisionArr: (idx: number, dvItem: string) =>
         set((state) => ({
-            ltDivisionArr: [...state.ltDivisionArr, {dvItem}],
+            ltDivisionArr: [...state.ltDivisionArr, {idx, dvItem}],
         })),
     removeLtDivisionArr: (rmItem: string) =>
         set((state) => ({
             ltDivisionArr: state.ltDivisionArr.filter((dvArr) => dvArr.dvItem !== rmItem),
         })),
-    ltState: 0,
-    setLtState: (item: number) =>
-        set((state: {ltState: number}) => ({
-            ltState: (state.ltState = item),
+    ltStateArr: [],
+    setLtStateArr: (idx: number, stItem: number, stName: string) =>
+        set((state) => ({
+            ltStateArr: [...state.ltStateArr, {idx, stItem, stName}],
+        })),
+    removeLtStateArr: (rmItem: number) =>
+        set((state) => ({
+            ltStateArr: state.ltStateArr.filter((stArr) => stArr.stItem !== rmItem),
         })),
 }));
 

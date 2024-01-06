@@ -19,10 +19,15 @@ const LectureSearchBox = styled.div<{ $showBox:boolean }>`
   .dvBtn-active {
     background-color: orangered;
   }
+
+  .stBtn-active {
+    background-color: green;
+  }
 `;
 
 const LectureSearchBoxView = (props : { isShow: boolean; }) => {
     const dvBtn:any = useRef<any>([]);
+    const stBtn:any = useRef<any>([]);
 
     const [lectureStateList, setLectureStateList] = useState<{
         lectureStateNo:number;
@@ -37,7 +42,7 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
     const {
         searchButton, setSearchButton, searchText, setSearchText,
         ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
-        ltState, setLtState
+        ltStateArr, setLtStateArr, removeLtStateArr
     } = useLectureSearchDataStore();
 
     const searchItemDivisionList = ():any[] => {
@@ -57,20 +62,31 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
         let result:any[] = [];
 
         for(let i:number=0; i<lectureStateList.length; i++) {
-            result.push(<button key={lectureStateList[i].lectureStateNo} onClick={() => setLtState(lectureStateList[i].lectureStateNo)}>
+            result.push(<button key={lectureStateList[i].lectureStateNo}
+                                ref={btn => (stBtn.current[i] = btn)}
+                                onClick={() => onClickStateBtn(i, lectureStateList[i].lectureStateNo, lectureStateList[i].lectureStateName)}>
                 {lectureStateList[i].lectureStateName}</button>)
         }
         return result;
     }
 
     const onClickDivisionBtn = (idx:number, item:string):void => {
-
         if(dvBtn.current[idx].className === 'dvBtn-active') {
             dvBtn.current[idx].className = dvBtn.current[idx].className.replace('dvBtn-active', '');
             removeLtDivisionArr(item);
         } else {
             dvBtn.current[idx].className += 'dvBtn-active';
-            setLtDivisionArr(item);
+            setLtDivisionArr(idx, item);
+        }
+    }
+
+    const onClickStateBtn = (idx:number, item:number, name:string):void => {
+        if(stBtn.current[idx].className === 'stBtn-active') {
+            stBtn.current[idx].className = stBtn.current[idx].className.replace('stBtn-active', '');
+            removeLtStateArr(item);
+        } else {
+            stBtn.current[idx].className += 'stBtn-active';
+            setLtStateArr(idx, item, name);
         }
     }
 
@@ -80,7 +96,6 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
                 method: "GET",
                 url: "/lecture/lectureStateList"
             }).then((res):void => {
-                console.log(res.data.data)
                 setLectureStateList(res.data.data);
             }).catch((err):void => {
                 console.log(err.message);
@@ -90,8 +105,26 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
     }, [])
 
     useEffect(() => {
-        console.log(ltDivisionArr);
+        for(let i:number=0; i<dvBtn.current.length; i++) {
+            dvBtn.current[i].className = dvBtn.current[i].className.replace('dvBtn-active', '');
+        }
+        if(ltDivisionArr.length > 0) {
+            for(let i:number=0; i<ltDivisionArr.length; i++) {
+                dvBtn.current[ltDivisionArr[i].idx].className += 'dvBtn-active';
+            }
+        }
     }, [ltDivisionArr])
+
+    useEffect(() => {
+        for(let i:number=0; i<stBtn.current.length; i++) {
+            stBtn.current[i].className = stBtn.current[i].className.replace('stBtn-active', '');
+        }
+        if(ltStateArr.length > 0) {
+            for(let i:number=0; i<ltStateArr.length; i++) {
+                stBtn.current[ltStateArr[i].idx].className += 'stBtn-active';
+            }
+        }
+    }, [ltStateArr])
 
     return (
         <LectureSearchBox $showBox={props.isShow}>

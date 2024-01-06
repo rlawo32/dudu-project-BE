@@ -8,5 +8,8 @@ import java.util.List;
 
 public interface LectureRepositoryCustom {
 
-    List<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText, List<LectureListRequestDto.DivisionItemList> searchDivision);
+    List<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
+                               Long mainCategoryNo, Long subCategoryNo,
+                               List<LectureListRequestDto.DivisionItemList> searchDivision,
+                               List<LectureListRequestDto.StateItemList> searchState);
 }

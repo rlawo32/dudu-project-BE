@@ -1,10 +1,8 @@
 package com.cac.duduproject.jpa.repository.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
-import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
+import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.web.dto.lecture.LectureListRequestDto;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryFactory;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +16,76 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
 
     @Autowired
     private JPAQueryFactory queryFactory;
+    @Autowired
+    private LectureStateRepository lectureStateRepository;
+    @Autowired
+    private LectureMainCategoryRepository lectureMainCategoryRepository;
+    @Autowired
+    private LectureSubCategoryRepository lectureSubCategoryRepository;
 
     public LectureRepositoryImpl() {
         super(Lecture.class);
     }
 
     @Override
-    public List<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText, List<LectureListRequestDto.DivisionItemList> searchDivision) {
+    public List<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
+                                      Long mainCategoryNo, Long subCategoryNo,
+                                      List<LectureListRequestDto.DivisionItemList> searchDivision,
+                                      List<LectureListRequestDto.StateItemList> searchState) {
         return queryFactory
                 .selectFrom(lecture)
                 .where(lecture.lectureInstitution.eq(lectureInstitution),
                         lecture.lectureTitle.contains(searchText),
-                        (eqDivision(searchDivision)))
+                        eqMainCategory(mainCategoryNo),
+                        eqSubCategory(subCategoryNo),
+                        (eqDivision(searchDivision)),
+                        (eqState(searchState)))
                 .fetch();
+    }
+
+    private BooleanExpression eqMainCategory(Long mainCategoryNo) {
+        if(mainCategoryNo == 0) {
+            return null;
+        } else {
+            LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
+            return lecture.lectureMainCategory.eq(lectureMainCategory);
+        }
+    }
+
+    private BooleanExpression eqSubCategory(Long subCategoryNo) {
+        if(subCategoryNo == 0) {
+            return null;
+        } else {
+            LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
+            return lecture.lectureSubCategory.eq(lectureSubCategory);
+        }
     }
 
     private BooleanBuilder eqDivision(List<LectureListRequestDto.DivisionItemList> searchDivision) {
         BooleanBuilder builder = new BooleanBuilder();
-        for(int i=0; i<searchDivision.size(); i++) {
-            builder.or(lecture.lectureDivision.eq(searchDivision.get(i).getDvItem()));
+        if(searchDivision.size() < 1) {
+            return null;
+        } else {
+            for(int i=0; i<searchDivision.size(); i++) {
+                builder.or(lecture.lectureDivision.eq(searchDivision.get(i).getDvItem()));
+            }
+            return builder;
         }
-        return builder;
+    }
+
+    private BooleanBuilder eqState(List<LectureListRequestDto.StateItemList> searchState) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if(searchState.size() < 1) {
+            return null;
+        } else {
+            for(int i=0; i<searchState.size(); i++) {
+                LectureState lectureState = lectureStateRepository.findById(searchState.get(i).getStItem())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + searchState));
+                builder.or(lecture.lectureState.eq(lectureState));
+            }
+            return builder;
+        }
     }
 }

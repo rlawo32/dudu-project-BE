@@ -1,6 +1,9 @@
 package com.cac.duduproject.service.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.*;
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
+import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
+import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
 import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
@@ -13,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,79 +100,18 @@ public class LectureListService {
             Long subCategoryNo = requestDto.getSubCategoryNo();
             String searchText = requestDto.getSearchText();
 
-            String searchDivision = "";
-            List<LectureListRequestDto.DivisionItemList> searchDivision1 = requestDto.getSearchDivision();
-            Long searchState = requestDto.getSearchState();
-
-            System.out.println(searchText);
-            System.out.println(searchDivision);
-            System.out.println(searchState);
+            List<LectureListRequestDto.DivisionItemList> searchDivision = requestDto.getSearchDivision();
+            List<LectureListRequestDto.StateItemList> searchState = requestDto.getSearchState();
 
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
 
-            if(searchDivision1.size() > 0) {
-                list = lectureRepository.findBySearch
-                                (lectureInstitution, searchText, searchDivision1).stream()
-                        .map(LectureListResponseDto::new)
-                        .collect(Collectors.toList());
+            list = lectureRepository.findBySearch(lectureInstitution, searchText,
+                            mainCategoryNo, subCategoryNo,
+                            searchDivision, searchState).stream()
+                    .map(LectureListResponseDto::new)
+                    .collect(Collectors.toList());
 
-                return CommonResponseDto.setSuccess("LectureInstitution List", list);
-            }
-
-            if(mainCategoryNo < 1 && searchState < 1) { // Main=0 State=0 Sub=0
-                list.addAll(lectureRepository.findAllBySearch(lectureInstitution, searchText, searchDivision).stream()
-                        .map(LectureListResponseDto::new)
-                        .collect(Collectors.toList()));
-            } else {
-                if(mainCategoryNo > 0 && searchState > 0) {
-                    LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
-                    LectureState lectureState = lectureStateRepository.findById(searchState)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + searchState));
-
-                    if(subCategoryNo < 1) { // Main=1 State=1 Sub=0
-                        list.addAll(lectureRepository.findAllByMainCategoryAndLectureStateSearch
-                                        (lectureInstitution, lectureMainCategory, lectureState, searchText, searchDivision).stream()
-                                .map(LectureListResponseDto::new)
-                                .collect(Collectors.toList()));
-                    } else { // Main=1 State=1 Sub=1
-                        LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
-                                .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
-
-                        list = lectureRepository.findAllByMainCategoryAndLectureStateAndSubCategorySearch
-                                        (lectureInstitution, lectureMainCategory, lectureState, lectureSubCategory, searchText, searchDivision).stream()
-                                .map(LectureListResponseDto::new)
-                                .collect(Collectors.toList());
-                    }
-                } else if(mainCategoryNo > 0) {
-                    LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
-
-                    if(subCategoryNo < 1) { // Main=1 State=0 Sub=0
-                        list = lectureRepository.findAllByMainCategorySearch
-                                        (lectureInstitution, lectureMainCategory, searchText, searchDivision).stream()
-                                .map(LectureListResponseDto::new)
-                                .collect(Collectors.toList());
-                    } else { // Main=1 State=0 Sub=1
-                        LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
-                                .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
-
-                        list = lectureRepository.findAllByMainCategoryAndSubCategorySearch
-                                        (lectureInstitution, lectureMainCategory, lectureSubCategory, searchText, searchDivision).stream()
-                                .map(LectureListResponseDto::new)
-                                .collect(Collectors.toList());
-                    }
-                } else if(searchState > 0) { // Main=0 State=1 Sub=0
-                    LectureState lectureState = lectureStateRepository.findById(searchState)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + searchState));
-
-                    list = lectureRepository.findAllByLectureStateSearch
-                                    (lectureInstitution, lectureState, searchText, searchDivision).stream()
-                            .map(LectureListResponseDto::new)
-                            .collect(Collectors.toList());
-                }
-            }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

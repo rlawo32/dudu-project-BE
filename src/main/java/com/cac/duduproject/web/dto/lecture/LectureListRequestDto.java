@@ -16,12 +16,17 @@ public class LectureListRequestDto {
     private Long subCategoryNo;
     private String searchText;
     private List<DivisionItemList> searchDivision;
-    private Long searchState;
+    private List<StateItemList> searchState;
 
     @Data
     public static class DivisionItemList {
         private String dvItem;
     }
 
+    @Data
+    public static class StateItemList {
+        private Long stItem;
+        private String stName;
+    }
 }
 

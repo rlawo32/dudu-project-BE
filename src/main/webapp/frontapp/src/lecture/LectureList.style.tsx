@@ -90,6 +90,7 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
       // }
 
       .select-list.show-list {
+        border: 1px solid ${({theme}) => theme.textColor};
         padding: 15px 5px 15px 5px;
         height: 210px;
       }

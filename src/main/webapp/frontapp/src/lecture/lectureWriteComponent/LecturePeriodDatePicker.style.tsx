@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 
-
 export const LectureDatePickerView = styled.div`
   display: inline-block;
   width: fit-content;

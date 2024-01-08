@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useLectureSearchDataStore from "../../stores/useLectureSearchDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch as search, faXmark as deleteBtn} from "@fortawesome/free-solid-svg-icons";
+import {faSearch as search, faXmark as deleteBtn, faArrowRightArrowLeft as sortBtn} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     ltCount: number;
@@ -29,33 +29,45 @@ const LectureListTool = styled.div<{
 
       .tool-total {
         display: inline-block;
+        
       }
     }
 
     .tool-right {
+      
+      button {
+        border: none;
+        background: none;
+        color: ${({theme}) => theme.textColor};
+        font-size: 15px;
+        cursor: pointer;
+        
+        .icon-custom {
+          margin-right: 5px;
+        }
+      }
 
       .tool-search {
         display: inline-block;
+        margin-right: 10px;
       }
 
       .tool-sort {
         display: inline-block;
+
+        .icon-custom {
+          rotate: 90deg;
+        }
       }
     }
   }
 
   .lt-search-inventory {
-    height: ${({$isInventory}) => $isInventory ? 
-            ({$searchText}) => $searchText !== "" ? "60px" : 
-                    ({$searchDivision}) => $searchDivision.length !== 0 ? "60px" :
-                            ({$searchState}) => $searchState.length !== 0 ? "60px" : 0 : 0};
+    height: ${({$isInventory}) => $isInventory ? "60px" : 0};
     width: 100%;
     box-sizing: border-box; // padding 값을 줄 때 부모 영역을 벗어나는 문제를 해결
-    padding: ${({$isInventory}) => $isInventory ? 
-            ({$searchText}) => $searchText !== "" ? "15px 20px" :
-                    ({$searchDivision}) => $searchDivision.length !== 0 ? "15px 20px" :
-                            ({$searchState}) => $searchState.length !== 0 ? "15px 20px" : 0 : 0};
-    margin-top: 10px;
+    padding: ${({$isInventory}) => $isInventory ? "15px 20px" : 0};
+    margin-top: 20px;
     border: none;
     border-radius: 15px;
     background-color: ${({theme}) => theme.boxBgColor};
@@ -100,15 +112,39 @@ const LectureListTool = styled.div<{
 
 const LectureListToolView = (props : Props) => {
 
-    const [isSearchInventory, setIsSearchInventory] = useState<boolean>(true);
+    const [isSearchInventory, setIsSearchInventory] = useState<boolean>(false);
+    const [isSearchText, setIsSearchText] = useState<string>("");
+    const [isSearchDivision, setIsSearchDivision] = useState<{
+        idx:number;
+        dvItem:string;
+    }[]>([]);
+    const [isSearchState, setIsSearchState] = useState<{
+        idx:number;
+        stItem:number;
+        stName:string;
+    }[]>([]);
 
     const {searchButton, setSearchButton, searchText, setSearchText,
         ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
         ltStateArr, setLtStateArr, removeLtStateArr} = useLectureSearchDataStore();
 
     useEffect(() => {
-        setIsSearchInventory(true);
+        setIsSearchText(searchText);
+        setIsSearchDivision(ltDivisionArr);
+        setIsSearchState(ltStateArr);
+        if(searchText.length > 0 || ltDivisionArr.length > 0 || ltStateArr.length > 0) {
+            setIsSearchInventory(true);
+        } else {
+            setIsSearchInventory(false);
+        }
     }, [searchButton])
+
+    useEffect(() => {
+        if(isSearchText.length > 0 || isSearchDivision.length > 0 || isSearchState.length > 0) {
+        } else {
+            setIsSearchInventory(false);
+        }
+    }, [searchText, ltDivisionArr, ltStateArr])
 
     return (
         <LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={ltDivisionArr}
@@ -120,7 +156,7 @@ const LectureListToolView = (props : Props) => {
                         <span style={{fontSize: "13px"}}>의강좌</span>
                     </div>
                 </div>
-                <div className="tool-rigth">
+                <div className="tool-right">
                     <div className="tool-search">
                         <button onClick={(e) => {
                             e.stopPropagation();
@@ -130,20 +166,23 @@ const LectureListToolView = (props : Props) => {
                         </button>
                     </div>
                     <div className="tool-sort">
-
+                        <button>
+                            <FontAwesomeIcon icon={sortBtn} className="icon-custom" />
+                            정렬
+                        </button>
                     </div>
                 </div>
             </div>
             <div className="lt-search-inventory">
                 <div className="inventory-item item-searchText">
-                    <span>{searchText}</span>
+                    <span>{isSearchText}</span>
                     <span>
                         <FontAwesomeIcon icon={deleteBtn} className="icon-custom"
                                          onClick={() => {setSearchText(""); setSearchButton(!searchButton)}}/>
                     </span>
                 </div>
                 {
-                    ltDivisionArr.map((item) => (
+                    isSearchDivision.map((item) => (
                         <div key={item.dvItem} className="inventory-item item-searchDivision">
                             <span>{item.dvItem}</span>
                             <span>
@@ -154,7 +193,7 @@ const LectureListToolView = (props : Props) => {
                     ))
                 }
                 {
-                    ltStateArr.map((item) => (
+                    isSearchState.map((item) => (
                         <div key={item.stItem} className="inventory-item item-searchState">
                             <span>{item.stName}</span>
                             <span>

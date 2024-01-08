@@ -7,7 +7,7 @@ import * as Styled from "./LectureSearchBoxView.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown as arrow, faSearch as searchIcon, faRotateRight as resetIcon} from "@fortawesome/free-solid-svg-icons";
 
-const LectureSearchBoxView = (props : { isShow: boolean; }) => {
+const LectureSearchBoxView = (props : { isShow: boolean; setIsShow: React.Dispatch<React.SetStateAction<boolean>>; }) => {
     const dvBtn:any = useRef<any>([]);
     const stBtn:any = useRef<any>([]);
     const divisionBox:any = useRef<any>();
@@ -144,6 +144,13 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
         }
     }, [isStateBoxShow])
 
+    useEffect(() => {
+        if(!props.isShow) {
+            setIsDivisionBoxShow(false);
+            setIsStateBoxShow(false);
+        }
+    }, [props.isShow])
+
     return (
         <Styled.LectureSearchBox $showBox={props.isShow}>
             <div className="search-header">
@@ -162,7 +169,16 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
                 <div className="search-division">
                     <div className="search-title"
                          onClick={() => setIsDivisionBoxShow(!isDivisionBoxShow)}>
-                        강좌구분
+                        {
+                            ltDivisionArr.length > 0 ?
+                                <div>강좌구분
+                                    <span className="count-view">
+                                        {ltDivisionArr.length}
+                                    </span>
+                                </div>
+                                :
+                                <div>강좌구분</div>
+                        }
                         <div className="division-arrow" ref={divisionArrow}>
                             <FontAwesomeIcon icon={arrow} />
                         </div>
@@ -174,7 +190,16 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
                 <div className="search-state">
                     <div className="search-title"
                          onClick={() => setIsStateBoxShow(!isStateBoxShow)}>
-                        강좌상태
+                        {
+                            ltStateArr.length > 0 ?
+                                <div>강좌상태
+                                    <span className="count-view">
+                                        {ltStateArr.length}
+                                    </span>
+                                </div>
+                                :
+                                <div>강좌상태</div>
+                        }
                         <div className="state-arrow" ref={stateArrow}>
                             <FontAwesomeIcon icon={arrow} />
                         </div>
@@ -189,8 +214,8 @@ const LectureSearchBoxView = (props : { isShow: boolean; }) => {
                     <FontAwesomeIcon icon={resetIcon} className="icon-custom" />
                     초기화
                 </button>
-                <button onClick={() => setSearchButton(!searchButton)} className="search-btn">
-                    검색
+                <button onClick={() => (props.setIsShow(false), setSearchButton(!searchButton))} className="search-btn">
+                    강좌 검색
                 </button>
             </div>
         </Styled.LectureSearchBox>

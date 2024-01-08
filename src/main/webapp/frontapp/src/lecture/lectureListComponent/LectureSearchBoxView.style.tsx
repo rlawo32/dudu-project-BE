@@ -7,7 +7,7 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
   height: 100%;
   width: ${({$showBox}) => $showBox ? "350px" : 0};
   padding: ${({$showBox}) => $showBox ? "25px" : 0};
-  border-left: 1px solid rgba(0,0,0,0.2);
+  border-left: 1px solid rgba(0,0,0,0.3);
   background-color: ${({theme}) => theme.boxBgColor};
   z-index: 3;
   transition: all 0.4s ease-in;
@@ -15,6 +15,7 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
   .search-title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 0 15px 0;
     font-size: 17px;
     font-weight: bold;
@@ -22,7 +23,7 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
   }
   
   .search-header {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border-bottom: 1px solid lightsteelblue;
 
     .search-title { 
@@ -101,7 +102,7 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
     
     .search-division {
       position: relative;
-      margin: 0 auto 35px;
+      margin: 0 auto 25px;
       border-bottom: 1px solid lightsteelblue;
       outline: none;
       
@@ -123,7 +124,7 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
 
     .search-state {
       position: relative;
-      margin: 0 auto 35px;
+      margin: 0 auto 25px;
       border-bottom: 1px solid lightsteelblue;
       outline: none;
 
@@ -141,6 +142,19 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
       .state-arrow.show-list {
         transform: rotate(180deg);
       }
+    }
+    
+    .count-view {
+      display: inline-block;
+      width: 17px;
+      padding: 1px;
+      margin-left: 5px;
+      border: none;
+      border-radius: 50%;
+      background-color: ${({theme}) => theme.reverseBgColor};
+      color: ${({theme}) => theme.reverseTextColor};
+      text-align: center;
+      font-size: 13px;
     }
   }
   

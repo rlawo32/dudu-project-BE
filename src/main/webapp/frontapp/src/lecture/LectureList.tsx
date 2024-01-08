@@ -144,7 +144,7 @@ const LectureList = () => {
 
     return (
         <Styled.LectureListView $isShow={isSearchBoxShow}>
-            <LectureSearchBoxView isShow={isSearchBoxShow} />
+            <LectureSearchBoxView isShow={isSearchBoxShow} setIsShow={setIsSearchBoxShow}/>
             <div className="lt-list-view" onClick={() => {setIsSearchBoxShow(false)}}>
                 <div className="header-navigation">
                     <HeaderNavigation />

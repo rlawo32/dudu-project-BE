@@ -4,7 +4,12 @@ import styled from "styled-components";
 import useLectureSearchDataStore from "../../stores/useLectureSearchDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch as search, faXmark as deleteBtn, faArrowRightArrowLeft as sortBtn} from "@fortawesome/free-solid-svg-icons";
+import {
+    faSearch as search,
+    faXmark as deleteBtn,
+    faArrowRightArrowLeft as sortBtn,
+    faRotateRight as resetIcon
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     ltCount: number;
@@ -80,16 +85,28 @@ const LectureListTool = styled.div<{
       display: inline-block;
       height: fit-content;
       width: fit-content;
+      margin-right: 5px;
       padding: 5px 10px;
       border: 1px solid grey;
       border-radius: 20px;
       background-color: ${({theme}) => theme.bgColor};
+      font-size: 13px;
+      font-weight: bold;
       
       .icon-custom {
         margin-left: 5px;
         cursor: pointer;
         opacity: 0.7;
       }
+    }
+
+    .inventory-item.item-reset {
+      display: ${({$isInventory}) => $isInventory ? "block" : "none"};
+      margin-right: 25px;
+      padding: 0;
+      border: none;
+      background: none;
+      font-size: 25px;
     }
     
     .inventory-item.item-searchText {
@@ -126,7 +143,15 @@ const LectureListToolView = (props : Props) => {
 
     const {searchButton, setSearchButton, searchText, setSearchText,
         ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
-        ltStateArr, setLtStateArr, removeLtStateArr} = useLectureSearchDataStore();
+        ltStateArr, setLtStateArr, removeLtStateArr,
+        removeAllLtDivisionArr, removeAllLtStateArr} = useLectureSearchDataStore();
+
+    const onClickSearchReset = ():void => {
+        setSearchText("");
+        removeAllLtDivisionArr();
+        removeAllLtStateArr();
+        setSearchButton(!searchButton);
+    }
 
     useEffect(() => {
         setIsSearchText(searchText);
@@ -174,6 +199,9 @@ const LectureListToolView = (props : Props) => {
                 </div>
             </div>
             <div className="lt-search-inventory">
+                <div className="inventory-item item-reset">
+                    <FontAwesomeIcon icon={resetIcon} className="icon-custom" onClick={() => onClickSearchReset()} />
+                </div>
                 <div className="inventory-item item-searchText">
                     <span>{isSearchText}</span>
                     <span>

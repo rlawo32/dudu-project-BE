@@ -162,7 +162,7 @@ const LectureSearchBoxView = (props : { isShow: boolean; setIsShow: React.Dispat
                            onChange={(e) => setSearchText(e.target.value)}
                            placeholder="강좌명 or 강사명으로 검색" />
                     <FontAwesomeIcon icon={searchIcon} className="icon-custom"
-                                     onClick={() => setSearchButton(!searchButton)}/>
+                                     onClick={() => (props.setIsShow(false), setSearchButton(!searchButton))}/>
                 </div>
             </div>
             <div className="search-body">

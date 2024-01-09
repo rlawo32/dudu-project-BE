@@ -4,8 +4,12 @@ import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.web.dto.lecture.LectureListRequestDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
@@ -28,19 +32,20 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
     }
 
     @Override
-    public List<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
+    public Page<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
                                       Long mainCategoryNo, Long subCategoryNo,
                                       List<LectureListRequestDto.DivisionItemList> searchDivision,
-                                      List<LectureListRequestDto.StateItemList> searchState) {
-        return queryFactory
-                .selectFrom(lecture)
+                                      List<LectureListRequestDto.StateItemList> searchState,
+                                      Pageable pageable) {
+        JPAQuery<Lecture> query = queryFactory.selectFrom(lecture)
                 .where(lecture.lectureInstitution.eq(lectureInstitution),
                         lecture.lectureTitle.contains(searchText),
                         eqMainCategory(mainCategoryNo),
                         eqSubCategory(subCategoryNo),
                         (eqDivision(searchDivision)),
-                        (eqState(searchState)))
-                .fetch();
+                        (eqState(searchState)));
+        List<Lecture> lectures = this.getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<Lecture>(lectures, pageable, query.fetchCount());
     }
 
     private BooleanExpression eqMainCategory(Long mainCategoryNo) {

@@ -1,133 +1,26 @@
-import React, {useEffect, useState} from "react";
-import styled from "styled-components";
+import React, {useEffect, useRef, useState} from "react";
 
 import useLectureSearchDataStore from "../../stores/useLectureSearchDataStore";
 
+import * as Styled from "./LectureListToolView.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faSearch as search,
     faXmark as deleteBtn,
-    faArrowRightArrowLeft as sortBtn,
+    faArrowRightArrowLeft as sortIcon,
     faRotateRight as resetIcon
 } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     ltCount: number;
     isSetBoxShow: React.Dispatch<React.SetStateAction<boolean>>;
+    institutionNo: number;
+    setSortType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const LectureListTool = styled.div<{
-    $isInventory:boolean;
-    $searchText:string;
-    $searchDivision:{dvItem:string}[];
-    $searchState:{stItem:number; stName:string}[];
-}>`
-  position: relative;
-  
-  .lt-list-tool {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-
-    .tool-left {
-
-      .tool-total {
-        display: inline-block;
-        
-      }
-    }
-
-    .tool-right {
-      
-      button {
-        border: none;
-        background: none;
-        color: ${({theme}) => theme.textColor};
-        font-size: 15px;
-        cursor: pointer;
-        
-        .icon-custom {
-          margin-right: 5px;
-        }
-      }
-
-      .tool-search {
-        display: inline-block;
-        margin-right: 10px;
-      }
-
-      .tool-sort {
-        display: inline-block;
-
-        .icon-custom {
-          rotate: 90deg;
-        }
-      }
-    }
-  }
-
-  .lt-search-inventory {
-    height: ${({$isInventory}) => $isInventory ? "60px" : 0};
-    width: 100%;
-    box-sizing: border-box; // padding 값을 줄 때 부모 영역을 벗어나는 문제를 해결
-    padding: ${({$isInventory}) => $isInventory ? "15px 20px" : 0};
-    margin-top: 20px;
-    border: none;
-    border-radius: 15px;
-    background-color: ${({theme}) => theme.boxBgColor};
-    transition: all 0.5s ease-in-out;
-    
-    display: flex;
-    align-items: center;
-    
-    .inventory-item {
-      display: inline-block;
-      height: fit-content;
-      width: fit-content;
-      margin-right: 5px;
-      padding: 5px 10px;
-      border: 1px solid grey;
-      border-radius: 20px;
-      background-color: ${({theme}) => theme.bgColor};
-      font-size: 13px;
-      font-weight: bold;
-      
-      .icon-custom {
-        margin-left: 5px;
-        cursor: pointer;
-        opacity: 0.7;
-      }
-    }
-
-    .inventory-item.item-reset {
-      display: ${({$isInventory}) => $isInventory ? "block" : "none"};
-      margin-right: 25px;
-      padding: 0;
-      border: none;
-      background: none;
-      font-size: 25px;
-    }
-    
-    .inventory-item.item-searchText {
-      display: ${({$isInventory}) => $isInventory ? 
-              ({$searchText}) => $searchText !== "" ? 
-                      "block" : "none" : "none"};
-    }
-    .inventory-item.item-searchDivision {
-      display: ${({$isInventory}) => $isInventory ?
-              ({$searchDivision}) => $searchDivision.length !== 0 ?
-                      "block" : "none" : "none"};
-    }
-    .inventory-item.item-searchState {
-      display: ${({$isInventory}) => $isInventory ?
-              ({$searchState}) => $searchState.length !== 0 ?
-                      "block" : "none" : "none"};
-    }
-  }
-`;
-
 const LectureListToolView = (props : Props) => {
+    const sortBox:any = useRef<any>();
+    const sortBtn:any = useRef<any>([]);
 
     const [isSearchInventory, setIsSearchInventory] = useState<boolean>(false);
     const [isSearchText, setIsSearchText] = useState<string>("");
@@ -141,10 +34,37 @@ const LectureListToolView = (props : Props) => {
         stName:string;
     }[]>([]);
 
+    const [isSortBoxShow, setIsSortBoxShow] = useState<boolean>(false);
+    const [sortSelect, setSortSelect] = useState<number>(0);
+    const sortArr:any[] = [
+        {key:'1', value:'강의시작일순'},
+        {key:'2', value:'접수인원순'},
+        {key:'3', value:'마감임박순'},
+        {key:'4', value:'낮은가격순'},
+        {key:'5', value:'높은가격순'}
+    ];
+
     const {searchButton, setSearchButton, searchText, setSearchText,
-        ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
-        ltStateArr, setLtStateArr, removeLtStateArr,
-        removeAllLtDivisionArr, removeAllLtStateArr} = useLectureSearchDataStore();
+        ltDivisionArr, removeLtDivisionArr, removeAllLtDivisionArr,
+        ltStateArr, removeLtStateArr, removeAllLtStateArr} = useLectureSearchDataStore();
+
+    const sortItemList = ():any[] => {
+        let result:any[] = [];
+
+        for(let i:number=0; i<sortArr.length; i++) {
+            result.push(<li key={sortArr[i].key}
+                            ref={btn => (sortBtn.current[i] = btn)}
+                            onClick={() => onClickSortSelectBox(i, sortArr[i].key)}>
+                {sortArr[i].value}</li>)
+        }
+        return result;
+    }
+
+    const onClickSortSelectBox = (idx:number, sortType:string):void => {
+        setIsSortBoxShow(false);
+        setSortSelect(idx);
+        props.setSortType(sortType);
+    }
 
     const onClickSearchReset = ():void => {
         setSearchText("");
@@ -152,6 +72,10 @@ const LectureListToolView = (props : Props) => {
         removeAllLtStateArr();
         setSearchButton(!searchButton);
     }
+
+    useEffect(() => {
+        setSortSelect(0);
+    }, [props.institutionNo])
 
     useEffect(() => {
         setIsSearchText(searchText);
@@ -171,8 +95,27 @@ const LectureListToolView = (props : Props) => {
         }
     }, [searchText, ltDivisionArr, ltStateArr])
 
+    useEffect(() => {
+        if(isSortBoxShow) {
+            sortBox.current.className += " show-list";
+        } else {
+            sortBox.current.className = sortBox.current.className.replace(' show-list', '');
+        }
+    }, [isSortBoxShow])
+
+    useEffect(() => {
+        sortBtn.current[sortSelect].className = sortBtn.current[sortSelect].className.replace('sort-active', '');
+        sortBtn.current[sortSelect].className += 'sort-active';
+
+        for(let i:number=0; i<sortBtn.current.length; i++) {
+            if(i !== sortSelect) {
+                sortBtn.current[i].className = sortBtn.current[i].className.replace('sort-active', '');
+            }
+        }
+    }, [sortSelect])
+
     return (
-        <LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={ltDivisionArr}
+        <Styled.LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={ltDivisionArr}
                          $searchState={ltStateArr}>
             <div className="lt-list-tool">
                 <div className="tool-left">
@@ -191,10 +134,15 @@ const LectureListToolView = (props : Props) => {
                         </button>
                     </div>
                     <div className="tool-sort">
-                        <button>
-                            <FontAwesomeIcon icon={sortBtn} className="icon-custom" />
-                            정렬
+                        <button onClick={(e) => {
+                            e.stopPropagation();
+                            setIsSortBoxShow(!isSortBoxShow)}}>
+                            <FontAwesomeIcon icon={sortIcon} className="icon-custom" />
+                            {sortArr[sortSelect].value}
                         </button>
+                        <ul className="sort-list" ref={sortBox}>
+                            {sortItemList()}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -232,7 +180,7 @@ const LectureListToolView = (props : Props) => {
                     ))
                 }
             </div>
-        </LectureListTool>
+        </Styled.LectureListTool>
     )
 }
 

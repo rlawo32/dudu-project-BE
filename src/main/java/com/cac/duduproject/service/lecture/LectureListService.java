@@ -9,6 +9,9 @@ import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -93,8 +98,10 @@ public class LectureListService {
 
     @Transactional
     public CommonResponseDto<?> findAllLectureList(LectureListRequestDto requestDto) {
-        List<LectureListResponseDto> list = new ArrayList<>();
+        Map<String, Object> result = new HashMap<>();
         try {
+            int pageNo = requestDto.getPageNo();
+            String sortType = requestDto.getSortType();
             Long institutionNo = requestDto.getInstitutionNo();
             Long mainCategoryNo = requestDto.getMainCategoryNo();
             Long subCategoryNo = requestDto.getSubCategoryNo();
@@ -106,16 +113,38 @@ public class LectureListService {
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
 
-            list = lectureRepository.findBySearch(lectureInstitution, searchText,
+            Sort sort = Sort.by("lecturePeriod").ascending();
+
+            if(sortType.equals("1")) {
+                sort = Sort.by("lecturePeriod").ascending();
+            } else if(sortType.equals("2")) {
+                sort = Sort.by("lectureCapacity").descending();
+            } else if(sortType.equals("3")) {
+                sort = Sort.by("lectureReception").descending();
+            } else if(sortType.equals("4")) {
+                sort = Sort.by("lectureFee").ascending();
+            } else if(sortType.equals("5")) {
+                sort = Sort.by("lectureFee").descending();
+            }
+
+            Page<Lecture> pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
                             mainCategoryNo, subCategoryNo,
-                            searchDivision, searchState).stream()
+                            searchDivision, searchState,
+                            PageRequest.of(0, (20*pageNo), sort));
+
+            Long totalPage = pageable.getTotalElements();
+
+            List<LectureListResponseDto> list = pageable.stream()
                     .map(LectureListResponseDto::new)
                     .collect(Collectors.toList());
+
+            result.put("lectureList", list);
+            result.put("totalPage", totalPage);
 
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("LectureInstitution List", list);
+        return CommonResponseDto.setSuccess("LectureInstitution List", result);
     }
 
     @Transactional

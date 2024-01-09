@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
+    ltType: string;
     ltCount: number;
     isSetBoxShow: React.Dispatch<React.SetStateAction<boolean>>;
     institutionNo: number;
@@ -115,8 +116,8 @@ const LectureListToolView = (props : Props) => {
     }, [sortSelect])
 
     return (
-        <Styled.LectureListTool $isInventory={isSearchInventory} $searchText={searchText} $searchDivision={ltDivisionArr}
-                         $searchState={ltStateArr}>
+        <Styled.LectureListTool $isInventory={isSearchInventory} $searchText={searchText}
+                                $searchDivision={ltDivisionArr} $searchState={ltStateArr}>
             <div className="lt-list-tool">
                 <div className="tool-left">
                     <div className="tool-total">
@@ -125,14 +126,19 @@ const LectureListToolView = (props : Props) => {
                     </div>
                 </div>
                 <div className="tool-right">
-                    <div className="tool-search">
-                        <button onClick={(e) => {
-                            e.stopPropagation();
-                            props.isSetBoxShow(true)}}>
-                            <FontAwesomeIcon icon={search} className="icon-custom" />
-                            상세검색
-                        </button>
-                    </div>
+                    {
+                        props.ltType === 'L' ?
+                            <div className="tool-search">
+                                <button onClick={(e) => {
+                                    e.stopPropagation();
+                                    props.isSetBoxShow(true)}}>
+                                    <FontAwesomeIcon icon={search} className="icon-custom" />
+                                    상세검색
+                                </button>
+                            </div>
+                            :
+                            <div />
+                    }
                     <div className="tool-sort">
                         <button onClick={(e) => {
                             e.stopPropagation();

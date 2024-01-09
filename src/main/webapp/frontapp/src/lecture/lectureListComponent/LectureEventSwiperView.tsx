@@ -109,10 +109,17 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
 
     useEffect(() => {
         const lectureList = async () => {
+            const getEventData:object = {
+                pageNo: 1,
+                sortType: '',
+                institutionNo: props.institutionNo,
+                lectureEventNo: 0
+            }
             await axios({
-                method: "GET",
+                method: "POST",
                 url: '/lecture/lectureEventList',
-                params: {institutionNo: props.institutionNo, lectureEventNo: 0}
+                data: JSON.stringify(getEventData),
+                headers: {'Content-type': 'application/json'}
             }).then((res):void => {
                 setLectureEventList(res.data.data);
             }).catch((err):void => {

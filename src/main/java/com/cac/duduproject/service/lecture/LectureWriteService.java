@@ -140,7 +140,7 @@ public class LectureWriteService {
     }
 
     @Transactional
-    public CommonResponseDto<?> insertLectureEvent(LectureEventRequestDto requestDto) {
+    public CommonResponseDto<?> insertLectureEvent(LectureEventWriteRequestDto requestDto) {
         try {
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));

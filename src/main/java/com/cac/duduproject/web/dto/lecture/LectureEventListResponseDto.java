@@ -1,12 +1,11 @@
 package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
-import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import lombok.Getter;
 
 
 @Getter
-public class LectureEventResponseDto {
+public class LectureEventListResponseDto {
 
     private Long lectureEventNo;
     private Long lectureInstitutionNo;
@@ -14,7 +13,7 @@ public class LectureEventResponseDto {
     private String lectureEventDesc;
     private String lectureEventThumbnail;
 
-    public LectureEventResponseDto(LectureEvent lectureEvent) {
+    public LectureEventListResponseDto(LectureEvent lectureEvent) {
         this.lectureEventNo = lectureEvent.getLectureEventNo();
         this.lectureInstitutionNo = lectureEvent.getLectureInstitution().getInstitutionNo();
         this.lectureEventName = lectureEvent.getLectureEventName();

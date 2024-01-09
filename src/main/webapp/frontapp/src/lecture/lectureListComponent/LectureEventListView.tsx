@@ -182,7 +182,7 @@ const LectureEventListView = () => {
             </LectureEventMainView>
 
             <div className="le-body">
-                <LectureListBoxView lectureList={lectureList} />
+                <LectureListBoxView ltCount={lectureList.length} lectureList={lectureList} />
             </div>
 
         </LectureEventList>

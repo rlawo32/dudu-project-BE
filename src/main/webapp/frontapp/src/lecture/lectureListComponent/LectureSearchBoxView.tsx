@@ -123,7 +123,6 @@ const LectureSearchBoxView = (props : { isShow: boolean; setIsShow: React.Dispat
     }, [isDivisionBoxShow])
 
     useEffect(() => {
-        console.log(ltStateArr)
         for(let i:number=0; i<stBtn.current.length; i++) {
             stBtn.current[i].className = stBtn.current[i].className.replace('stBtn-active', '');
         }

@@ -41,6 +41,11 @@ const TabLectureSubCategory = styled.div`
         position: relative;
         height: 100px;
         width: 100px;
+        @media screen and (max-width: 900px) {
+          height: 60px;
+          width: 60px;
+          font-size: 18px;
+        }
         border-radius: 50%;
         margin-bottom: 15px;
         
@@ -67,6 +72,9 @@ const TabLectureSubCategory = styled.div`
       
       .sc-item-name {
         font-size: 15px;
+        @media screen and (max-width: 900px) {
+          font-size: 12px;
+        }
         font-weight: 500;
       }
       
@@ -193,22 +201,22 @@ const LectureSubCategoryView = (props: Props) => {
                     pagination={{ clickable: true }}
                     breakpoints={{
                         500: {
-                            slidesPerView: 3,
+                            slidesPerView: 5,
                             spaceBetween: 10
                         },
-                        900: {
-                            slidesPerView: 4,
-                            spaceBetween: 10
-                        },
-                        1100: {
+                        600: {
                             slidesPerView: 6,
                             spaceBetween: 10
                         },
-                        1400: {
+                        700: {
+                            slidesPerView: 8,
+                            spaceBetween: 10
+                        },
+                        900: {
                             slidesPerView: 7,
                             spaceBetween: 10
                         },
-                        1650: {
+                        1250: {
                             slidesPerView: 9,
                             spaceBetween: 10
                         }

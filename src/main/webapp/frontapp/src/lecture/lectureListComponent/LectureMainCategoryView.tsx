@@ -20,7 +20,12 @@ const TabLectureMainCategory = styled.div`
     padding: 2% 5px 2% 5px;
     margin: 0 25px 0 25px;
     text-align: center;
-    font-size: 22px;
+    font-size: 20px;
+    @media screen and (max-width: 1024px) {
+      font-size: 16px;
+      padding: 1% 3px 1% 3px;
+      margin: 0 10px 0 10px;
+    }
     font-weight: 600;
     cursor: pointer;
   }

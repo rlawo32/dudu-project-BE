@@ -18,6 +18,9 @@ const LectureEventView = styled.div`
     .les-item {
       position: relative;
       height: 380px;
+      @media screen and (max-width: 1024px) {
+        height: 250px;
+      }
       width: 550px;
       color: white;
       font-weight: bold;
@@ -48,10 +51,16 @@ const LectureEventView = styled.div`
         .les-item-name {
           margin-bottom: 10px;
           font-size: 26px;
+          @media screen and (max-width: 1024px) {
+            font-size: 22px;
+          }
         }
 
         .les-item-desc {
           font-size: 16px;
+          @media screen and (max-width: 1024px) {
+            font-size: 14px;
+          }
         }
       }
     }
@@ -119,8 +128,8 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
             <Swiper className="les-list"
                     modules={[Navigation, Pagination, Autoplay]}
                     speed={1000}
-                    slidesPerView={2}
                     spaceBetween={10}
+                    slidesPerView={2}
                     navigation
                     pagination={{ clickable: true }}
                     autoplay={{
@@ -128,7 +137,14 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
                         disableOnInteraction: false
                     }}
                     breakpoints={{
-
+                        400: {
+                            slidesPerView: 1,
+                            spaceBetween: 10
+                        },
+                        700: {
+                            slidesPerView: 2,
+                            spaceBetween: 10
+                        },
                     }}>
                 {lectureEventSwiper()}
             </Swiper>

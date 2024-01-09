@@ -6,6 +6,9 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
   right: 0;
   height: 100%;
   width: ${({$showBox}) => $showBox ? "350px" : 0};
+  @media screen and (max-width: 1024px) {
+    width: ${({$showBox}) => $showBox ? "200px" : 0};
+  }
   padding: ${({$showBox}) => $showBox ? "25px" : 0};
   border-left: 1px solid rgba(0,0,0,0.3);
   background-color: ${({theme}) => theme.boxBgColor};
@@ -137,6 +140,9 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
       .state-item-list.show-list {
         padding: 5px;
         height: 92px;
+        @media screen and (max-width: 1024px) {
+          height: 127px;
+        }
       }
 
       .state-arrow.show-list {
@@ -178,6 +184,9 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
       margin-right: 12px;
       background: none;
       font-size: 17px;
+      @media screen and (max-width: 1024px) {
+        font-size: 12px;
+      }
       
       .icon-custom {
         margin-right: 5px;
@@ -190,6 +199,10 @@ export const LectureSearchBox = styled.div<{ $showBox:boolean }>`
       background-color: ${({theme}) => theme.reverseBgColor};
       color: ${({theme}) => theme.reverseTextColor};
       font-size: 21px;
+      @media screen and (max-width: 1024px) {
+        width: 42%;
+        font-size: 16px;
+      }
       font-weight: bold;
     }
   }

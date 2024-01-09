@@ -5,26 +5,44 @@ import styled from "styled-components";
 
 import HeaderNavigation from "../../navigation/HeaderNavigation";
 import LectureListBoxView from "./LectureListBoxView";
+import LectureListToolView from "./LectureListToolView";
 
 const LectureEventList = styled.div`
   position: relative;
-  margin: 75px auto;
   
   .le-body {
-    padding: 0 20% 0 20%;
+    width: 1160px;
+    @media screen and (max-width: 1280px) {
+      width: calc(100% - 48px);
+    }
+    @media screen and (max-width: 1024px) {
+      margin: 0 2rem;
+      width: calc(100% - 4rem);
+    }
+    padding: 0;
+    margin: 2% auto;
     
     .lt-list-item {
-      width: 367px;
-
-      .lt-list-image {
-
-        img {
-          height: 310px;
-        }
+      width: 370px;
+      @media screen and (max-width: 1280px) {
+        width: calc((100% - 48px) / 2);
+      }
+      @media screen and (max-width: 1024px) {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border-bottom: 1px solid gray;
       }
 
-      .lt-list-title {
-        min-height: 55px;
+      .lt-list-image {
+        height: 300px;
+        @media screen and (max-width: 1280px) {
+          height: 400px;
+        }
+        @media screen and (max-width: 1024px) {
+          height: 100%;
+          width: 35%;
+        }
       }
     }
   }
@@ -33,7 +51,11 @@ const LectureEventList = styled.div`
 
 const LectureEventMainView = styled.div<{ $url:string }>`
   position: relative;
-  height: 380px;
+  height: 480px;
+  @media screen and (max-width: 1024px) {
+    height: 350px;
+  }
+  width: 100vw;
   overflow: hidden;
   
   .le-header-bg {
@@ -54,7 +76,6 @@ const LectureEventMainView = styled.div<{ $url:string }>`
     width: 750px;
     margin: 0 auto 70px;
     color: white;
-    cursor: pointer;
 
     .le-header-image {
       height: 100%;
@@ -72,7 +93,7 @@ const LectureEventMainView = styled.div<{ $url:string }>`
     .le-header-text {
       width: 100%;
       position: absolute;
-      top: 70%;
+      top: 80%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
@@ -81,10 +102,16 @@ const LectureEventMainView = styled.div<{ $url:string }>`
         margin-bottom: 10px;
         word-break: keep-all;
         font-size: 46px;
+        @media screen and (max-width: 1024px) {
+          font-size: 33px;
+        }
       }
 
       .le-header-desc {
         font-size: 26px;
+        @media screen and (max-width: 1024px) {
+          font-size: 17px;
+        }
       }
     }
   }
@@ -92,6 +119,13 @@ const LectureEventMainView = styled.div<{ $url:string }>`
 
 const LectureEventListView = () => {
     const location = useLocation();
+    const institutionNo:number = location.state.institutionNo;
+    const lectureEventNo:number = location.state.eventNo;
+
+    const [pageNo, setPageNo] = useState<number>(1);
+    const [sortType, setSortType] = useState<string>("");
+    const [totalPage, setTotalPage] = useState<number>(0);
+    const [isSearchBoxShow, setIsSearchBoxShow] = useState<boolean>(false);
 
     const [lectureList, setLectureList] = useState<{
         lectureNo:number;
@@ -132,16 +166,21 @@ const LectureEventListView = () => {
     });
 
     useEffect(():void => {
-
         const lectureList = async () => {
-            const institutionNo:number = location.state.institutionNo;
-            const lectureEventNo:number = location.state.eventNo;
+            const getEventData:object = {
+                pageNo: pageNo,
+                sortType: sortType,
+                institutionNo: institutionNo,
+                lectureEventNo: lectureEventNo
+            }
             await axios({
-                method: "GET",
+                method: "POST",
                 url: '/lecture/lectureEventList',
-                params: {institutionNo: institutionNo, lectureEventNo: lectureEventNo}
+                data: JSON.stringify(getEventData),
+                headers: {'Content-type': 'application/json'}
             }).then((res):void => {
-                setLectureList(res.data.data);
+                setLectureList(res.data.data.eventList);
+                setTotalPage(res.data.data.totalPage);
             }).catch((err):void => {
                 console.log(err.message);
             });
@@ -156,7 +195,7 @@ const LectureEventListView = () => {
             });
         }
         lectureList().then();
-    }, [])
+    }, [sortType])
 
     return (
         <LectureEventList>
@@ -182,6 +221,8 @@ const LectureEventListView = () => {
             </LectureEventMainView>
 
             <div className="le-body">
+                <LectureListToolView ltType={"E"} ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
+                                     institutionNo={institutionNo} setSortType={setSortType}/>
                 <LectureListBoxView ltCount={lectureList.length} lectureList={lectureList} />
             </div>
 

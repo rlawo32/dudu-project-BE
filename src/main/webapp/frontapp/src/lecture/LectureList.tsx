@@ -186,7 +186,7 @@ const LectureList = () => {
                             :
                             <></>
                     }
-                    <LectureListToolView ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
+                    <LectureListToolView ltType={"L"} ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
                                          institutionNo={institutionNo} setSortType={setSortType}/>
                     <LectureListBoxView ltCount={totalPage} lectureList={lectureList}/>
                     {

@@ -149,41 +149,65 @@ public class LectureListService {
 
     @Transactional
     public CommonResponseDto<?> findLectureEvent(HttpServletRequest request) {
-        LectureEventResponseDto lectureEventResponseDto = null;
+        LectureEventListResponseDto lectureEventListResponseDto = null;
         try {
             Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
 
             LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. No. : " + lectureEventNo));
 
-            lectureEventResponseDto = new LectureEventResponseDto(lectureEvent);
+            lectureEventListResponseDto = new LectureEventListResponseDto(lectureEvent);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("LectureEvent List", lectureEventResponseDto);
+        return CommonResponseDto.setSuccess("LectureEvent List", lectureEventListResponseDto);
     }
 
     @Transactional
-    public CommonResponseDto<?> findAllLectureEvent(HttpServletRequest request) {
-
+    public CommonResponseDto<?> findAllLectureEvent(LectureEventListRequestDto requestDto) {
         try {
-            Long institutionNo = Long.valueOf(request.getParameter("institutionNo"));
-            Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
+            Map<String, Object> result = new HashMap<>();
+
+            int pageNo = requestDto.getPageNo();
+            String sortType = requestDto.getSortType();
+            Long institutionNo = requestDto.getInstitutionNo();
+            Long lectureEventNo = requestDto.getLectureEventNo();
+
+            Sort sort = Sort.by("lecturePeriod").ascending();
+
+            if(sortType.equals("1")) {
+                sort = Sort.by("lecturePeriod").ascending();
+            } else if(sortType.equals("2")) {
+                sort = Sort.by("lectureCapacity").descending();
+            } else if(sortType.equals("3")) {
+                sort = Sort.by("lectureReception").descending();
+            } else if(sortType.equals("4")) {
+                sort = Sort.by("lectureFee").ascending();
+            } else if(sortType.equals("5")) {
+                sort = Sort.by("lectureFee").descending();
+            }
 
             if(lectureEventNo > 0) {
                 LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
 
-                List<LectureListResponseDto> list = lectureRepository.findAllByLectureEvent(lectureEvent).stream()
+                Page<Lecture> pageable = lectureRepository.findAllByLectureEvent(lectureEvent, PageRequest.of(0, (20*pageNo), sort));
+                Long totalPage = pageable.getTotalElements();
+
+                List<LectureListResponseDto> list = pageable.stream()
                         .map(LectureListResponseDto::new)
                         .collect(Collectors.toList());
-                return CommonResponseDto.setSuccess("LectureEvent List", list);
+
+                result.put("eventList", list);
+                result.put("totalPage", totalPage);
+
+                return CommonResponseDto.setSuccess("LectureEvent List", result);
             } else {
                 LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
 
-                List<LectureEventResponseDto> list = lectureEventRepository.findAllByLectureInstitution(lectureInstitution).stream()
-                        .map(LectureEventResponseDto::new)
+                List<LectureEventListResponseDto> list = lectureEventRepository.findAllByLectureInstitution(lectureInstitution).stream()
+                        .map(LectureEventListResponseDto::new)
                         .collect(Collectors.toList());
                 return CommonResponseDto.setSuccess("LectureEvent List", list);
             }

@@ -52,15 +52,22 @@ const LectureList = () => {
         lectureThumbnail: ''
     }]);
 
+    const [pageNo, setPageNo] = useState<number>(1);
+    const [sortType, setSortType] = useState<string>("");
+    const [totalPage, setTotalPage] = useState<number>(0);
+
     const [institutionNo, setInstitutionNo] = useState<number>(1);
     const [mainCategoryNo, setMainCategoryNo] = useState<number>(0);
     const [subCategoryNo, setSubCategoryNo] = useState<number>(0);
     const [isSelectBoxShow, setIsSelectBoxShow] = useState<boolean>(false);
     const [isSearchBoxShow, setIsSearchBoxShow] = useState<boolean>(false);
 
-    const {searchButton, searchText, ltDivisionArr, ltStateArr} = useLectureSearchDataStore();
+    const {searchButton, searchText,
+        ltDivisionArr, ltStateArr} = useLectureSearchDataStore();
 
-    const paging:object = {
+    const getListData:object = {
+        pageNo: pageNo,
+        sortType: sortType,
         institutionNo: institutionNo,
         mainCategoryNo: mainCategoryNo,
         subCategoryNo: subCategoryNo,
@@ -116,20 +123,26 @@ const LectureList = () => {
            await axios({
                method: "POST",
                url: '/lecture/lectureList',
-               data: JSON.stringify(paging),
+               data: JSON.stringify(getListData),
                headers: {'Content-type': 'application/json'}
            }).then((res):void => {
-               setLectureList(res.data.data);
+               setLectureList(res.data.data.lectureList);
+               setTotalPage(res.data.data.totalPage);
            }).catch((err):void => {
                console.log(err.message);
            });
         }
         lectureList().then();
-    }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton])
+    }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton, pageNo, sortType])
+
+    useEffect(() => {
+        setPageNo(1)
+    }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton, sortType])
 
     useEffect(() => {
         setMainCategoryNo(0);
         setSubCategoryNo(0);
+        setSortType("");
     }, [institutionNo])
 
     useEffect(() => {
@@ -173,8 +186,17 @@ const LectureList = () => {
                             :
                             <></>
                     }
-                    <LectureListToolView ltCount={lectureList.length} isSetBoxShow={setIsSearchBoxShow}/>
-                    <LectureListBoxView lectureList={lectureList}/>
+                    <LectureListToolView ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
+                                         institutionNo={institutionNo} setSortType={setSortType}/>
+                    <LectureListBoxView ltCount={totalPage} lectureList={lectureList}/>
+                    {
+                        totalPage > lectureList.length ?
+                            <div className="lt-more-btn" onClick={() => setPageNo(pageNo + 1)}>
+                                강좌 더보기 <FontAwesomeIcon icon={arrow} />
+                            </div>
+                            :
+                            <div />
+                    }
                 </div>
             </div>
 

@@ -2,9 +2,62 @@ import styled from "styled-components";
 
 export const LectureListView = styled.div<{$isShow:boolean}>`
   position: relative;
+  box-sizing: border-box;
   padding-top: 4%;
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 100;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf') format('opentype');
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 300;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf') format('opentype');
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 400;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf') format('opentype');
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf') format('opentype');
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 700;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf') format('opentype');
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 900;
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2') format('woff2'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff') format('woff'),
+    url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf') format('opentype');
+  }
+  font-family: "Noto Sans KR";
   
   .lt-list-view {
+    @media screen and (max-width: 1024px) {
+      margin-top: 5%;
+    }
     opacity: ${({$isShow}) => $isShow ? "0.5" : "1"};
   }
   
@@ -26,8 +79,16 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
   }
   
   .lt-list-header {
+    width: 1250px;
+    @media screen and (max-width: 1280px) {
+      width: calc(100% - 48px);
+    }
+    @media screen and (max-width: 1024px) {
+      margin: 0 2rem;
+      width: calc(100% - 4rem);
+    }
+    margin: auto;
     flex-direction: column;
-    padding: 0 18% 0 18%;
     text-align: center;
     pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
     
@@ -46,7 +107,10 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
         width: fit-content;
         color: ${({theme}) => theme.textColor};
         font-size: 35px;
-        font-weight: bold;
+        @media screen and (max-width: 1024px) {
+          font-size: 20px;
+        }
+        font-weight: 500;
         cursor: pointer;
       }
 
@@ -61,6 +125,9 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
         top: 105%;
         height: 0;
         width: 300px;
+        @media screen and (max-width: 1024px) {
+          width: 200px;
+        }
         margin: 10px auto 0;
         padding: 0;
         border: none;
@@ -79,6 +146,9 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
       ul.select-list li {
         padding: 7px 10px 7px 10px;
         font-size: 20px;
+        @media screen and (max-width: 1024px) {
+          font-size: 15px;
+        }
         line-height: 1.4em;
         transition: all 0.3s ease-in;
       }
@@ -93,6 +163,9 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
         border: 1px solid ${({theme}) => theme.textColor};
         padding: 15px 5px 15px 5px;
         height: 210px;
+        @media screen and (max-width: 1024px) {
+          height: 170px;
+        }
       }
 
       .select-arrow.show-list {
@@ -107,9 +180,27 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
 
   .lt-list-main {
     position: relative;
+    width: 1140px;
+    @media screen and (max-width: 1280px) {
+      width: calc(100% - 48px);
+    }
+    @media screen and (max-width: 1024px) {
+      margin: 0 2rem;
+      width: calc(100% - 4rem);
+    }
     margin: 3% auto;
-    padding: 0 20% 0 20%;
     pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
     
+    .lt-more-btn {
+      width: 25%;
+      margin: 40px auto 20px;
+      padding: 10px 15px 10px 15px;
+      border: 1px solid ${({theme}) => theme.textColor};
+      border-radius: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
 `;

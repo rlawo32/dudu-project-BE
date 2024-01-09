@@ -4,11 +4,33 @@ import axios from "axios";
 import styled from "styled-components";
 
 import HeaderNavigation from "../../navigation/HeaderNavigation";
-import LectureListBoxView from "./LectureListBoxView";
+import LectureListMainView from "./LectureListMainView";
 import LectureListToolView from "./LectureListToolView";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
 
 const LectureEventList = styled.div`
   position: relative;
+  
+  .lt-top-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #d8d8d8;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: center;
+    z-index: 2;
+    cursor: pointer;
+
+    .icon-custom {
+      position: relative;
+      top: 12px;
+      font-size: 25px;
+    }
+  }
   
   .le-body {
     width: 1160px;
@@ -200,6 +222,9 @@ const LectureEventListView = () => {
     return (
         <LectureEventList>
             <HeaderNavigation />
+            <div className="lt-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <FontAwesomeIcon icon={topIcon} className="icon-custom" />
+            </div>
 
             <LectureEventMainView $url={lectureEventOne.lectureEventThumbnail}>
                 <div className="le-header-bg">
@@ -223,7 +248,7 @@ const LectureEventListView = () => {
             <div className="le-body">
                 <LectureListToolView ltType={"E"} ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
                                      institutionNo={institutionNo} setSortType={setSortType}/>
-                <LectureListBoxView ltCount={lectureList.length} lectureList={lectureList} />
+                <LectureListMainView ltCount={lectureList.length} lectureList={lectureList} />
             </div>
 
         </LectureEventList>

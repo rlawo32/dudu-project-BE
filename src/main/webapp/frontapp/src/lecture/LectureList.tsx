@@ -5,13 +5,13 @@ import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureEventSwiperView from "./lectureListComponent/LectureEventSwiperView";
 import LectureMainCategoryView from "./lectureListComponent/LectureMainCategoryView";
 import LectureSubCategoryView from "./lectureListComponent/LectureSubCategoryView";
-import LectureListBoxView from "./lectureListComponent/LectureListBoxView";
+import LectureListMainView from "./lectureListComponent/LectureListMainView";
 import LectureListToolView from "./lectureListComponent/LectureListToolView";
 import LectureSearchBoxView from "./lectureListComponent/LectureSearchBoxView";
 import useLectureSearchDataStore from "../stores/useLectureSearchDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronDown as arrow, faSearch as search} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown as arrow, faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureList.style";
 
 const LectureList = () => {
@@ -158,6 +158,9 @@ const LectureList = () => {
     return (
         <Styled.LectureListView $isShow={isSearchBoxShow}>
             <LectureSearchBoxView isShow={isSearchBoxShow} setIsShow={setIsSearchBoxShow}/>
+            <div className="lt-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <FontAwesomeIcon icon={topIcon} className="icon-custom" />
+            </div>
             <div className="lt-list-view" onClick={() => {setIsSearchBoxShow(false)}}>
                 <div className="header-navigation">
                     <HeaderNavigation />
@@ -188,7 +191,7 @@ const LectureList = () => {
                     }
                     <LectureListToolView ltType={"L"} ltCount={totalPage} isSetBoxShow={setIsSearchBoxShow}
                                          institutionNo={institutionNo} setSortType={setSortType}/>
-                    <LectureListBoxView ltCount={totalPage} lectureList={lectureList}/>
+                    <LectureListMainView ltCount={totalPage} lectureList={lectureList}/>
                     {
                         totalPage > lectureList.length ?
                             <div className="lt-more-btn" onClick={() => setPageNo(pageNo + 1)}>

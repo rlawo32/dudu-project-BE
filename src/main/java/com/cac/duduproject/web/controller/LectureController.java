@@ -98,4 +98,8 @@ public class LectureController {
         imageUploadUtil.ImageDeleteS3(request);
     }
 
+    @GetMapping("/lectureDetail")
+    public CommonResponseDto<?> lectureDetail(HttpServletRequest request) {
+        return lectureListService.findLectureDetail(request);
+    }
 }

@@ -12,7 +12,7 @@ export const LectureListTool = styled.div<{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 12px;
     
     .tool-left {
 
@@ -27,13 +27,13 @@ export const LectureListTool = styled.div<{
         border: none;
         background: none;
         color: ${({theme}) => theme.textColor};
-        font-size: 15px;
+        font-size: 12px;
         font-weight: bold;
         cursor: pointer;
         
         .icon-custom {
           margin-right: 6px;
-          font-size: 18px;
+          font-size: 16px;
         }
       }
 

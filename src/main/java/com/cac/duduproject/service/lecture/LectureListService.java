@@ -229,6 +229,21 @@ public class LectureListService {
     }
 
     @Transactional
+    public CommonResponseDto<LectureDetailResponseDto> findLectureDetail(HttpServletRequest request) {
+        try {
+            Long lectureNo = Long.valueOf(request.getParameter("lectureNo"));
+            Lecture lecture = lectureRepository.findById(lectureNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+
+            LectureDetailResponseDto lectureDetailResponseDto = new LectureDetailResponseDto(lecture);
+
+            return CommonResponseDto.setSuccess("LectureEvent List", lectureDetailResponseDto);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
     @Scheduled(cron = "0 0 0 * * *")
     public CommonResponseDto<?> schedulerLectureStateUpdate() {
         try {

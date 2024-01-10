@@ -76,7 +76,7 @@ const CustomQuillEditorView = styled.div`
     background-color: ${({theme}) => theme.boxBgColor};
     
     .ql-container {
-      height: 350px;
+      height: 650px;
       width: 100%;
       border: none;
       font-size: 25px;

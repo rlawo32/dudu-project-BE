@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 
@@ -6,13 +7,13 @@ import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureRoomWrite from "./lectureWriteComponent/LectureRoomWrite";
 import LectureSubCategoryWrite from "./lectureWriteComponent/LectureSubCategoryWrite";
 import LectureQuillEditor from "./lectureWriteComponent/LectureQuillEditor";
+import LectureItemAddition from "./lectureWriteComponent/LectureItemAddition";
 import * as timeSelectBox from "./lectureWriteComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePicker";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureWrite.style";
-import {useNavigate} from "react-router-dom";
 
 const LectureWrite = () => {
     const navigate = useNavigate();
@@ -81,10 +82,11 @@ const LectureWrite = () => {
     const [lectureInstitution, setLectureInstitution] = useState<string>("1");
     const [lectureMainCategory, setLectureMainCategory] = useState<string>("1");
     const [lectureSubCategory, setLectureSubCategory] = useState<string>("");
+    const [lectureSchedule, setLectureSchedule] = useState<string>("");
+    const [materialsAndSignificant, setMaterialsAndSignificant] = useState<string>("");
 
     const [thumbnailPreviewName, setThumbnailPreviewName] = useState<string>("");
     const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState<string>("");
-    const [thumbnailPreviewSize, setThumbnailPreviewSize] = useState<number>(0);
     const [lectureThumbnail, setLectureThumbnail] = useState<{
         imgType:string;
         imgName:string;
@@ -373,19 +375,6 @@ const LectureWrite = () => {
                     </div>
                 </div>
 
-                <div className="lt-write-content">
-                    <div className="lt-section-title">
-                        세부 내용 작성
-                    </div>
-                    <div className="lt-description">
-                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
-                    </div>
-                </div>
-
-                {/*<div>*/}
-                {/*    <input type="file" />*/}
-                {/*</div>*/}
-
                 <div className="lt-period">
                     <div className="period-datePicker">
                         <div className="lt-section-title">
@@ -448,6 +437,31 @@ const LectureWrite = () => {
                     </span>
                     <div className="lt-write-submit">
                         <button onClick={() => lectureWriteHandler()}>작성하기</button>
+                    </div>
+                </div>
+
+                <div className="lt-write-content">
+                    <div className="lt-section-title">
+                        세부 내용 작성
+                    </div>
+                    <div className="lt-description">
+                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
+                    </div>
+                </div>
+
+                <div className="lt-write-additional">
+                    <div className="lt-write-schedule">
+                        <div className="lt-section-title">
+                            강의 세부 일정
+                        </div>
+                        <LectureItemAddition type={"S"} />
+                    </div>
+
+                    <div className="lt-write-materials">
+                        <div className="lt-section-title">
+                            준비물 및 특이사항
+                        </div>
+                        <LectureItemAddition type={"M"} />
                     </div>
                 </div>
             </div>

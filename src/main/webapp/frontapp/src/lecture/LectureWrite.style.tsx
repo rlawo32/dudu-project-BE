@@ -231,9 +231,22 @@ export const LectureWriteView = styled.div`
           font-size: 12px;
         }
         font-size: 20px;
+        font-weight: bold;
         cursor: pointer;
         
       }
+    }
+  }
+  
+  .lt-write-additional {
+    display: flex;
+    
+    .lt-write-schedule {
+      margin-right: 20px;
+    }
+    
+    .lt-write-materials {
+      
     }
   }
 `;

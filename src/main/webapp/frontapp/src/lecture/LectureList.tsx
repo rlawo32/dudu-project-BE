@@ -109,7 +109,7 @@ const LectureList = () => {
                 method: "GET",
                 url: "/lecture/lectureInstitutionList"
             }).then((res):void => {
-                setInstitutionNo(res.data.data[0].institutionNo);
+                setInstitutionNo(res.data.data[1].institutionNo);
                 setInstitutionList(res.data.data);
             }).catch((err):void => {
                 console.log(err.message);

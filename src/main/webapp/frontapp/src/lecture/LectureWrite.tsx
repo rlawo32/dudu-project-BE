@@ -158,14 +158,14 @@ const LectureWrite = () => {
         let materialsAndSignificant:string = "";
         for(let i:number=0; i<lectureScheduleData.length; i++) {
             if(i > 0) {
-                lectureSchedule += "&" + lectureScheduleData[i].content;
+                lectureSchedule += "^*" + lectureScheduleData[i].content;
             } else {
                 lectureSchedule += lectureScheduleData[i].content;
             }
         }
         for(let i:number=0; i<materialsAndSignificantData.length; i++) {
             if(i > 0) {
-                materialsAndSignificant += "&" + materialsAndSignificantData[i].content;
+                materialsAndSignificant += "^*" + materialsAndSignificantData[i].content;
             } else {
                 materialsAndSignificant += materialsAndSignificantData[i].content;
             }

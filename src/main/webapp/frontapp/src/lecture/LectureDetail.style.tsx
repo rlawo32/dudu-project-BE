@@ -7,7 +7,7 @@ export const LectureDetailView = styled.div`
   word-break: keep-all;
   overflow-wrap: break-word;
   line-height: 1.75;
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans KR", sans-serif;
   
   .lt-detail-main {
     display: flex;

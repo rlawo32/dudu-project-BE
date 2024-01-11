@@ -43,8 +43,8 @@ const LectureDetail = () => {
     ];
 
     const onActiveArrangement = (result:any):void => {
-        setLectureScheduleArr(result.lectureSchedule.split("&"));
-        setMaterialsAndSignificantArr(result.materialsAndSignificant.split("&"));
+        setLectureScheduleArr(result.lectureSchedule.split("^*"));
+        setMaterialsAndSignificantArr(result.materialsAndSignificant.split("^*"));
 
         const startDate:dayjs.Dayjs = dayjs(result.lecturePeriod.substring(0, result.lecturePeriod.indexOf("~")));
         const endDate:dayjs.Dayjs = dayjs(result.lecturePeriod.substring(result.lecturePeriod.indexOf("~") + 1));

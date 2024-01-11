@@ -303,13 +303,9 @@ const LectureQuillEditor = (props: Props) => {
                     <select className="ql-align" />
                 </span>
                 <span className="ql-formats">
+                    <button className="ql-code-block" />
                     <button className="ql-link" />
                     <button className="ql-image" />
-                </span>
-                <span className="ql-formats">
-                    <button className="ql-formula" />
-                    <button className="ql-code-block" />
-                    <button className="ql-clean" />
                 </span>
             </div>
 

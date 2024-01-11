@@ -59,6 +59,14 @@ public class Lecture {
     @NotEmpty
     private String lectureDescription;
 
+    @Column(name = "lecture_schedule", columnDefinition = "TEXT")
+    @NotEmpty
+    private String lectureSchedule;
+
+    @Column(name = "lecture_materialsAndSignificant", columnDefinition = "TEXT")
+    @NotEmpty
+    private String materialsAndSignificant;
+
     @Column(name = "lecture_division")
     @NotBlank
     private String lectureDivision;
@@ -121,8 +129,8 @@ public class Lecture {
 
     @Builder
     public Lecture(String lectureTitle, String lecturePeriod, String lectureTime, String lectureReception,
-                   int lectureCapacity, Long lectureFee, String lectureDescription, String lectureDivision,
-                   int lectureCount,
+                   int lectureCapacity, Long lectureFee, String lectureDescription, String lectureSchedule,
+                   String materialsAndSignificant, String lectureDivision, int lectureCount,
                    Member member, LectureInstitution lectureInstitution, LectureRoom lectureRoom,
                    LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory,
                    LectureState lectureState) {
@@ -133,6 +141,8 @@ public class Lecture {
         this.lectureCapacity = lectureCapacity;
         this.lectureFee = lectureFee;
         this.lectureDescription = lectureDescription;
+        this.lectureSchedule = lectureSchedule;
+        this.materialsAndSignificant = materialsAndSignificant;
         this.lectureDivision = lectureDivision;
         this.lectureCount = lectureCount;
         this.member = member;

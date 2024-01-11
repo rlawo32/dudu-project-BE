@@ -30,10 +30,10 @@ const LectureSearchBoxView = (props : { isShow: boolean; setIsShow: React.Dispat
 
     const {
         searchButton, setSearchButton, searchText, setSearchText,
-        ltDivisionArr, setLtDivisionArr, removeLtDivisionArr,
-        removeAllLtDivisionArr,
-        ltStateArr, setLtStateArr, removeLtStateArr,
-        removeAllLtStateArr
+        ltDivisionArr, setLtDivisionArr,
+        removeLtDivisionArr, removeAllLtDivisionArr,
+        ltStateArr, setLtStateArr,
+        removeLtStateArr, removeAllLtStateArr
     } = useLectureSearchDataStore();
 
     const onClickSearchReset = ():void => {

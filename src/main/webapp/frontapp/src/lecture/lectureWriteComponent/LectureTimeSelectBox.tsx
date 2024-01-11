@@ -65,10 +65,10 @@ const LectureTimeSelectBox = () => {
 
     const customDowSelectBox = ():any[] => {
         const dowArr:any[] = [];
-        const daysOfWeek:string[] = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+        const daysOfWeek:string[] = ['요일선택', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
         for(let i:number=0; i<daysOfWeek.length; i++) {
-            dowArr.push(<option value={i+1} key={i}>{daysOfWeek[i]}</option>);
+            dowArr.push(<option value={i} key={i}>{daysOfWeek[i]}</option>);
         }
 
         return dowArr;

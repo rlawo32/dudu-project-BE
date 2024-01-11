@@ -65,9 +65,14 @@ const LectureRoomWrite = () => {
     }[]>([]);
 
     const listData:object = {
+        pageNo: 1,
+        sortType: "",
         institutionNo: institutionNo,
         mainCategoryNo: mainCategoryNo,
-        subCategoryNo: subCategoryNo
+        subCategoryNo: subCategoryNo,
+        searchText: "",
+        searchDivision: [],
+        searchState: []
     }
 
     const changeEventThumbnailHandler = async(file:FileList|null):Promise<void> => {
@@ -184,11 +189,12 @@ const LectureRoomWrite = () => {
     useEffect(() => {
         const lectureList = async () => {
             await axios({
-                method: "GET",
+                method: "POST",
                 url: '/lecture/lectureList',
-                params: listData
+                data: JSON.stringify(listData),
+                headers: {'Content-type': 'application/json'}
             }).then((res):void => {
-                setLectureList(res.data.data);
+                setLectureList(res.data.data.lectureList);
             }).catch((err):void => {
                 console.log(err.message);
             });

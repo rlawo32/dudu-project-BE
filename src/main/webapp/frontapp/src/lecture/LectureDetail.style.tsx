@@ -21,6 +21,15 @@ export const LectureDetailView = styled.div`
       width: calc(100% - 490px);
       margin-top: 30px;
       
+      img {
+        height: 100%;
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        object-fit: cover;
+        vertical-align: top;
+      }
+      
       p {
         text-align: center;
         display: block;
@@ -165,7 +174,7 @@ export const LectureDetailView = styled.div`
               margin: 16px 0 0;
 
               .dt {
-                width: 94px;
+                width: 104px;
                 margin-right: 40px;
                 opacity: 0.8;
               }

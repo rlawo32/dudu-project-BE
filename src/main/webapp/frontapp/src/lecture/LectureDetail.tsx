@@ -48,8 +48,8 @@ const LectureDetail = () => {
 
         const startDate:dayjs.Dayjs = dayjs(result.lecturePeriod.substring(0, result.lecturePeriod.indexOf("~")));
         const endDate:dayjs.Dayjs = dayjs(result.lecturePeriod.substring(result.lecturePeriod.indexOf("~") + 1));
-        const dow:string = result.lectureTime.substring(result.lectureTime.indexOf("(") + 1, result.lectureTime.indexOf("(") + 2);
-
+        let dow:string = result.lectureTime.substring(result.lectureTime.indexOf("(") + 1, result.lectureTime.indexOf("(") + 2);
+        if(dow === '7') {dow = '0';}
         const dayDiff:number = endDate.diff(startDate, "day");
 
         for (let i:number=0; i <= dayDiff; i++) {
@@ -69,7 +69,6 @@ const LectureDetail = () => {
             }
         }
     }
-
 
     useEffect(() => {
         const lectureDetail = async () => {
@@ -103,7 +102,7 @@ const LectureDetail = () => {
                         <div className="detail-section-item">
                             <ul>
                                 {lectureScheduleArr.map((item, idx) => (
-                                    <div className="schedule-item">
+                                    <div className="schedule-item" key={idx}>
                                         <div className="schedule-date">
                                             {lectureScheduleDateArr[idx]}
                                         </div>

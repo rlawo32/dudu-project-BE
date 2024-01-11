@@ -27,6 +27,11 @@ export const LectureWriteView = styled.div`
     font-weight: bold;
   }
   
+  .essential-mark {
+    color: orangered;
+    margin-left: 3px;
+  }
+  
   .lt-section-title {
     margin-top: 20px;
     margin-bottom: 3px;
@@ -34,7 +39,9 @@ export const LectureWriteView = styled.div`
     font-weight: bold;
   }
   
-  .lt-write-content {
+  .lt-write-detail {
+    display: flex;
+    justify-content: space-between;
     height: fit-content;
     @media all and (max-width: 1024px) {
       width: 700px;
@@ -42,7 +49,21 @@ export const LectureWriteView = styled.div`
     @media all and (max-width: 740px) {
       width: 450px;
     }
-    width: 900px;
+    width: 1160px;
+    
+    .lt-write-content {
+      width: 870px;
+    }
+    
+    .lt-write-additional {
+
+      .lt-write-schedule {
+      }
+
+      .lt-write-materials {
+
+      }
+    }
   }
   
   select {
@@ -55,23 +76,25 @@ export const LectureWriteView = styled.div`
     font-weight: bold;
   }
   
-  .lt-select-title {
-    color: orangered;
-    margin-bottom: 3px;
-  }
-  
   .lt-input-header {
     display: flex;
-    justify-content: space-between;
     
     .header-left-view {
-      margin-right: 20px;
+      width: 870px;
+      margin-right: 80px;
       
       .lt-section-select {
         display: flex;
+        justify-content: space-between;
+
+        .lt-select-title {
+          color: orangered;
+          margin-bottom: 3px;
+        }
         
         .lt-category {
-          margin-right: 35px;
+          display: inline-block;
+          width: 300px;
 
           .lt-mainCategory {
             display: inline-block;
@@ -84,6 +107,8 @@ export const LectureWriteView = styled.div`
         }
         
         .lt-position {
+          display: inline-block;
+          width: 450px;
 
           .lt-institution {
             display: inline-block;
@@ -94,9 +119,20 @@ export const LectureWriteView = styled.div`
             display: inline-block;
           }
         }
-
-        .lt-title {
-
+        
+        .lt-teacher {
+          display: inline-block;
+          
+          .lt-select-title {
+            visibility: hidden;
+          }
+        }
+      }
+      
+      .lt-name {
+        
+        input {
+          width: calc(100% - 26px);
         }
       }
     }
@@ -172,15 +208,22 @@ export const LectureWriteView = styled.div`
   
   .input-capacity {
     height: 10px;
-    width: 40px;
+    width: 50px;
   }
   
   .input-fee {
     height: 10px;
-    width: 75px;
+    width: 85px;
   }
   
   .lt-period {
+    display: flex;
+    justify-content: space-between;
+
+    .reception-datePicker {
+      display: inline-block;
+      margin-right: 30px;
+    }
     
     .period-datePicker {
       display: inline-block;
@@ -192,34 +235,25 @@ export const LectureWriteView = styled.div`
       margin-right: 30px;
     }
 
-    .lt-teacher {
+    .lt-capacity {
       display: inline-block;
-      margin-right: 30px;
     }
   }
-
-  .lt-reception {
+  
+  .lt-input-footer {
     display: flex;
     justify-content: space-between;
-    align-items: self-end;
-    
-    .reception-datePicker {
-      display: inline-block;
-      margin-right: 30px;
-    }
-    
+
     .lt-fee {
       display: inline-block;
       margin-right: 30px;
     }
 
-    .lt-capacity {
-      display: inline-block;
-    }
-
     .lt-write-submit {
       display: inline-block;
-      
+      position: relative;
+      bottom: -30px;
+
       button {
         border: ${({theme}) => theme.borderColor};
         border-radius: 10px;
@@ -233,20 +267,8 @@ export const LectureWriteView = styled.div`
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
-        
+
       }
-    }
-  }
-  
-  .lt-write-additional {
-    display: flex;
-    
-    .lt-write-schedule {
-      margin-right: 20px;
-    }
-    
-    .lt-write-materials {
-      
     }
   }
 `;

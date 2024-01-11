@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import LectureRoomWrite from "./lectureWriteComponent/LectureRoomWrite";
@@ -10,6 +9,7 @@ import LectureQuillEditor from "./lectureWriteComponent/LectureQuillEditor";
 import LectureItemAddition from "./lectureWriteComponent/LectureItemAddition";
 import * as timeSelectBox from "./lectureWriteComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePicker";
+import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
@@ -82,8 +82,6 @@ const LectureWrite = () => {
     const [lectureInstitution, setLectureInstitution] = useState<string>("1");
     const [lectureMainCategory, setLectureMainCategory] = useState<string>("1");
     const [lectureSubCategory, setLectureSubCategory] = useState<string>("");
-    const [lectureSchedule, setLectureSchedule] = useState<string>("");
-    const [materialsAndSignificant, setMaterialsAndSignificant] = useState<string>("");
 
     const [thumbnailPreviewName, setThumbnailPreviewName] = useState<string>("");
     const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState<string>("");
@@ -100,7 +98,9 @@ const LectureWrite = () => {
         imgSize:number;
     }[]>([]);
 
-    const {lecturePeriodData, lectureTimeData, lectureReceptionData} = UseLectureDataStore();
+    const {lecturePeriodData, lectureTimeData, lectureReceptionData,
+        materialsAndSignificantData, lectureScheduleData,
+        onChangeLectureSchedule, onChangeMaterialsAndSignificant} = UseLectureDataStore();
 
     const changeThumbnailHandler = async(file:FileList|null):Promise<void> => {
         if(file !== null) {
@@ -154,6 +154,22 @@ const LectureWrite = () => {
     }
 
     const lectureWriteHandler = ():void => {
+        let lectureSchedule:string = "";
+        let materialsAndSignificant:string = "";
+        for(let i:number=0; i<lectureScheduleData.length; i++) {
+            if(i > 0) {
+                lectureSchedule += "&" + lectureScheduleData[i].content;
+            } else {
+                lectureSchedule += lectureScheduleData[i].content;
+            }
+        }
+        for(let i:number=0; i<materialsAndSignificantData.length; i++) {
+            if(i > 0) {
+                materialsAndSignificant += "&" + materialsAndSignificantData[i].content;
+            } else {
+                materialsAndSignificant += materialsAndSignificantData[i].content;
+            }
+        }
         const lectureData:object = {
             memberNo: lectureTeacher,
             lectureTitle: lectureTitle,
@@ -168,7 +184,9 @@ const LectureWrite = () => {
             mainCategoryNo: lectureMainCategory,
             subCategoryNo: lectureSubCategory,
             lectureImage: lectureImageArr,
-            lectureThumbnail: lectureThumbnail
+            lectureThumbnail: lectureThumbnail,
+            lectureSchedule: lectureSchedule,
+            materialsAndSignificant: materialsAndSignificant,
         }
         axios({
             method: "POST",
@@ -185,6 +203,8 @@ const LectureWrite = () => {
 
     // lectureWriteDataList
     useEffect(() => {
+        onChangeLectureSchedule([{id:0, content:''}]);
+        onChangeMaterialsAndSignificant([{id:0, content:''}]);
         const selectDataList = async ():Promise<void> => {
             await axios({
                 method: "GET",
@@ -250,14 +270,14 @@ const LectureWrite = () => {
             })
         }
         selectLectureSubCategoryList().then();
-    }, [lectureMainCategory])
+    }, [lectureMainCategory]);
 
     // datePicker useEffect
     useEffect(() => {
         setLecturePeriod(lecturePeriodData);
         setLectureTime(lectureTimeData);
         setLectureReceptionPeriod(lectureReceptionData);
-    }, [lecturePeriodData, lectureTimeData, lectureReceptionData])
+    }, [lecturePeriodData, lectureTimeData, lectureReceptionData]);
 
     return (
         <Styled.LectureWriteView>
@@ -341,6 +361,25 @@ const LectureWrite = () => {
                                     </select>
                                 </div>
                             </div>
+                            <div className="lt-teacher">
+                                <div className="lt-section-title">
+                                    강사명
+                                </div>
+                                <div className="lt-select-title">
+                                    강사명
+                                </div>
+                                <select
+                                    value={lectureTeacher}
+                                    onChange={(e) => setLectureTeacher(e.target.value)}
+                                    className="select-teacher"
+                                >
+                                    {lectureTeacherList.map((option) => (
+                                        <option key={option.memberNo} value={option.memberNo}>
+                                            {option.memberName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                         <div className="lt-name">
                             <div className="lt-section-title">
@@ -376,6 +415,12 @@ const LectureWrite = () => {
                 </div>
 
                 <div className="lt-period">
+                    <div className="reception-datePicker">
+                        <div className="lt-section-title">
+                            접수기간 설정
+                        </div>
+                        <periodDatePicker.default type={"reception"} />
+                    </div>
                     <div className="period-datePicker">
                         <div className="lt-section-title">
                             강의기간 설정
@@ -388,80 +433,58 @@ const LectureWrite = () => {
                         </div>
                         <timeSelectBox.default />
                     </div>
-                    <div className="lt-teacher">
+                    <div className="lt-capacity">
                         <div className="lt-section-title">
-                            강사명
+                            인원
                         </div>
-                        <select
-                            value={lectureTeacher}
-                            onChange={(e) => setLectureTeacher(e.target.value)}
-                            className="select-teacher"
-                        >
-                            {lectureTeacherList.map((option) => (
-                                <option key={option.memberNo} value={option.memberNo}>
-                                    {option.memberName}
-                                </option>
-                            ))}
-                        </select>
+                        <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)}
+                               className="input-capacity" value={lectureCapacity} step={1} />
+                        <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
+                            명
+                        </span>
                     </div>
                 </div>
 
-                <div className="lt-reception">
-                    <span>
-                        <div className="reception-datePicker">
-                            <div className="lt-section-title">
-                                접수기간 설정
-                            </div>
-                            <periodDatePicker.default type={"reception"} />
+                <div className="lt-write-detail">
+                    <div className="lt-write-content">
+                        <div className="lt-section-title">
+                            내용 작성
                         </div>
-                        <div className="lt-fee">
-                            <div className="lt-section-title">
-                                강의료
-                            </div>
-                            <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)}
-                                   className="input-fee" value={lectureFee} step={1000} />
-                            <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
-                                원
-                            </span>
+                        <div className="lt-description">
+                            <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
                         </div>
-                        <div className="lt-capacity">
+                    </div>
+                    <div className="lt-write-additional">
+                        <div className="lt-write-schedule">
                             <div className="lt-section-title">
-                                인원
+                                강의 일정 작성
                             </div>
-                            <input type="number" onChange={(e) => setLectureCapacity(e.target.valueAsNumber)}
-                                   className="input-capacity" value={lectureCapacity} step={1} />
-                            <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
-                                명
-                            </span>
+                            <LectureItemAddition type={"S"} />
                         </div>
-                    </span>
+
+                        <div className="lt-write-materials">
+                            <div className="lt-section-title">
+                                준비물 및 특이사항 작성
+                            </div>
+                            <LectureItemAddition type={"M"} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="lt-input-footer">
+                    <div className="lt-fee">
+                        <div className="lt-section-title">
+                            강의료
+                        </div>
+                        <input type="number" onChange={(e) => setLectureFee(e.target.valueAsNumber)}
+                               className="input-fee" value={lectureFee} step={1000} />
+                        <span style={{fontSize: "20px", fontWeight: "bold", marginLeft: "3px"}}>
+                            원
+                        </span>
+                    </div>
+
                     <div className="lt-write-submit">
                         <button onClick={() => lectureWriteHandler()}>작성하기</button>
-                    </div>
-                </div>
-
-                <div className="lt-write-content">
-                    <div className="lt-section-title">
-                        세부 내용 작성
-                    </div>
-                    <div className="lt-description">
-                        <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
-                    </div>
-                </div>
-
-                <div className="lt-write-additional">
-                    <div className="lt-write-schedule">
-                        <div className="lt-section-title">
-                            강의 세부 일정
-                        </div>
-                        <LectureItemAddition type={"S"} />
-                    </div>
-
-                    <div className="lt-write-materials">
-                        <div className="lt-section-title">
-                            준비물 및 특이사항
-                        </div>
-                        <LectureItemAddition type={"M"} />
                     </div>
                 </div>
             </div>

@@ -23,6 +23,8 @@ public class LectureWriteRequestDto {
     private String lectureDescription;
     private List<ImageInsertRequestDto> lectureImage;
     private List<ImageInsertRequestDto> lectureThumbnail;
+    private String lectureSchedule;
+    private String materialsAndSignificant;
 
     //
     private String lectureDivision;
@@ -50,6 +52,8 @@ public class LectureWriteRequestDto {
                 .lectureCapacity(lectureCapacity)
                 .lectureFee(lectureFee)
                 .lectureDescription(lectureDescription)
+                .lectureSchedule(lectureSchedule)
+                .materialsAndSignificant(materialsAndSignificant)
                 .lectureDivision(lectureDivision)
                 .lectureCount(lectureCount)
                 .member(member)

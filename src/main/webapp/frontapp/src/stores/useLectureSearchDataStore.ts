@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
 interface lectureSearchDataStore {
-    searchButton: boolean;
-    setSearchButton: (btn: boolean) => void;
-    searchText: string;
-    setSearchText: (text: string) => void;
+    searchButton:boolean;
+    setSearchButton: (btn:boolean) => void;
+    searchText:string;
+    setSearchText: (text:string) => void;
     ltDivisionArr: {idx:number; dvItem:string}[];
-    setLtDivisionArr: (idx: number, dvItem: string) => void;
-    removeLtDivisionArr: (rmItem: string) => void;
+    setLtDivisionArr: (idx:number, dvItem:string) => void;
+    removeLtDivisionArr: (rmItem:string) => void;
     removeAllLtDivisionArr: () => void;
     ltStateArr: {idx:number; stItem:number; stName:string}[];
-    setLtStateArr: (idx: number, stItem: number, stName:string) => void;
-    removeLtStateArr: (rmItem: number) => void;
+    setLtStateArr: (idx:number, stItem:number, stName:string) => void;
+    removeLtStateArr: (rmItem:number) => void;
     removeAllLtStateArr: () => void;
 }
 

@@ -2,15 +2,19 @@ import { create } from "zustand";
 
 interface lectureWriteDataStore {
     lectureTimeData: string;
-    setLectureTimeData: (time: string) => void;
+    setLectureTimeData: (time:string) => void;
     lecturePeriodData: string;
-    setLecturePeriodData: (period: string) => void;
+    setLecturePeriodData: (period:string) => void;
     lectureReceptionData: string;
     setLectureReceptionData: (reception: string) => void;
-    materialsAndSignificantData: string;
-    setMaterialsAndSignificantData: (materialsAndSignificant: string) => void;
-    lectureScheduleData: string;
-    setLectureScheduleData: (schedule: string) => void;
+    lectureScheduleData: {id:number; content:string;}[];
+    setLectureScheduleData: (id:number, content:string) => void;
+    onChangeLectureSchedule: (content:{id:number; content:string;}[]) => void;
+    removeLectureScheduleData: (rmItem:number) => void;
+    materialsAndSignificantData: {id:number; content:string;}[];
+    setMaterialsAndSignificantData: (id:number, content:string) => void;
+    onChangeMaterialsAndSignificant: (content:{id:number; content:string;}[]) => void;
+    removeMaterialsAndSignificantData: (rmItem:number) => void;
 }
 
 const useLectureWriteDataStore = create<lectureWriteDataStore>((set) => ({
@@ -29,15 +33,31 @@ const useLectureWriteDataStore = create<lectureWriteDataStore>((set) => ({
         set((state: {lectureReceptionData:string}) => ({
             lectureReceptionData: (state.lectureReceptionData = reception),
         })),
-    materialsAndSignificantData: "",
-    setMaterialsAndSignificantData: (materialsAndSignificant:string) =>
-        set((state: {materialsAndSignificantData:string}) => ({
-            materialsAndSignificantData: (state.materialsAndSignificantData = materialsAndSignificant),
+    lectureScheduleData: [{id:0, content:''}],
+    setLectureScheduleData: (id:number, content:string) =>
+        set((state) => ({
+            lectureScheduleData: [...state.lectureScheduleData, {id, content}],
         })),
-    lectureScheduleData: "",
-    setLectureScheduleData: (schedule:string) =>
-        set((state: {lectureScheduleData:string}) => ({
-            lectureScheduleData: (state.lectureScheduleData = schedule),
+    onChangeLectureSchedule: (content:{id:number; content:string;}[]) =>
+        set((state) => ({
+            lectureScheduleData: content
+        })),
+    removeLectureScheduleData: (rmItem:number) =>
+        set((state) => ({
+            lectureScheduleData: state.lectureScheduleData.filter((stArr) => stArr.id !== rmItem),
+        })),
+    materialsAndSignificantData: [{id:0, content:''}],
+    setMaterialsAndSignificantData: (id:number, content:string) =>
+        set((state) => ({
+            materialsAndSignificantData: [...state.materialsAndSignificantData, {id, content}],
+        })),
+    onChangeMaterialsAndSignificant: (content:{id:number; content:string;}[]) =>
+        set((state) => ({
+            materialsAndSignificantData: content
+        })),
+    removeMaterialsAndSignificantData: (rmItem:number) =>
+        set((state) => ({
+            materialsAndSignificantData: state.materialsAndSignificantData.filter((stArr) => stArr.id !== rmItem),
         })),
 }));
 

@@ -22,18 +22,10 @@ export const LectureDetailView = styled.div`
       margin-top: 30px;
       
       img {
-        height: 100%;
-        width: 100%;
         border: none;
         border-radius: 10px;
         object-fit: cover;
         vertical-align: top;
-      }
-      
-      p {
-        text-align: center;
-        display: block;
-        margin: 0;
       }
 
       ul {
@@ -49,8 +41,10 @@ export const LectureDetailView = styled.div`
         font-weight: bold;
       }
       
-      .detail-content {
-        
+      .detail-content > * {
+        text-align: center;
+        padding: 0;
+        margin: 0;
       }
       
       .detail-schedule {
@@ -120,7 +114,7 @@ export const LectureDetailView = styled.div`
                 border: none;
                 border-radius: 10px;
                 margin-right: 6px;
-                padding: 1px 8px;
+                padding: 2px 15px;
                 font-size: 13px;
               }
 
@@ -129,7 +123,7 @@ export const LectureDetailView = styled.div`
                 border: 1px solid gray;
                 border-radius: 15px;
                 margin-right: 6px;
-                padding: 1px 8px;
+                padding: 1px 15px;
                 font-size: 13px;
               }
             }

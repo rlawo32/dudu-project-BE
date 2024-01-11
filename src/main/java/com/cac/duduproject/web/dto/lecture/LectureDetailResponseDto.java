@@ -7,8 +7,9 @@ import lombok.Data;
 public class LectureDetailResponseDto {
 
     private Long lectureNo;
-    private String lectureState;
+    private Long lectureStateNo;
     private String lectureTitle;
+    private String lectureThumbnail;
     private String lectureInstitution;
     private String lectureDivision;
     private String lectureTeacher;
@@ -21,11 +22,19 @@ public class LectureDetailResponseDto {
     private String lectureReception;
     private String lectureContact;
     private String lectureDescription;
+    private String lectureSchedule;
+    private String materialsAndSignificant;
 
     public LectureDetailResponseDto(Lecture lecture) {
         this.lectureNo = lecture.getLectureNo();
-        this.lectureState = lecture.getLectureState().getLectureStateName();
+        this.lectureStateNo = lecture.getLectureState().getLectureStateNo();
         this.lectureTitle = lecture.getLectureTitle();
+        for(int i=0; i<lecture.getLectureImages().size(); i++) {
+            if(lecture.getLectureImages().get(i).getLectureImageType().equals("T")) {
+                this.lectureThumbnail = lecture.getLectureImages().get(i).getLectureImageUrl();
+                break;
+            }
+        }
         this.lectureInstitution = lecture.getLectureInstitution().getInstitutionName();
         this.lectureDivision = lecture.getLectureDivision();
         this.lectureTeacher = lecture.getMember().getMemberName();
@@ -38,5 +47,7 @@ public class LectureDetailResponseDto {
         this.lectureReception = lecture.getLectureReception();
         this.lectureContact = lecture.getLectureInstitution().getInstitutionContact();
         this.lectureDescription = lecture.getLectureDescription();
+        this.lectureSchedule = lecture.getLectureSchedule();
+        this.materialsAndSignificant = lecture.getMaterialsAndSignificant();
     }
 }

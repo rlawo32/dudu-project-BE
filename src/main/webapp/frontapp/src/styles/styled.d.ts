@@ -7,6 +7,7 @@ declare module "styled-components" {
         textColor: string;
         reverseTextColor: string;
         borderColor: string;
+        borderBottomColor: string;
         boxBgColor: string;
         inputBgColor: string;
         toggleColor: string;

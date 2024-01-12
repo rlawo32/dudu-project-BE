@@ -39,7 +39,7 @@ const SignIn = ():any => {
             console.log(responseData)
             if(responseData.data) {
                 const { grantType, accessToken, refreshToken, refreshTokenExpiresIn } = responseData.data;
-                const expires:Date  = new Date(refreshTokenExpiresIn);
+                const expires  = new Date(refreshTokenExpiresIn);
 
                 axios.defaults.headers.common['Authorization'] = `${grantType} ${accessToken}`;
 
@@ -48,8 +48,15 @@ const SignIn = ():any => {
                     // httpOnly: true,
                     // expires
                 });
-
-                navigate("/");
+                axios({
+                    method: "GET",
+                    url: "/member/getRole"
+                }).then((res) => {
+                    window.localStorage.setItem("role", res.data);
+                    navigate("/");
+                }).catch((err) => {
+                    console.log(err.message);
+                })
             } else {
                 alert(responseData.message);
             }

@@ -25,6 +25,10 @@ public class LectureEvent {
     @JoinColumn(name = "institution_no")
     private LectureInstitution lectureInstitution;
 
+    @Column(name = "lecture_event_type")
+    @NotEmpty
+    private String lectureEventType; // L : 강좌 상단에 표시될 이벤트, M : 메인화면에 표시될 이벤트
+
     @Column(name = "lecture_event_name")
     @NotEmpty
     private String lectureEventName;

@@ -13,6 +13,7 @@ import com.cac.duduproject.util.Role;
 import com.cac.duduproject.util.jwt.JwtTokenProvider;
 import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
+import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.LectureRoomResponseDto;
 import com.cac.duduproject.web.dto.member.MemberListResponseDto;
@@ -169,6 +170,18 @@ public class MemberService {
 
         // 토큰 발급
         return CommonResponseDto.setSuccess("Reissue Success", tokenDto);
+    }
+
+    public String getRole() {
+        try {
+            Long memberNo = SecurityUtil.getCurrentMemberNo();
+            Member member = memberRepository.findById(memberNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + memberNo));
+
+            return member.getRoleKey();
+        } catch (Exception e) {
+            return "새로고침 또는 재로그인을 해주세요.";
+        }
     }
 
     @Transactional

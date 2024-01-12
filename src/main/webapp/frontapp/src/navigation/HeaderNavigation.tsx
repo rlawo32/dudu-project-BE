@@ -1,8 +1,11 @@
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import React from "react";
 
 import ThemeModeToggle from "./ThemeModeToggle";
+import axios from "axios";
+import {removeCookie, setCookie} from "../Cookie";
+import useThemeToggleStore from "../stores/useThemeToggleStore";
 
 const StyledLink:any = styled(Link)`
   text-decoration: none;
@@ -25,6 +28,26 @@ const StyledHeaderNavigation = styled.div`
 
 const HeaderNavigation = ():any => {
 
+    const [memberRole, setMemberRole] = useState<string>("");
+
+    useEffect(() => {
+        const localRole:string|null = window.localStorage.getItem("role");
+
+        if(localRole) {
+            setMemberRole(localRole);
+        }
+    }, [])
+
+    const logout = ():void => {
+        window.localStorage.removeItem("role");
+        // window.location.reload();
+        axios({
+            method: "POST",
+            url: "/logout"
+        }).then((res) => {
+        })
+    }
+
     return (
         <StyledHeaderNavigation>
             <StyledLink to="/" style={{marginLeft: '20px'}}>
@@ -33,20 +56,44 @@ const HeaderNavigation = ():any => {
 
             <ThemeModeToggle />
 
-            <div style={{marginRight: '20px'}}>
-                <StyledLink to="/lectureEventWrite" style={{marginRight: '20px'}}>
-                    LectureEventWrite
-                </StyledLink>
-                <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
-                    LectureList
-                </StyledLink>
-                <StyledLink to="/lectureWrite" style={{marginRight: '20px'}}>
-                    LectureWrite
-                </StyledLink>
-                <StyledLink to="/signIn" style={{marginRight: '20px'}}>
-                    SignIn
-                </StyledLink>
-            </div>
+            {
+                memberRole === 'ROLE_ADMIN' ?
+                    <div style={{marginRight: '20px'}}>
+                        <StyledLink to="/lectureEventWrite" style={{marginRight: '20px'}}>
+                            LectureEventWrite
+                        </StyledLink>
+                        <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
+                            LectureList
+                        </StyledLink>
+                        <StyledLink to="/lectureWrite" style={{marginRight: '20px'}}>
+                            LectureWrite
+                        </StyledLink>
+                        <StyledLink to="/" style={{marginRight: '20px'}}>
+                            <span onClick={() => logout()}>Logout</span>
+                        </StyledLink>
+                    </div>
+                    :
+                    memberRole === 'ROLE_MEMBER' || memberRole === 'ROLE_SOCIAL' ?
+                        <div style={{marginRight: '20px'}}>
+                            <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
+                                LectureList
+                            </StyledLink>
+                            <StyledLink to="/" style={{marginRight: '20px'}}>
+                                <span onClick={() => logout()}>Logout</span>
+                            </StyledLink>
+                        </div>
+                        :
+                        <div style={{marginRight: '20px'}}>
+                            <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
+                                LectureList
+                            </StyledLink>
+                            <StyledLink to="/signIn" style={{marginRight: '20px'}}>
+                                SignIn
+                            </StyledLink>
+                        </div>
+            }
+
+
         </StyledHeaderNavigation>
     )
 }

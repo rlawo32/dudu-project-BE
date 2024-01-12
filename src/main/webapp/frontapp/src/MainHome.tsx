@@ -4,8 +4,12 @@ import {setCookie} from "./Cookie";
 import axios from "axios";
 
 import HeaderNavigation from "./navigation/HeaderNavigation";
+import reissue from "./reissue";
 
 const MainHome = ():any => {
+    // else if(axios.defaults.headers.common["Authorization"]?.toString() === undefined) {
+    //     alert('재로그인을 해주세요');
+    // }
 
     // 간편로그인 성공 시 생성되는 토큰들을 헤더와 쿠키에 넣어주는 작업
     const [searchParams, setSearchParams] = useSearchParams();

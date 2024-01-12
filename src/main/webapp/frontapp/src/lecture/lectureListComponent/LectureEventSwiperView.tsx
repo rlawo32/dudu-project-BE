@@ -126,7 +126,7 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
                 console.log(err.message);
             });
         }
-        lectureList().then();
+        setTimeout(() => {lectureList().then();}, 100);
     }, [props.institutionNo])
 
     return (

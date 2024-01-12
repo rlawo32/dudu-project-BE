@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {ko} from "date-fns/esm/locale";
-import { getMonth, getYear } from 'date-fns';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko';
 
@@ -36,6 +35,11 @@ const LectureItemAdditionStyle = styled.div`
     .icon-custom {
       font-size: 18px;
       text-align: center;
+    }
+    
+    &:hover {
+      background-color: ${({theme}) => theme.headerBgColor};
+      color: ${({theme}) => theme.headerTextColor};
     }
   }
   

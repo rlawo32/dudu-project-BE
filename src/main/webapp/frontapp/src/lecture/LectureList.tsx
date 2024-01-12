@@ -115,7 +115,7 @@ const LectureList = () => {
                 console.log(err.message);
             })
         }
-        institutionList().then();
+        setTimeout(() => {institutionList().then();}, 0);
     }, [])
 
     useEffect(() => {
@@ -132,7 +132,7 @@ const LectureList = () => {
                console.log(err.message);
            });
         }
-        lectureList().then();
+        setTimeout(() => {lectureList().then();}, 0);
     }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton, pageNo, sortType])
 
     useEffect(() => {

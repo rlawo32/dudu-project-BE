@@ -22,6 +22,7 @@ import LectureEventListView from "./lecture/lectureListComponent/LectureEventLis
 import {GlobalStyle} from "./styles/GlobalStyles";
 import {darkTheme, lightTheme} from "./styles/theme";
 import useThemeToggleStore from "./stores/useThemeToggleStore";
+import reissue from "./reissue";
 
 
 function App() {
@@ -35,49 +36,7 @@ function App() {
             setThemeMode(localTheme);
         }
 
-        if(getCookie('refreshToken')) {
-            const token:object = {
-                accessToken: axios.defaults.headers.common["Authorization"]?.toString(),
-                refreshToken: getCookie('refreshToken')
-            }
-
-            const reissue = async ():Promise<void> => {
-                await axios({
-                    method: "POST",
-                    url: "/member/reissue",
-                    data: JSON.stringify(token),
-                    headers: {'Content-type': 'application/json'}
-                }).then((res) => {
-                    const responseData = res.data;
-                    if(responseData.result) {
-                        const { grantType, accessToken, refreshToken, accessTokenExpiresIn} = responseData.data;
-                        const expires:Date = new Date(accessTokenExpiresIn);
-
-                        axios.defaults.headers.common['Authorization'] = `${grantType} ${accessToken}`;
-
-                        setCookie('refreshToken', refreshToken, {
-                            path: '/',
-                            // httpOnly: true,
-                            // expires
-                        });
-                    } else {
-                        alert('재로그인을 해주세요');
-                        removeCookie('refreshToken');
-                    }
-                }).catch((err) => {
-                    const errCode:string = err.message.substring(err.message.length-3);
-
-                    if(errCode === '401' || errCode === '403') { // 대부분 refresh token 만료로 인한 오류
-                        alert('재로그인을 해주세요');
-                    }
-                })
-            }
-
-            reissue().then();
-        }
-        // else if(axios.defaults.headers.common["Authorization"]?.toString() === undefined) {
-        //     alert('재로그인을 해주세요');
-        // }
+        reissue().then();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

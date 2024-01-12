@@ -83,7 +83,7 @@ const LectureDetail = () => {
                 console.log(err.message);
             });
         }
-        lectureDetail().then();
+        setTimeout(() => {lectureDetail().then();}, 100);
     }, [])
 
     return (

@@ -216,7 +216,7 @@ const LectureEventListView = () => {
                 console.log(err.message);
             });
         }
-        lectureList().then();
+        setTimeout(() => {lectureList().then();}, 100);
     }, [sortType])
 
     return (

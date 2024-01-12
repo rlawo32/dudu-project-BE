@@ -162,7 +162,8 @@ const LectureRoomWrite = () => {
                 console.log(err.message);
             })
         }
-        dataList().then();
+
+        setTimeout(() => {dataList().then();}, 100);
     }, [])
 
     useEffect(() => {
@@ -183,7 +184,7 @@ const LectureRoomWrite = () => {
                 console.log(err.message);
             })
         }
-        subCategoryList().then();
+        setTimeout(() => {subCategoryList().then();}, 100);
     }, [mainCategoryNo])
 
     useEffect(() => {
@@ -199,7 +200,7 @@ const LectureRoomWrite = () => {
                 console.log(err.message);
             });
         }
-        lectureList().then();
+        setTimeout(() => {lectureList().then();}, 100);
     }, [institutionNo, mainCategoryNo, subCategoryNo])
 
     return (

@@ -87,7 +87,7 @@ const LectureMainCategoryView = (props: Props) => {
                 console.log(err.message);
             })
         }
-        lectureCategoryData().then();
+        setTimeout(() => {lectureCategoryData().then();}, 100);
         mcBtn.current[0].className = mcBtn.current[0].className.replace(' mcBtn-active', '');
         mcBtn.current[0].className += ' mcBtn-active';
     }, [])

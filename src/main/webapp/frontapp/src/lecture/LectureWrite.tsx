@@ -14,6 +14,7 @@ import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureWrite.style";
+import reissue from "../reissue";
 
 const LectureWrite = () => {
     const navigate = useNavigate();
@@ -235,8 +236,21 @@ const LectureWrite = () => {
                 console.log(err.message);
             })
         }
-        selectDataList().then();
+        setTimeout(() => {selectDataList().then();}, 100);
+        // (() => {
+        //     window.addEventListener('beforeunload', listener);
+        // })();
+        //
+        // return () => {
+        //     window.removeEventListener('beforeunload', listener);
+        // };
     }, [])
+
+    const listener = (e:Event):void => {
+        navigate("/");
+        e.preventDefault();
+        e.returnValue = false;
+    }
 
     // lectureRoomList useEffect
     useEffect(() => {
@@ -252,7 +266,7 @@ const LectureWrite = () => {
                 console.log(err.message);
             })
         }
-        selectLectureRoomList().then();
+        setTimeout(() => {selectLectureRoomList().then();}, 100);
     }, [lectureInstitution])
 
     // subCategoryList useEffect
@@ -269,7 +283,7 @@ const LectureWrite = () => {
                 console.log(err.message);
             })
         }
-        selectLectureSubCategoryList().then();
+        setTimeout(() => {selectLectureSubCategoryList().then();}, 100);
     }, [lectureMainCategory]);
 
     // datePicker useEffect

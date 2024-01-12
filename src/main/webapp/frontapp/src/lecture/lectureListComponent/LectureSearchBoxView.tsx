@@ -98,7 +98,7 @@ const LectureSearchBoxView = (props : { isShow: boolean; setIsShow: React.Dispat
                 console.log(err.message);
             })
         }
-        stateList().then();
+        setTimeout(() => {stateList().then();}, 100);
     }, [])
 
     useEffect(() => {

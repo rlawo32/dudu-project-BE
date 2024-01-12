@@ -3,9 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
 import ThemeModeToggle from "./ThemeModeToggle";
-import axios from "axios";
 import {removeCookie, setCookie} from "../Cookie";
-import useThemeToggleStore from "../stores/useThemeToggleStore";
 
 const StyledLink:any = styled(Link)`
   text-decoration: none;
@@ -27,6 +25,7 @@ const StyledHeaderNavigation = styled.div`
 `;
 
 const HeaderNavigation = ():any => {
+    const navigate = useNavigate();
 
     const [memberRole, setMemberRole] = useState<string>("");
 
@@ -39,13 +38,17 @@ const HeaderNavigation = ():any => {
     }, [])
 
     const logout = ():void => {
+        removeCookie("refreshToken");
         window.localStorage.removeItem("role");
-        // window.location.reload();
-        axios({
-            method: "POST",
-            url: "/logout"
-        }).then((res) => {
-        })
+        navigate("/");
+        window.location.reload();
+        // axios({
+        //     method: "POST",
+        //     url: "/logout"
+        // }).then((res) => {
+        // }).catch((err) => {
+        //     console.log(err.message)
+        // })
     }
 
     return (

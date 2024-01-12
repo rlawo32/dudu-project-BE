@@ -32,8 +32,11 @@ function App() {
     useEffect(() => {
         const localTheme:string|null = window.localStorage.getItem("theme");
 
-        if(localTheme) {
-            setThemeMode(localTheme);
+        console.log(localTheme)
+        if(localTheme === 'false') {
+            setThemeMode(false);
+        } else {
+            setThemeMode(true);
         }
 
         reissue().then();
@@ -42,7 +45,7 @@ function App() {
 
   return (
     <>
-        <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme } >
+        <ThemeProvider theme={themeMode ? darkTheme : lightTheme } >
             <GlobalStyle />
 
             <Routes>

@@ -21,7 +21,7 @@ export const SignInMain = styled.div`
     align-items: center;
     height: 100vh;
     width: 100%;
-    background-image: url("/images/signup-image1.jpg");
+    background-image: url("https://react-project-bucket.s3.ap-northeast-2.amazonaws.com/defaultImage/signup-image1.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

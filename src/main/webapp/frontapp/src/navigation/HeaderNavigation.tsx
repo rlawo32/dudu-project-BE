@@ -1,17 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import {removeCookie} from "../Cookie";
 import styled from "styled-components";
 
 import ThemeModeToggle from "./ThemeModeToggle";
-import {removeCookie, setCookie} from "../Cookie";
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowRightToBracket as loginIcon, faArrowRightFromBracket as logoutIcon,
+    faUser as myPageIcon} from "@fortawesome/free-solid-svg-icons";
 
 const StyledLink:any = styled(Link)`
   text-decoration: none;
   color: ${({theme}) => theme.headerTextColor};
-  font-size: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  
+  .icon-custom {
+    font-size: 29px;
+  }
 `;
 
-const StyledHeaderNavigation = styled.div`
+const StyledHeaderNavigation = styled.div<{$getRole:string}>`
   position: fixed;
   display: flex;
   align-items: center;
@@ -19,9 +28,29 @@ const StyledHeaderNavigation = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 8%;
+  height: 7%;
   background: ${({theme}) => theme.headerBgColor};
   z-index: 2;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    width: ${({$getRole}) => $getRole === "" ? 0 : "173px"};
+    margin-left: 50px;
+  }
+
+  .header-center {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    
+    margin-right: 50px;
+  }
 `;
 
 const HeaderNavigation = ():any => {
@@ -52,52 +81,92 @@ const HeaderNavigation = ():any => {
     }
 
     return (
-        <StyledHeaderNavigation>
-            <StyledLink to="/" style={{marginLeft: '20px'}}>
-                Home
-            </StyledLink>
-
-            <ThemeModeToggle />
+        <>
 
             {
                 memberRole === 'ROLE_ADMIN' ?
-                    <div style={{marginRight: '20px'}}>
-                        <StyledLink to="/lectureEventWrite" style={{marginRight: '20px'}}>
-                            LectureEventWrite
-                        </StyledLink>
-                        <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
-                            LectureList
-                        </StyledLink>
-                        <StyledLink to="/lectureWrite" style={{marginRight: '20px'}}>
-                            LectureWrite
-                        </StyledLink>
-                        <StyledLink to="/" style={{marginRight: '20px'}}>
-                            <span onClick={() => logout()}>Logout</span>
-                        </StyledLink>
-                    </div>
+                    <StyledHeaderNavigation $getRole={memberRole}>
+
+                        <div className="header-left">
+                            <StyledLink to="/">
+                                Home
+                            </StyledLink>
+                        </div>
+
+                        <div className="header-center">
+                            <StyledLink to="/lectureList" style={{marginLeft: '30px'}}>
+                                수강신청
+                            </StyledLink>
+                            <StyledLink to="/lectureWrite" style={{marginLeft: '30px'}}>
+                                강좌개설
+                            </StyledLink>
+                            <StyledLink to="/lectureEventWrite" style={{marginLeft: '30px'}}>
+                                강좌이벤트개설
+                            </StyledLink>
+                        </div>
+
+                        <div className="header-right">
+                            <ThemeModeToggle />
+                            <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                <FontAwesomeIcon icon={myPageIcon} className="icon-custom"/>
+                            </StyledLink>
+                            <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                <FontAwesomeIcon icon={logoutIcon} onClick={() => logout()}
+                                                 className="icon-custom"/>
+                            </StyledLink>
+                        </div>
+                    </StyledHeaderNavigation>
                     :
                     memberRole === 'ROLE_MEMBER' || memberRole === 'ROLE_SOCIAL' ?
-                        <div style={{marginRight: '20px'}}>
-                            <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
-                                LectureList
-                            </StyledLink>
-                            <StyledLink to="/" style={{marginRight: '20px'}}>
-                                <span onClick={() => logout()}>Logout</span>
-                            </StyledLink>
-                        </div>
+                        <StyledHeaderNavigation $getRole={memberRole}>
+
+                            <div className="header-left">
+                                <StyledLink to="/">
+                                    Home
+                                </StyledLink>
+                            </div>
+
+                            <div className="header-center">
+                                <StyledLink to="/lectureList" style={{marginLeft: '20px'}}>
+                                    수강신청
+                                </StyledLink>
+                            </div>
+
+                            <div className="header-right">
+                                <ThemeModeToggle />
+                                <StyledLink to="/" style={{marginLeft: '20px'}}>
+                                    <FontAwesomeIcon icon={myPageIcon} className="icon-custom"/>
+                                </StyledLink>
+                                <StyledLink to="/" style={{marginLeft: '20px'}}>
+                                    <FontAwesomeIcon icon={logoutIcon} onClick={() => logout()}
+                                                     className="icon-custom"/>
+                                </StyledLink>
+                            </div>
+                        </StyledHeaderNavigation>
                         :
-                        <div style={{marginRight: '20px'}}>
-                            <StyledLink to="/lectureList" style={{marginRight: '20px'}}>
-                                LectureList
-                            </StyledLink>
-                            <StyledLink to="/signIn" style={{marginRight: '20px'}}>
-                                SignIn
-                            </StyledLink>
-                        </div>
+                        <StyledHeaderNavigation $getRole={memberRole}>
+
+                            <div className="header-left">
+                                <StyledLink to="/">
+                                    Home
+                                </StyledLink>
+                            </div>
+
+                            <div className="header-center">
+                                <StyledLink to="/lectureList" style={{marginLeft: '20px'}}>
+                                    수강신청
+                                </StyledLink>
+                            </div>
+
+                            <div className="header-right">
+                                <ThemeModeToggle />
+                                <StyledLink to="/signIn" style={{marginLeft: '20px'}}>
+                                    <FontAwesomeIcon icon={loginIcon} className="icon-custom"/>
+                                </StyledLink>
+                            </div>
+                        </StyledHeaderNavigation>
             }
-
-
-        </StyledHeaderNavigation>
+        </>
     )
 }
 

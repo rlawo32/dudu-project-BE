@@ -23,50 +23,61 @@ const SignIn = ():any => {
 
     const {setActiveProgressTab} = useJoinProgressStore();
 
+    const activeEnter = (e:any):void => {
+        if(e.key === "Enter") {
+            signInHandler();
+        }
+    }
+
     const signInHandler = ():void => {
         const signInData:object = {
             memberId: loginMemberId,
             memberPw: loginMemberPw
         }
 
-        axios({
-            method: "POST",
-            url: "/member/signIn",
-            data: JSON.stringify(signInData),
-            headers: {'Content-type': 'application/json'}
-        }).then((res) => {
-            const responseData = res.data;
-            console.log(responseData)
-            if(responseData.data) {
-                const { grantType, accessToken, refreshToken, refreshTokenExpiresIn } = responseData.data;
-                const expires  = new Date(refreshTokenExpiresIn);
+        if(loginMemberId.length < 1) {
+            alert('아이디를 입력해주세요.');
+        } else if(loginMemberPw.length < 1) {
+            alert('비밀번호를 입력해주세요.');
+        } else {
+            axios({
+                method: "POST",
+                url: "/member/signIn",
+                data: JSON.stringify(signInData),
+                headers: {'Content-type': 'application/json'}
+            }).then((res) => {
+                const responseData = res.data;
+                if(responseData.data) {
+                    const { grantType, accessToken, refreshToken, refreshTokenExpiresIn } = responseData.data;
+                    const expires  = new Date(refreshTokenExpiresIn);
 
-                axios.defaults.headers.common['Authorization'] = `${grantType} ${accessToken}`;
+                    axios.defaults.headers.common['Authorization'] = `${grantType} ${accessToken}`;
 
-                setCookie('refreshToken', refreshToken, {
-                    path: '/',
-                    // httpOnly: true,
-                    // expires
-                });
-                axios({
-                    method: "GET",
-                    url: "/member/getRole"
-                }).then((res) => {
-                    window.localStorage.setItem("role", res.data);
-                    navigate("/");
-                }).catch((err) => {
-                    console.log(err.message);
-                })
-            } else {
-                alert(responseData.message);
-            }
-        }).catch((err) => {
-            const errCode:string = err.message.substring(err.message.length-3);
+                    setCookie('refreshToken', refreshToken, {
+                        path: '/',
+                        // httpOnly: true,
+                        // expires
+                    });
+                    axios({
+                        method: "GET",
+                        url: "/member/getRole"
+                    }).then((res) => {
+                        window.localStorage.setItem("role", res.data);
+                        navigate("/");
+                    }).catch((err) => {
+                        console.log(err.message);
+                    })
+                } else {
+                    alert(responseData.message);
+                }
+            }).catch((err) => {
+                const errCode:string = err.message.substring(err.message.length-3);
 
-            if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
-                alert('새로고침을 한번 해주세요');
-            }
-        })
+                if(errCode === '401' || errCode === '403') { // 대부분 access token 만료로 인한 오류
+                    alert('새로고침을 한번 해주세요');
+                }
+            })
+        }
     }
 
     return (
@@ -91,12 +102,12 @@ const SignIn = ():any => {
                     <Styled.InputBox>
                         <FontAwesomeIcon icon={idIcon} className="icon-custom" />
                         <Styled.SignInInput type="text" onChange={(e) => setLoginMemberId(e.target.value)}
-                                            placeholder="아이디를 입력해주세요."/>
+                                            onKeyDown={(e) => activeEnter(e)}placeholder="아이디를 입력해주세요."/>
                     </Styled.InputBox>
                     <Styled.InputBox>
                         <FontAwesomeIcon icon={pwIcon} className="icon-custom" />
                         <Styled.SignInInput type="password" onChange={(e) => setLoginMemberPw(e.target.value)}
-                                            placeholder="비밀번호를 입력해주세요."/>
+                                            onKeyDown={(e) => activeEnter(e)} placeholder="비밀번호를 입력해주세요."/>
                     </Styled.InputBox>
 
                     <Styled.SignInButton onClick={() => signInHandler()}>로그인</Styled.SignInButton>

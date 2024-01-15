@@ -127,12 +127,21 @@ public class LectureListService {
                 sort = Sort.by("lectureFee").descending();
             }
 
-            Page<Lecture> pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
-                            mainCategoryNo, subCategoryNo,
-                            searchDivision, searchState,
-                            PageRequest.of(0, (20*pageNo), sort));
-
-            Long totalPage = pageable.getTotalElements();
+            Page<Lecture> pageable;
+            Long totalPage;
+            if(sortType.length() < 1) {
+                pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
+                        mainCategoryNo, subCategoryNo,
+                        searchDivision, searchState,
+                        PageRequest.of(pageNo, (10), sort));
+                totalPage = Long.valueOf(pageable.getTotalPages());
+            } else {
+                pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
+                        mainCategoryNo, subCategoryNo,
+                        searchDivision, searchState,
+                        PageRequest.of(0, (20*pageNo), sort));
+                totalPage = pageable.getTotalElements();
+            }
 
             List<LectureListResponseDto> list = pageable.stream()
                     .map(LectureListResponseDto::new)

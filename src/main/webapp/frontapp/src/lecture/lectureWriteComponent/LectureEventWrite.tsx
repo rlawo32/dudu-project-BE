@@ -6,6 +6,7 @@ import HeaderNavigation from "../../navigation/HeaderNavigation";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete} from "@fortawesome/free-solid-svg-icons";
+import * as Styled from "./LectureEventWrite.style";
 
 const LectureRoomWrite = () => {
     const navigate = useNavigate();
@@ -49,9 +50,13 @@ const LectureRoomWrite = () => {
         lectureTeacher: ''
     }]);
 
+    const [pageNo, setPageNo] = useState<number>(0);
+    const [totalPage, setTotalPage] = useState<number>(0);
+
     const [institutionNo, setInstitutionNo] = useState<string>("1");
     const [mainCategoryNo, setMainCategoryNo] = useState<string>("0");
     const [subCategoryNo, setSubCategoryNo] = useState<string>("0");
+    const [lectureCheck, setLectureCheck] = useState<boolean>(false);
 
     const [lectureEventName, setLectureEventName] = useState<string>("");
     const [lectureEventDesc, setLectureEventDesc] = useState<string>("");
@@ -65,7 +70,7 @@ const LectureRoomWrite = () => {
     }[]>([]);
 
     const listData:object = {
-        pageNo: 1,
+        pageNo: pageNo,
         sortType: "",
         institutionNo: institutionNo,
         mainCategoryNo: mainCategoryNo,
@@ -73,6 +78,14 @@ const LectureRoomWrite = () => {
         searchText: "",
         searchDivision: [],
         searchState: []
+    }
+
+    const pagination = ():any[] => {
+        let result:any[] = [];
+        for (let i:number=0; i<totalPage; i++) {
+            result.push(<li key={i} onClick={() => setPageNo(i)}><button className="list-item">{i+1}</button></li>);
+        }
+        return result;
     }
 
     const changeEventThumbnailHandler = async(file:FileList|null):Promise<void> => {
@@ -114,6 +127,20 @@ const LectureRoomWrite = () => {
         }).catch((err):void => {
             console.log(err.message);
         })
+    }
+
+    const changeEventLectureHandler = (checked:boolean, lecture:any):void => {
+        if(checked) {
+            setEventLectureSelectArr((prevList) => [...prevList, {
+                lectureNo:lecture.lectureNo,
+                lectureInstitution:lecture.lectureInstitution,
+                lectureTitle:lecture.lectureTitle,
+                lectureTeacher:lecture.lectureTeacher
+            }]);
+        } else {
+            setEventLectureSelectArr(eventLectureSelectArr.filter(
+                (elArr) => elArr.lectureNo !== lecture.lectureNo));
+        }
     }
 
     const insertLectureEventHandler = ():void => {
@@ -196,105 +223,119 @@ const LectureRoomWrite = () => {
                 headers: {'Content-type': 'application/json'}
             }).then((res):void => {
                 setLectureList(res.data.data.lectureList);
+                setTotalPage(res.data.data.totalPage);
             }).catch((err):void => {
                 console.log(err.message);
             });
         }
         setTimeout(() => {lectureList().then();}, 100);
-    }, [institutionNo, mainCategoryNo, subCategoryNo])
+    }, [institutionNo, mainCategoryNo, subCategoryNo, pageNo])
+
+    console.log(eventLectureSelectArr)
 
     return (
-        <div style={{marginTop: "5%", marginLeft: "5%"}}>
+        <Styled.LectureEventWriteView style={{marginTop: "5%", marginLeft: "5%"}}>
             <HeaderNavigation />
-            <div className="sc-thumbnail" >
-                <input type="file" id="sc-attach-thumbnail" accept="image/jpg,image/png,image/jpeg"
-                       onChange={(e) => changeEventThumbnailHandler(e.target.files)}/>
-                {
-                    eventThumbnailUrl.length > 0 ?
-                        <div style={{position: "relative", height: "150px", width: "150px"}}>
-                            <img src={eventThumbnailUrl} alt="썸네일 이미지" style={{height: "150px", width: "150px"}} />
-                            <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
-                                deleteEventThumbnailHandler(eventThumbnailName, "E")}
-                                             style={{position: "absolute", top: "0", left: "150px"}}/>
-                        </div>
-                        :
-                        <div />
-                }
+            <div className="ew-main-view">
+                <div className="ew-thumbnail">
+                    <div>이벤트 메인 이미지 등록</div>
+                    <input type="file" id="ew-attach-thumbnail" accept="image/jpg,image/png,image/jpeg"
+                           onChange={(e) => changeEventThumbnailHandler(e.target.files)}/>
+                    {
+                        eventThumbnailUrl.length > 0 ?
+                            <div style={{position: "relative", height: "150px", width: "150px"}}>
+                                <img src={eventThumbnailUrl} alt="썸네일 이미지" style={{height: "150px", width: "150px"}} />
+                                <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
+                                    deleteEventThumbnailHandler(eventThumbnailName, "E")}
+                                                 style={{position: "absolute", top: "0", left: "150px"}}/>
+                            </div>
+                            :
+                            <div />
+                    }
+                </div>
+                <div className="ew-lecture">
+                    <div className="ew-list-select">
+                        <select
+                            value={institutionNo}
+                            onChange={(e) => setInstitutionNo(e.target.value)}
+                        >
+                            {institutionList.map((option) => (
+                                <option key={option.institutionNo} value={option.institutionNo}>
+                                    {option.institutionName}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            value={mainCategoryNo}
+                            onChange={(e) => setMainCategoryNo(e.target.value)}
+                        >
+                            <option key={0} value={"0"}>
+                                전체
+                            </option>
+                            {lectureMainCategoryList.map((option) => (
+                                <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
+                                    {option.lectureMainCategoryName}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            value={subCategoryNo}
+                            onChange={(e) => setSubCategoryNo(e.target.value)}
+                        >
+                            <option key={0} value={"0"}>
+                                전체
+                            </option>
+                            {lectureSubCategoryList.map((option) => (
+                                <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
+                                    {option.lectureSubCategoryName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {
+                        lectureList.length > 0 ?
+                            <div className="ew-list-view">
+                                <table>
+                                    <thead className="table-header">
+                                    <tr style={{height: "35px", fontWeight: "bold"}}>
+                                        <td style={{width: "80px"}}>선택</td>
+                                        <td style={{width: "100px"}}>강의번호</td>
+                                        <td style={{width: "150px"}}>기관명</td>
+                                        <td style={{width: "450px"}}>강의제목</td>
+                                        <td style={{width: "80px"}}>강사명</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody" className="font-list">
+                                    {lectureList.map((lectures) => {
+                                        return (
+                                            <tr key={lectures.lectureNo} style={{height: "30px"}}>
+                                                <td>
+                                                    <input type="checkbox" checked={eventLectureSelectArr.findIndex(
+                                                        (item) => item.lectureNo === lectures.lectureNo) > -1 ? true : false}
+                                                           onChange={({ target: { checked } }) =>
+                                                               changeEventLectureHandler(checked, lectures)}/>
+                                                </td>
+                                                <td>{lectures.lectureNo}</td>
+                                                <td>{lectures.lectureInstitution}</td>
+                                                <td>{lectures.lectureTitle}</td>
+                                                <td>{lectures.lectureTeacher}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </table>
+                                <div className="paging-view">
+                                    <ul>
+                                        {pagination()}
+                                    </ul>
+                                </div>
+                            </div>
+                            :
+                            <div />
+                    }
+                </div>
             </div>
-            <select
-                value={institutionNo}
-                onChange={(e) => setInstitutionNo(e.target.value)}
-            >
-                {institutionList.map((option) => (
-                    <option key={option.institutionNo} value={option.institutionNo}>
-                        {option.institutionName}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={mainCategoryNo}
-                onChange={(e) => setMainCategoryNo(e.target.value)}
-            >
-                <option key={0} value={"0"}>
-                    전체
-                </option>
-                {lectureMainCategoryList.map((option) => (
-                    <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
-                        {option.lectureMainCategoryName}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={subCategoryNo}
-                onChange={(e) => setSubCategoryNo(e.target.value)}
-            >
-                <option key={0} value={"0"}>
-                    전체
-                </option>
-                {lectureSubCategoryList.map((option) => (
-                    <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
-                        {option.lectureSubCategoryName}
-                    </option>
-                ))}
-            </select>
 
-            {
-                lectureList.length > 0 ?
-                    <table>
-                        <thead className="table-header">
-                            <tr style={{height: "35px", fontWeight: "bold"}}>
-                                <td style={{width: "80px"}}>선택</td>
-                                <td style={{width: "100px"}}>강의번호</td>
-                                <td style={{width: "150px"}}>기관명</td>
-                                <td style={{width: "450px"}}>강의제목</td>
-                                <td style={{width: "80px"}}>강사명</td>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody" className="font-list">
-                        {lectureList.map((lectures) => {
-                            return (
-                                <tr key={lectures.lectureNo} style={{height: "30px"}}>
-                                    <td>
-                                        <input type="checkbox" value={lectures.lectureNo}
-                                               onClick={() => setEventLectureSelectArr((prevList) => [...prevList, {
-                                                   lectureNo:lectures.lectureNo,
-                                                   lectureInstitution:lectures.lectureInstitution,
-                                                   lectureTitle:lectures.lectureTitle,
-                                                   lectureTeacher:lectures.lectureTeacher
-                                               }])}/>
-                                    </td>
-                                    <td>{lectures.lectureNo}</td>
-                                    <td>{lectures.lectureInstitution}</td>
-                                    <td>{lectures.lectureTitle}</td>
-                                    <td>{lectures.lectureTeacher}</td>
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                    :
-                    <div />
-            }
             <div style={{marginTop: "50px"}}>
                 <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
                 <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
@@ -309,7 +350,8 @@ const LectureRoomWrite = () => {
                                 <td style={{width: "100px"}}>강의번호</td>
                                 <td style={{width: "150px"}}>기관명</td>
                                 <td style={{width: "450px"}}>강의제목</td>
-                                <td style={{width: "80px"}}>강사명</td>
+                                <td style={{width: "50px"}}>강사명</td>
+                                <td style={{width: "20px"}}></td>
                             </tr>
                             </thead>
                             <tbody id="tbody" className="font-list">
@@ -320,6 +362,9 @@ const LectureRoomWrite = () => {
                                         <td>{events.lectureInstitution}</td>
                                         <td>{events.lectureTitle}</td>
                                         <td>{events.lectureTeacher}</td>
+                                        <td style={{cursor: "pointer"}}
+                                            onClick={() => setEventLectureSelectArr(eventLectureSelectArr.filter(
+                                                (elArr) => elArr.lectureNo !== events.lectureNo))}>x</td>
                                     </tr>
                                 )
                             })}
@@ -329,7 +374,7 @@ const LectureRoomWrite = () => {
                         <div />
                 }
             </div>
-        </div>
+        </Styled.LectureEventWriteView>
     )
 }
 

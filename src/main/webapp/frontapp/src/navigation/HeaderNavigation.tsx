@@ -97,6 +97,12 @@ const HeaderNavigation = ():any => {
                             <StyledLink to="/lectureList" style={{marginLeft: '30px'}}>
                                 수강신청
                             </StyledLink>
+                            <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                이용안내
+                            </StyledLink>
+                            <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                커뮤니티
+                            </StyledLink>
                             <StyledLink to="/lectureWrite" style={{marginLeft: '30px'}}>
                                 강좌개설
                             </StyledLink>
@@ -130,6 +136,12 @@ const HeaderNavigation = ():any => {
                                 <StyledLink to="/lectureList" style={{marginLeft: '20px'}}>
                                     수강신청
                                 </StyledLink>
+                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                    이용안내
+                                </StyledLink>
+                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                    커뮤니티
+                                </StyledLink>
                             </div>
 
                             <div className="header-right">
@@ -155,6 +167,12 @@ const HeaderNavigation = ():any => {
                             <div className="header-center">
                                 <StyledLink to="/lectureList" style={{marginLeft: '20px'}}>
                                     수강신청
+                                </StyledLink>
+                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                    이용안내
+                                </StyledLink>
+                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                    커뮤니티
                                 </StyledLink>
                             </div>
 

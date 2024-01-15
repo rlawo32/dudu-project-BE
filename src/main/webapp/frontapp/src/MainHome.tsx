@@ -1,10 +1,10 @@
 import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {setCookie} from "./Cookie";
 import axios from "axios";
 
 import HeaderNavigation from "./navigation/HeaderNavigation";
-import reissue from "./reissue";
+import FooterNavigation from "./navigation/FooterNavigation";
 
 const MainHome = ():any => {
     // else if(axios.defaults.headers.common["Authorization"]?.toString() === undefined) {
@@ -44,6 +44,8 @@ const MainHome = ():any => {
     return (
         <div>
             <HeaderNavigation />
+
+            <FooterNavigation />
         </div>
     )
 }

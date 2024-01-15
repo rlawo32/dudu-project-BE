@@ -7,8 +7,9 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
   font-family: "Noto Sans KR";
   
   .lt-list-view {
+    margin: 0 auto 5%;
     @media screen and (max-width: 1024px) {
-      margin-top: 5%;
+      margin: 5% auto 5%;
     }
     opacity: ${({$isShow}) => $isShow ? "0.5" : "1"};
   }
@@ -161,12 +162,12 @@ export const LectureListView = styled.div<{$isShow:boolean}>`
       margin: 0 2rem;
       width: calc(100% - 4rem);
     }
-    margin: 3% auto;
+    margin: 3% auto 0;
     pointer-events: ${({$isShow}) => $isShow ? "none" : "auto"};
     
     .lt-more-btn {
       width: 25%;
-      margin: 40px auto 20px;
+      margin: 40px auto 0;
       padding: 10px 15px 10px 15px;
       border: 1px solid ${({theme}) => theme.textColor};
       border-radius: 10px;

@@ -7,6 +7,7 @@ import HeaderNavigation from "../navigation/HeaderNavigation";
 
 import * as Styled from "./LectureDetail.style";
 import dayjs from "dayjs";
+import FooterNavigation from "../navigation/FooterNavigation";
 
 const LectureDetail = () => {
     const location = useLocation();
@@ -248,6 +249,8 @@ const LectureDetail = () => {
                 </div>
             </div>
 
+
+            <FooterNavigation />
         </Styled.LectureDetailView>
     )
 }

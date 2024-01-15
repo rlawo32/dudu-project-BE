@@ -15,7 +15,7 @@ export const LectureDetailView = styled.div`
     height: 100%;
     width: 1160px;
     padding: 0;
-    margin: 5% auto 0;
+    margin: 5% auto 5%;
     
     .lt-detail-content-box {
       width: calc(100% - 490px);

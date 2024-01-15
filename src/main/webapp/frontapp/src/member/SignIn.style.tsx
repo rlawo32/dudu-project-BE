@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SignInMain = styled.div`
   position: relative;
-  display: flex;
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
   
@@ -13,6 +13,10 @@ export const SignInMain = styled.div`
   h1 {
     text-align: center;
     margin-bottom: 50px;
+  }
+  
+  .login-view {
+    display: flex;
   }
   
   .signUp-view {

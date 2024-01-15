@@ -13,6 +13,7 @@ import useLectureSearchDataStore from "../stores/useLectureSearchDataStore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown as arrow, faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureList.style";
+import FooterNavigation from "../navigation/FooterNavigation";
 
 const LectureList = () => {
     const selectBox:any = useRef<any>();
@@ -202,7 +203,7 @@ const LectureList = () => {
                     }
                 </div>
             </div>
-
+            <FooterNavigation />
         </Styled.LectureListView>
     )
 }

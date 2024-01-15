@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
-import {getCookie, removeCookie, setCookie} from "./Cookie";
 import {ThemeProvider} from "styled-components";
-import axios from "axios";
 
 import MainHome from './MainHome';
 // member

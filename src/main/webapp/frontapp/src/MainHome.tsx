@@ -45,7 +45,7 @@ const MainHome = ():any => {
         <div>
             <HeaderNavigation />
 
-            <FooterNavigation />
+            {/*<FooterNavigation />*/}
         </div>
     )
 }

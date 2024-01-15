@@ -51,9 +51,10 @@ public class LectureEvent {
     }
 
     @Builder
-    public LectureEvent(LectureInstitution lectureInstitution, String lectureEventName,
-                        String lectureEventDesc, String lectureEventThumbnail) {
+    public LectureEvent(LectureInstitution lectureInstitution, String lectureEventType,
+                        String lectureEventName, String lectureEventDesc, String lectureEventThumbnail) {
         this.lectureInstitution = lectureInstitution;
+        this.lectureEventType = lectureEventType;
         this.lectureEventName = lectureEventName;
         this.lectureEventDesc = lectureEventDesc;
         this.lectureEventThumbnail = lectureEventThumbnail;

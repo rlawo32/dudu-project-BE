@@ -78,9 +78,29 @@ public class LectureController {
         return lectureListService.findLectureEvent(request);
     }
 
+    @PostMapping("/lectureEventAll")
+    public CommonResponseDto<?> lectureEventAll(LectureEventListRequestDto requestDto) {
+        return lectureListService.findAllLectureEvent(requestDto);
+    }
+
     @PostMapping("/lectureEventList")
     public CommonResponseDto<?> lectureEventList(@RequestBody LectureEventListRequestDto requestDto) {
-        return lectureListService.findAllLectureEvent(requestDto);
+        return lectureListService.findLectureEventList(requestDto);
+    }
+
+    @GetMapping("/lectureEventCatalog")
+    public CommonResponseDto<?> lectureEventCatalog(HttpServletRequest request) {
+        return lectureListService.findLectureEventCatalog(request);
+    }
+
+    @DeleteMapping("/lectureDeleteEvent")
+    public void lectureDeleteEvent(HttpServletRequest request) {
+        lectureListService.lectureEventDelete(request);
+    }
+
+    @DeleteMapping("/lectureDeleteEventList")
+    public void lectureDeleteEventList(HttpServletRequest request) {
+        lectureListService.lectureEventListDelete(request);
     }
 
     @GetMapping("/lectureStateList")

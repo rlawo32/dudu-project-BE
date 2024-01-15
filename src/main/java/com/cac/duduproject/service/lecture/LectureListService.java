@@ -132,13 +132,13 @@ public class LectureListService {
             Long totalPage = 0L;
             if(listType.equals("E")) {
                 pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
-                        mainCategoryNo, subCategoryNo,
+                        mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
                         PageRequest.of(pageNo, (10), sort));
                 totalPage = Long.valueOf(pageable.getTotalPages());
             } else if(listType.equals("L")) {
                 pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
-                        mainCategoryNo, subCategoryNo,
+                        mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
                         PageRequest.of(0, (20*pageNo), sort));
                 totalPage = pageable.getTotalElements();
@@ -154,7 +154,7 @@ public class LectureListService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("LectureInstitution List", result);
+        return CommonResponseDto.setSuccess("Lecture List", result);
     }
 
     @Transactional
@@ -165,16 +165,40 @@ public class LectureListService {
 
             LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. No. : " + lectureEventNo));
-
             lectureEventListResponseDto = new LectureEventListResponseDto(lectureEvent);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("LectureEvent List", lectureEventListResponseDto);
+        return CommonResponseDto.setSuccess("LectureEvent One", lectureEventListResponseDto);
     }
 
     @Transactional
     public CommonResponseDto<?> findAllLectureEvent(LectureEventListRequestDto requestDto) {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            int pageNo = requestDto.getPageNo();
+            String sortType = requestDto.getSortType();
+            Long institutionNo = requestDto.getInstitutionNo();
+            Long lectureEventNo = requestDto.getLectureEventNo();
+
+            Page<LectureEvent> pageable = lectureEventRepository.findAll(PageRequest.of(pageNo, 10));
+            int totalPage = pageable.getTotalPages();
+
+            List<LectureEventListResponseDto> list = pageable.stream()
+                    .map(LectureEventListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            result.put("eventList", list);
+            result.put("totalPage", totalPage);
+
+            return CommonResponseDto.setSuccess("LectureEvent List", result);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findLectureEventList(LectureEventListRequestDto requestDto) {
         try {
             Map<String, Object> result = new HashMap<>();
 
@@ -211,7 +235,7 @@ public class LectureListService {
                 result.put("eventList", list);
                 result.put("totalPage", totalPage);
 
-                return CommonResponseDto.setSuccess("LectureEvent List", result);
+                return CommonResponseDto.setSuccess("LectureEvent Item List", result);
             } else {
                 LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
@@ -224,6 +248,54 @@ public class LectureListService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findLectureEventCatalog(HttpServletRequest request) {
+        try {
+            Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
+
+            LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
+            Page<Lecture> pageable = lectureRepository.findAllByLectureEvent(lectureEvent, PageRequest.of(0, 30));
+
+            List<LectureListResponseDto> list = pageable.stream()
+                    .map(LectureListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            return CommonResponseDto.setSuccess("LectureEvent Catalog List", list);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> lectureEventDelete(HttpServletRequest request) {
+        try {
+            Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
+
+            LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
+            lectureRepository.updateByLectureEvent(lectureEvent);
+            lectureEventRepository.delete(lectureEvent);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("DELETE SUCCESS!", null);
+    }
+
+    @Transactional
+    public CommonResponseDto<?> lectureEventListDelete(HttpServletRequest request) {
+        try {
+            Long lectureNo = Long.valueOf(request.getParameter("lectureNo"));
+
+            Lecture lecture = lectureRepository.findById(lectureNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+            lecture.lectureEventUpdate(null);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("DELETE SUCCESS!", null);
     }
 
     @Transactional

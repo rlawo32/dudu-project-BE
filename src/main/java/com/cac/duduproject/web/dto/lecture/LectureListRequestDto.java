@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LectureListRequestDto {
 
+    private String listType;
     private int pageNo;
     private String sortType;
     private Long institutionNo;

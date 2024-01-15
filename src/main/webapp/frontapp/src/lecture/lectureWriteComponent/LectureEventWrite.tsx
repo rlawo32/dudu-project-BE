@@ -56,7 +56,6 @@ const LectureRoomWrite = () => {
     const [institutionNo, setInstitutionNo] = useState<string>("1");
     const [mainCategoryNo, setMainCategoryNo] = useState<string>("0");
     const [subCategoryNo, setSubCategoryNo] = useState<string>("0");
-    const [lectureCheck, setLectureCheck] = useState<boolean>(false);
 
     const [lectureEventName, setLectureEventName] = useState<string>("");
     const [lectureEventDesc, setLectureEventDesc] = useState<string>("");
@@ -70,6 +69,7 @@ const LectureRoomWrite = () => {
     }[]>([]);
 
     const listData:object = {
+        listType: "E",
         pageNo: pageNo,
         sortType: "",
         institutionNo: institutionNo,
@@ -191,7 +191,7 @@ const LectureRoomWrite = () => {
         }
 
         setTimeout(() => {dataList().then();}, 100);
-    }, [])
+    }, []);
 
     useEffect(() => {
         const subCategoryList = async ():Promise<void> => {
@@ -212,7 +212,7 @@ const LectureRoomWrite = () => {
             })
         }
         setTimeout(() => {subCategoryList().then();}, 100);
-    }, [mainCategoryNo])
+    }, [mainCategoryNo]);
 
     useEffect(() => {
         const lectureList = async () => {
@@ -229,9 +229,7 @@ const LectureRoomWrite = () => {
             });
         }
         setTimeout(() => {lectureList().then();}, 100);
-    }, [institutionNo, mainCategoryNo, subCategoryNo, pageNo])
-
-    console.log(eventLectureSelectArr)
+    }, [institutionNo, mainCategoryNo, subCategoryNo, pageNo]);
 
     return (
         <Styled.LectureEventWriteView style={{marginTop: "5%", marginLeft: "5%"}}>
@@ -247,7 +245,7 @@ const LectureRoomWrite = () => {
                                 <img src={eventThumbnailUrl} alt="썸네일 이미지" style={{height: "150px", width: "150px"}} />
                                 <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
                                     deleteEventThumbnailHandler(eventThumbnailName, "E")}
-                                                 style={{position: "absolute", top: "0", left: "150px"}}/>
+                                                 style={{position: "absolute", top: "0", left: "150px", cursor: "pointer"}}/>
                             </div>
                             :
                             <div />
@@ -296,19 +294,21 @@ const LectureRoomWrite = () => {
                         lectureList.length > 0 ?
                             <div className="ew-list-view">
                                 <table>
-                                    <thead className="table-header">
-                                    <tr style={{height: "35px", fontWeight: "bold"}}>
-                                        <td style={{width: "80px"}}>선택</td>
-                                        <td style={{width: "100px"}}>강의번호</td>
-                                        <td style={{width: "150px"}}>기관명</td>
-                                        <td style={{width: "450px"}}>강의제목</td>
-                                        <td style={{width: "80px"}}>강사명</td>
-                                    </tr>
+                                    <thead>
+                                        <tr style={{height: "35px", fontWeight: "bold"}}>
+                                            <td style={{width: "80px"}}>순번</td>
+                                            <td style={{width: "80px"}}>선택</td>
+                                            <td style={{width: "140px"}}>강의번호</td>
+                                            <td style={{width: "150px"}}>기관명</td>
+                                            <td style={{width: "350px"}}>강의제목</td>
+                                            <td style={{width: "80px"}}>강사명</td>
+                                        </tr>
                                     </thead>
-                                    <tbody id="tbody" className="font-list">
-                                    {lectureList.map((lectures) => {
+                                    <tbody>
+                                    {lectureList.map((lectures, idx) => {
                                         return (
                                             <tr key={lectures.lectureNo} style={{height: "30px"}}>
+                                                <td>{(idx+1) + (pageNo*10)}</td>
                                                 <td>
                                                     <input type="checkbox" checked={eventLectureSelectArr.findIndex(
                                                         (item) => item.lectureNo === lectures.lectureNo) > -1 ? true : false}
@@ -317,7 +317,9 @@ const LectureRoomWrite = () => {
                                                 </td>
                                                 <td>{lectures.lectureNo}</td>
                                                 <td>{lectures.lectureInstitution}</td>
-                                                <td>{lectures.lectureTitle}</td>
+                                                <td style={{cursor: "pointer"}}
+                                                    onClick={() => navigate("/lectureDetail/" + lectures.lectureNo,
+                                                    { state: {lectureNo: lectures.lectureNo}})}>{lectures.lectureTitle}</td>
                                                 <td>{lectures.lectureTeacher}</td>
                                             </tr>
                                         )
@@ -333,46 +335,54 @@ const LectureRoomWrite = () => {
                             :
                             <div />
                     }
+                    <div className="ew-list-write">
+                        <div className="write-list">
+                            {
+                                eventLectureSelectArr.length > 0 ?
+                                    <div>
+                                        <div>- 등록할 강좌</div>
+                                        <table>
+                                            <thead>
+                                                <tr style={{height: "35px", fontWeight: "bold"}}>
+                                                    <td style={{width: "100px"}}>등록순번</td>
+                                                    <td style={{width: "100px"}}>강의번호</td>
+                                                    <td style={{width: "150px"}}>기관명</td>
+                                                    <td style={{width: "250px"}}>강의제목</td>
+                                                    <td style={{width: "50px"}}>강사명</td>
+                                                    <td style={{width: "20px"}}></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {eventLectureSelectArr.map((events, idx) => {
+                                                    return (
+                                                        <tr key={events.lectureNo} style={{height: "30px"}}>
+                                                            <td>{idx+1}</td>
+                                                            <td>{events.lectureNo}</td>
+                                                            <td>{events.lectureInstitution}</td>
+                                                            <td style={{cursor: "pointer"}}
+                                                                onClick={() => navigate("/lectureDetail/" + events.lectureNo,
+                                                                    { state: {lectureNo: events.lectureNo}})}>{events.lectureTitle}</td>
+                                                            <td>{events.lectureTeacher}</td>
+                                                            <td style={{cursor: "pointer"}}
+                                                                onClick={() => setEventLectureSelectArr(eventLectureSelectArr.filter(
+                                                                    (elArr) => elArr.lectureNo !== events.lectureNo))}>x</td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    :
+                                    <div />
+                            }
+                        </div>
+                        <div className="write-insert">
+                            <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
+                            <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
+                            <button onClick={() => insertLectureEventHandler()}>이벤트 등록</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div style={{marginTop: "50px"}}>
-                <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
-                <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
-                <button onClick={() => insertLectureEventHandler()}>insert</button>
-            </div>
-            <div>
-                {
-                    eventLectureSelectArr.length > 0 ?
-                        <table>
-                            <thead className="table-header">
-                            <tr style={{height: "35px", fontWeight: "bold"}}>
-                                <td style={{width: "100px"}}>강의번호</td>
-                                <td style={{width: "150px"}}>기관명</td>
-                                <td style={{width: "450px"}}>강의제목</td>
-                                <td style={{width: "50px"}}>강사명</td>
-                                <td style={{width: "20px"}}></td>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody" className="font-list">
-                            {eventLectureSelectArr.map((events) => {
-                                return (
-                                    <tr key={events.lectureNo} style={{height: "30px"}}>
-                                        <td>{events.lectureNo}</td>
-                                        <td>{events.lectureInstitution}</td>
-                                        <td>{events.lectureTitle}</td>
-                                        <td>{events.lectureTeacher}</td>
-                                        <td style={{cursor: "pointer"}}
-                                            onClick={() => setEventLectureSelectArr(eventLectureSelectArr.filter(
-                                                (elArr) => elArr.lectureNo !== events.lectureNo))}>x</td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table>
-                        :
-                        <div />
-                }
             </div>
         </Styled.LectureEventWriteView>
     )

@@ -54,7 +54,7 @@ const LectureList = () => {
     }]);
 
     const [pageNo, setPageNo] = useState<number>(1);
-    const [sortType, setSortType] = useState<string>("");
+    const [sortType, setSortType] = useState<string>("1");
     const [totalPage, setTotalPage] = useState<number>(0);
 
     const [institutionNo, setInstitutionNo] = useState<number>(1);
@@ -67,6 +67,7 @@ const LectureList = () => {
         ltDivisionArr, ltStateArr} = useLectureSearchDataStore();
 
     const getListData:object = {
+        listType: "L",
         pageNo: pageNo,
         sortType: sortType,
         institutionNo: institutionNo,

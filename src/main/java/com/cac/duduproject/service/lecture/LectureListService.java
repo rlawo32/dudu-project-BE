@@ -100,6 +100,7 @@ public class LectureListService {
     public CommonResponseDto<?> findAllLectureList(LectureListRequestDto requestDto) {
         Map<String, Object> result = new HashMap<>();
         try {
+            String listType = requestDto.getListType();
             int pageNo = requestDto.getPageNo();
             String sortType = requestDto.getSortType();
             Long institutionNo = requestDto.getInstitutionNo();
@@ -127,15 +128,15 @@ public class LectureListService {
                 sort = Sort.by("lectureFee").descending();
             }
 
-            Page<Lecture> pageable;
-            Long totalPage;
-            if(sortType.length() < 1) {
+            Page<Lecture> pageable = null;
+            Long totalPage = 0L;
+            if(listType.equals("E")) {
                 pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
                         mainCategoryNo, subCategoryNo,
                         searchDivision, searchState,
                         PageRequest.of(pageNo, (10), sort));
                 totalPage = Long.valueOf(pageable.getTotalPages());
-            } else {
+            } else if(listType.equals("L")) {
                 pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
                         mainCategoryNo, subCategoryNo,
                         searchDivision, searchState,

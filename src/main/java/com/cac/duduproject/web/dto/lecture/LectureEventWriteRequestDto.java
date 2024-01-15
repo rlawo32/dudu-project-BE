@@ -15,6 +15,7 @@ public class LectureEventWriteRequestDto {
 
     private Long institutionNo;
     private LectureInstitution lectureInstitution;
+    private String lectureEventType;
     private String lectureEventName;
     private String lectureEventDesc;
     private List<lectureEventItemList> lectureEventList;
@@ -31,6 +32,7 @@ public class LectureEventWriteRequestDto {
     public LectureEvent toLectureEvent() {
         return LectureEvent.builder()
                 .lectureInstitution(lectureInstitution)
+                .lectureEventType(lectureEventType)
                 .lectureEventName(lectureEventName)
                 .lectureEventDesc(lectureEventDesc)
                 .lectureEventThumbnail(lectureEventThumbnail)

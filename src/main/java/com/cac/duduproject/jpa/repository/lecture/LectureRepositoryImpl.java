@@ -33,7 +33,7 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
 
     @Override
     public Page<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
-                                      Long mainCategoryNo, Long subCategoryNo,
+                                      Long mainCategoryNo, Long subCategoryNo, String listType,
                                       List<LectureListRequestDto.DivisionItemList> searchDivision,
                                       List<LectureListRequestDto.StateItemList> searchState,
                                       Pageable pageable) {
@@ -42,6 +42,7 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                         lecture.lectureTitle.contains(searchText),
                         eqMainCategory(mainCategoryNo),
                         eqSubCategory(subCategoryNo),
+                        eqListType(listType),
                         (eqDivision(searchDivision)),
                         (eqState(searchState)));
         List<Lecture> lectures = this.getQuerydsl().applyPagination(pageable, query).fetch();
@@ -66,6 +67,15 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
             return lecture.lectureSubCategory.eq(lectureSubCategory);
         }
+    }
+
+    private BooleanExpression eqListType(String listType) {
+        if(listType.equals("E")) {
+            return lecture.lectureEvent.isNull();
+        } else if(listType.equals("L")) {
+            return null;
+        }
+        return null;
     }
 
     private BooleanBuilder eqDivision(List<LectureListRequestDto.DivisionItemList> searchDivision) {

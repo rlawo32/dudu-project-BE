@@ -11,7 +11,7 @@ import java.util.List;
 public interface LectureRepositoryCustom {
 
     Page<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
-                               Long mainCategoryNo, Long subCategoryNo,
+                               Long mainCategoryNo, Long subCategoryNo, String listType,
                                List<LectureListRequestDto.DivisionItemList> searchDivision,
                                List<LectureListRequestDto.StateItemList> searchState,
                                Pageable pageable);

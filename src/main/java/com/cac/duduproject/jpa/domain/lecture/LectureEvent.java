@@ -1,5 +1,6 @@
 package com.cac.duduproject.jpa.domain.lecture;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -44,6 +47,10 @@ public class LectureEvent {
     @Column(name = "lecture_event_created_date")
     @NotBlank
     private String lectureEventCreatedDate;
+
+    @OneToMany(mappedBy = "lectureEvent")
+    @JsonIgnore
+    private List<LectureEventImage> lectureEventImages = new ArrayList<>();
 
     @PrePersist
     public void onPrePersist() {

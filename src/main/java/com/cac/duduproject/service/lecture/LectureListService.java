@@ -5,6 +5,7 @@ import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
 import com.cac.duduproject.jpa.repository.lecture.*;
+import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +35,10 @@ public class LectureListService {
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
     private final LectureEventRepository lectureEventRepository;
+    private final LectureEventImageRepository lectureEventImageRepository;
     private final LectureStateRepository lectureStateRepository;
+
+    private final ImageUploadUtil imageUploadUtil;
 
     @Transactional
     public CommonResponseDto<?> findAllLectureInstitution() {
@@ -187,7 +191,6 @@ public class LectureListService {
             List<LectureEventListResponseDto> list = pageable.stream()
                     .map(LectureEventListResponseDto::new)
                     .collect(Collectors.toList());
-
             result.put("eventList", list);
             result.put("totalPage", totalPage);
 
@@ -243,7 +246,7 @@ public class LectureListService {
                 List<LectureEventListResponseDto> list = lectureEventRepository.findAllByLectureInstitution(lectureInstitution).stream()
                         .map(LectureEventListResponseDto::new)
                         .collect(Collectors.toList());
-                return CommonResponseDto.setSuccess("LectureEvent List", list);
+                return CommonResponseDto.setSuccess("LectureEvent Swiper List", list);
             }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
@@ -277,6 +280,9 @@ public class LectureListService {
             LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
             lectureRepository.updateByLectureEvent(lectureEvent);
+
+            imageUploadUtil.ImageDeleteS3(request);
+            lectureEventImageRepository.deleteByLectureEvent(lectureEvent);
             lectureEventRepository.delete(lectureEvent);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");

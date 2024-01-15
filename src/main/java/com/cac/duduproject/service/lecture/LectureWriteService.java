@@ -142,21 +142,36 @@ public class LectureWriteService {
     @Transactional
     public CommonResponseDto<?> insertLectureEvent(LectureEventWriteRequestDto requestDto) {
         try {
-            LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
-            requestDto.setLectureInstitution(lectureInstitution);
+            if(requestDto.getLectureEventNo() == 0) {
+                LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
+                requestDto.setLectureInstitution(lectureInstitution);
 
-            Long lectureEventNo = lectureEventRepository.save(requestDto.toLectureEvent()).getLectureEventNo();
+                Long lectureEventNo = lectureEventRepository.save(requestDto.toLectureEvent()).getLectureEventNo();
 
-            LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureEventNo));
+                lectureImageService.lectureEventImageInsert(lectureEventNo, requestDto);
 
-            for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
-                Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
-                Lecture lecture = lectureRepository.findById(lectureNo)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+                LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureEventNo));
 
-                lecture.lectureEventUpdate(lectureEvent);
+                for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
+                    Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
+                    Lecture lecture = lectureRepository.findById(lectureNo)
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+
+                    lecture.lectureEventUpdate(lectureEvent);
+                }
+            } else {
+                LectureEvent lectureEvent = lectureEventRepository.findById(requestDto.getLectureEventNo())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getLectureEventNo()));
+
+                for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
+                    Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
+                    Lecture lecture = lectureRepository.findById(lectureNo)
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+
+                    lecture.lectureEventUpdate(lectureEvent);
+                }
             }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");

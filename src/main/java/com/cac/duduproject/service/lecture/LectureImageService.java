@@ -3,12 +3,17 @@ package com.cac.duduproject.service.lecture;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
+import com.cac.duduproject.jpa.domain.lecture.LectureEventImage;
 import com.cac.duduproject.jpa.domain.lecture.LectureImage;
+import com.cac.duduproject.jpa.repository.lecture.LectureEventImageRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureEventRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureImageRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
+import com.cac.duduproject.web.dto.lecture.LectureEventWriteRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +33,8 @@ public class LectureImageService {
 
     private final LectureRepository lectureRepository;
     private final LectureImageRepository lectureImageRepository;
+    private final LectureEventRepository lectureEventRepository;
+    private final LectureEventImageRepository lectureEventImageRepository;
 
     private final AmazonS3 s3Client;
     private final ImageUploadUtil imageUploadUtil;
@@ -101,6 +108,34 @@ public class LectureImageService {
 
                 lectureImageRepository.save(lectureImage);
             }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void lectureEventImageInsert(Long lectureEventNo, LectureEventWriteRequestDto requestDto) {
+        try {
+            LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureEventNo));
+
+            String lectureImageType= "E";
+            Long lectureImageSize = 0L;
+            String customName = requestDto.getLectureEventImageName();
+            String originName = customName.substring(customName.lastIndexOf("_")+1);
+            String urlName = requestDto.getLectureEventThumbnail();
+            String extension = customName.substring(customName.lastIndexOf(".")+1);
+
+            LectureEventImage lectureEventImage = LectureEventImage.builder()
+                    .lectureImageType(lectureImageType)
+                    .lectureEvent(lectureEvent)
+                    .lectureImageOrigin(originName)
+                    .lectureImageCustom(customName)
+                    .lectureImageUrl(urlName)
+                    .lectureImageExtension(extension)
+                    .lectureImageSize(lectureImageSize)
+                    .build();
+            lectureEventImageRepository.save(lectureEventImage);
         } catch(Exception e) {
             e.printStackTrace();
         }

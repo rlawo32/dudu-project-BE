@@ -50,7 +50,8 @@ public class ImageUploadUtil {
                 deleteDir = "/lectureEventImage";
             }
 
-            s3Client.deleteObject(new DeleteObjectRequest(bucketName + deleteDir, request.getParameter("imageFileName")));
+            String imageFileName = request.getParameter("imageFileName");
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName + deleteDir, imageFileName));
         } catch(Exception e) {
             e.printStackTrace();
         }

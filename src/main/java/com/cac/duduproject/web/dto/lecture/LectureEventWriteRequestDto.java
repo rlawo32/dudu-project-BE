@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LectureEventWriteRequestDto {
 
+    private Long lectureEventNo;
     private Long institutionNo;
     private LectureInstitution lectureInstitution;
     private String lectureEventType;
@@ -20,6 +21,7 @@ public class LectureEventWriteRequestDto {
     private String lectureEventDesc;
     private List<lectureEventItemList> lectureEventList;
     private String lectureEventThumbnail;
+    private String lectureEventImageName;
 
     @Data
     public static class lectureEventItemList {

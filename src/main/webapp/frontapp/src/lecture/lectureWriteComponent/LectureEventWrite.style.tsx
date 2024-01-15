@@ -124,8 +124,12 @@ export const LectureEventWriteView = styled.div`
       }
       
       .ew-catalog-box {
+        height: fit-content;
+        max-height: 400px;
+        padding: 10px 10px 30px 10px;
         margin-top: 20px;
         border: 2px solid gray;
+        overflow: auto;
       }
     }
   }

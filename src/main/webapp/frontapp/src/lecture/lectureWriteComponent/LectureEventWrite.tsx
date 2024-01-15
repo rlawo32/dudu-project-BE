@@ -15,53 +15,32 @@ const LectureRoomWrite = () => {
         institutionNo:number;
         institutionName:string;
         institutionContact:string;
-    }[]>([{
-        institutionNo: 0,
-        institutionName: '',
-        institutionContact: ''
-    }]);
+    }[]>([]);
     const [lectureMainCategoryList, setLectureMainCategoryList] = useState<{
         lectureMainCategoryNo:number;
         lectureMainCategoryName:string;
         lectureMainCategoryDesc:string;
-    }[]>([{
-        lectureMainCategoryNo: 0,
-        lectureMainCategoryName: '',
-        lectureMainCategoryDesc: ''
-    }]);
+    }[]>([]);
     const [lectureSubCategoryList, setLectureSubCategoryList] = useState<{
         lectureSubCategoryNo:number;
         lectureSubCategoryName:string;
         lectureSubCategoryDesc:string;
-    }[]>([{
-        lectureSubCategoryNo: 0,
-        lectureSubCategoryName: '',
-        lectureSubCategoryDesc: ''
-    }]);
+    }[]>([]);
     const [lectureList, setLectureList] = useState<{
         lectureNo:number;
         lectureInstitution:string;
         lectureTitle:string;
         lectureTeacher:string;
-    }[]>([{
-        lectureNo: 0,
-        lectureInstitution: '',
-        lectureTitle: '',
-        lectureTeacher: ''
-    }]);
+    }[]>([]);
     const [eventList, setEventList] = useState<{
         lectureEventNo:number;
         lectureInstitutionNo:number;
         lectureEventType:string;
         lectureEventName:string;
         lectureEventDesc:string;
-    }[]>([{
-        lectureEventNo: 0,
-        lectureInstitutionNo: 0,
-        lectureEventType: '',
-        lectureEventName: '',
-        lectureEventDesc: ''
-    }]);
+        lectureEventThumbnail:string;
+        lectureEventImageName:string;
+    }[]>([]);
     const [catalogList, setCatalogList] = useState<{
         lectureNo:number;
         lectureInstitution:string;
@@ -79,6 +58,7 @@ const LectureRoomWrite = () => {
     const [subCategoryNo, setSubCategoryNo] = useState<string>("0");
     const [catalogTitle, setCatalogTitle] = useState<string>("");
 
+    const [lectureEventNo, setLectureEventNo] = useState<string>("0");
     const [lectureEventType, setLectureEventType] = useState<string>("");
     const [lectureEventName, setLectureEventName] = useState<string>("");
     const [lectureEventDesc, setLectureEventDesc] = useState<string>("");
@@ -107,8 +87,20 @@ const LectureRoomWrite = () => {
         return result;
     }
 
+    const selectEventListView = ():any[] => {
+        let result:any[] = [];
+        for (let i:number=0; i<=eventList.length; i++) {
+            if(i === 0) {
+                result.push(<option key={i} value={"0"}>새로 생성</option>);
+            } else {
+                result.push(<option key={i} value={eventList[i-1].lectureEventNo}>{eventList[i-1].lectureEventName}</option>);
+            }
+        }
+        return result;
+    }
+
     const selectEventTypeView = ():any[] => {
-        const selectArr:{key:string;value:string;}[] = [{key:"", value:"이벤트선택"}, {key:"M", value:"메인이벤트"}, {key:"L", value:"강좌이벤트"}]
+        const selectArr:{key:string;value:string;}[] = [{key:"", value:"이벤트선택"}, {key:"M", value:"메인이벤트"}, {key:"L", value:"강좌이벤트"}];
         let result:any[] = [];
         for (let i:number=0; i<selectArr.length; i++) {
             result.push(<option key={i} value={selectArr[i].key}>{selectArr[i].value}</option>);
@@ -184,12 +176,13 @@ const LectureRoomWrite = () => {
         })
     }
 
-    const catalogEventDeleteHandler = (eventNo:number):boolean => {
+    const catalogEventDeleteHandler = (eventNo:number, image:string):boolean => {
         if(window.confirm("정말 삭제하시겠습니까??") == true) {
             axios({
                 method: "DELETE",
                 url: "/lecture/lectureDeleteEvent",
-                params: {lectureEventNo: eventNo}
+                params: {lectureEventNo: eventNo,
+                    type: "E", imageFileName: image}
             }).then((res):void => {
                 window.location.reload();
             }).catch((err):void => {
@@ -220,12 +213,14 @@ const LectureRoomWrite = () => {
 
     const insertLectureEventHandler = ():void => {
         const eventData:object = {
+            lectureEventNo: lectureEventNo,
             institutionNo: institutionNo,
             lectureEventType: lectureEventType,
             lectureEventName: lectureEventName,
             lectureEventDesc: lectureEventDesc,
             lectureEventList: eventLectureSelectArr,
-            lectureEventThumbnail: eventThumbnailUrl
+            lectureEventThumbnail: eventThumbnailUrl,
+            lectureEventImageName: eventThumbnailName
         }
         axios({
             method: "POST",
@@ -488,11 +483,27 @@ const LectureRoomWrite = () => {
                             }
                         </div>
                         <div className="write-insert">
-                            <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
-                            <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
-                            <select onChange={(e) => setLectureEventType(e.target.value)}>
-                                {selectEventTypeView()}
+                            {
+                                lectureEventNo === '0' ?
+                                    <div>이벤트 생성</div>
+                                    :
+                                    <div>기존 이벤트에 추가</div>
+                            }
+                            <select onChange={(e) => setLectureEventNo(e.target.value)}>
+                                {selectEventListView()}
                             </select>
+                            {
+                                lectureEventNo === '0' ?
+                                    <span>
+                                        <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
+                                        <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
+                                        <select onChange={(e) => setLectureEventType(e.target.value)}>
+                                            {selectEventTypeView()}
+                                        </select>
+                                    </span>
+                                    :
+                                    <span />
+                            }
                             <button style={{marginLeft: "10px"}} onClick={() => insertLectureEventHandler()}>이벤트 등록</button>
                         </div>
                     </div>
@@ -532,7 +543,7 @@ const LectureRoomWrite = () => {
                                                         </span>
                                                         <span style={{margin: "0 5px"}}>/</span>
                                                         <span style={{cursor: "pointer"}}
-                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo)}>
+                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImageName)}>
                                                             X
                                                         </span>
                                                     </td>
@@ -553,12 +564,12 @@ const LectureRoomWrite = () => {
                     <div className="ew-catalog-box">
                         {catalogList.length > 0 ?
                             <div>
-                                <div style={{margin: "10px 10px", fontWeight: "bold"}}>{catalogTitle}</div>
+                                <div style={{margin: "10px 10px", fontWeight: "bold"}}>이벤트제목 : {catalogTitle}</div>
                                 <table>
                                     <thead>
                                         <tr style={{height: "35px", fontWeight: "bold"}}>
                                             <td style={{width: "50px"}}>No.</td>
-                                            <td style={{width: "70px"}}>강의번호</td>
+                                            <td style={{width: "80px"}}>강의번호</td>
                                             <td style={{width: "200px"}}>강의제목</td>
                                             <td style={{width: "80px"}}>강사명</td>
                                             <td style={{width: "50px"}}>선택</td>

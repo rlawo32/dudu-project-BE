@@ -49,14 +49,37 @@ const LectureRoomWrite = () => {
         lectureTitle: '',
         lectureTeacher: ''
     }]);
+    const [eventList, setEventList] = useState<{
+        lectureEventNo:number;
+        lectureInstitutionNo:number;
+        lectureEventType:string;
+        lectureEventName:string;
+        lectureEventDesc:string;
+    }[]>([{
+        lectureEventNo: 0,
+        lectureInstitutionNo: 0,
+        lectureEventType: '',
+        lectureEventName: '',
+        lectureEventDesc: ''
+    }]);
+    const [catalogList, setCatalogList] = useState<{
+        lectureNo:number;
+        lectureInstitution:string;
+        lectureTitle:string;
+        lectureTeacher:string;
+    }[]>([]);
 
-    const [pageNo, setPageNo] = useState<number>(0);
-    const [totalPage, setTotalPage] = useState<number>(0);
+    const [lecturePageNo, setLecturePageNo] = useState<number>(0);
+    const [eventPageNo, setEventPageNo] = useState<number>(0);
+    const [lectureTotalPage, setLectureTotalPage] = useState<number>(0);
+    const [eventTotalPage, setEventTotalPage] = useState<number>(0);
 
     const [institutionNo, setInstitutionNo] = useState<string>("1");
     const [mainCategoryNo, setMainCategoryNo] = useState<string>("0");
     const [subCategoryNo, setSubCategoryNo] = useState<string>("0");
+    const [catalogTitle, setCatalogTitle] = useState<string>("");
 
+    const [lectureEventType, setLectureEventType] = useState<string>("");
     const [lectureEventName, setLectureEventName] = useState<string>("");
     const [lectureEventDesc, setLectureEventDesc] = useState<string>("");
     const [eventThumbnailName, setEventThumbnailName] = useState<string>("");
@@ -68,22 +91,27 @@ const LectureRoomWrite = () => {
         lectureTeacher:string;
     }[]>([]);
 
-    const listData:object = {
-        listType: "E",
-        pageNo: pageNo,
-        sortType: "",
-        institutionNo: institutionNo,
-        mainCategoryNo: mainCategoryNo,
-        subCategoryNo: subCategoryNo,
-        searchText: "",
-        searchDivision: [],
-        searchState: []
+    const lectureListPagination = ():any[] => {
+        let result:any[] = [];
+        for (let i:number=0; i<lectureTotalPage; i++) {
+            result.push(<li key={i} onClick={() => setLecturePageNo(i)}>{i+1}</li>);
+        }
+        return result;
     }
 
-    const pagination = ():any[] => {
+    const eventListPagination = ():any[] => {
         let result:any[] = [];
-        for (let i:number=0; i<totalPage; i++) {
-            result.push(<li key={i} onClick={() => setPageNo(i)}><button className="list-item">{i+1}</button></li>);
+        for (let i:number=0; i<eventTotalPage; i++) {
+            result.push(<li key={i} onClick={() => setEventPageNo(i)}>{i+1}</li>);
+        }
+        return result;
+    }
+
+    const selectEventTypeView = ():any[] => {
+        const selectArr:{key:string;value:string;}[] = [{key:"", value:"이벤트선택"}, {key:"M", value:"메인이벤트"}, {key:"L", value:"강좌이벤트"}]
+        let result:any[] = [];
+        for (let i:number=0; i<selectArr.length; i++) {
+            result.push(<option key={i} value={selectArr[i].key}>{selectArr[i].value}</option>);
         }
         return result;
     }
@@ -129,7 +157,7 @@ const LectureRoomWrite = () => {
         })
     }
 
-    const changeEventLectureHandler = (checked:boolean, lecture:any):void => {
+    const addAndRemoveLectureHandler = (checked:boolean, lecture:any):void => {
         if(checked) {
             setEventLectureSelectArr((prevList) => [...prevList, {
                 lectureNo:lecture.lectureNo,
@@ -143,9 +171,57 @@ const LectureRoomWrite = () => {
         }
     }
 
+    const catalogLectureViewHandler = (eventNo:number, eventTitle:string):void => {
+        axios({
+            method: "GET",
+            url: "/lecture/lectureEventCatalog",
+            params: {lectureEventNo: eventNo}
+        }).then((res):void => {
+            setCatalogList(res.data.data);
+            setCatalogTitle(eventTitle);
+        }).catch((err):void => {
+            console.log(err.message);
+        })
+    }
+
+    const catalogEventDeleteHandler = (eventNo:number):boolean => {
+        if(window.confirm("정말 삭제하시겠습니까??") == true) {
+            axios({
+                method: "DELETE",
+                url: "/lecture/lectureDeleteEvent",
+                params: {lectureEventNo: eventNo}
+            }).then((res):void => {
+                window.location.reload();
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    const catalogLectureDeleteHandler = (lectureNo:number):boolean => {
+        if(window.confirm("정말 삭제하시겠습니까??") == true) {
+            axios({
+                method: "DELETE",
+                url: "/lecture/lectureDeleteEventList",
+                params: {lectureNo: lectureNo}
+            }).then((res):void => {
+                window.location.reload();
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     const insertLectureEventHandler = ():void => {
         const eventData:object = {
             institutionNo: institutionNo,
+            lectureEventType: lectureEventType,
             lectureEventName: lectureEventName,
             lectureEventDesc: lectureEventDesc,
             lectureEventList: eventLectureSelectArr,
@@ -194,6 +270,29 @@ const LectureRoomWrite = () => {
     }, []);
 
     useEffect(() => {
+        const listData:object = {
+            pageNo: eventPageNo,
+            sortType: "",
+            institutionNo: institutionNo,
+            lectureEventNo: 0
+        }
+        const eventList = async ():Promise<void> => {
+            await axios({
+                method: "POST",
+                url: '/lecture/lectureEventAll',
+                data: JSON.stringify(listData),
+                headers: {'Content-type': 'application/json'}
+            }).then((res):void => {
+                setEventList(res.data.data.eventList);
+                setEventTotalPage(res.data.data.totalPage);
+            }).catch((err):void => {
+                console.log(err.message);
+            })
+        }
+        setTimeout(() => {eventList().then();}, 100);
+    }, [eventPageNo]);
+
+    useEffect(() => {
         const subCategoryList = async ():Promise<void> => {
             await axios({
                 method: "GET",
@@ -215,6 +314,17 @@ const LectureRoomWrite = () => {
     }, [mainCategoryNo]);
 
     useEffect(() => {
+        const listData:object = {
+            listType: "E",
+            pageNo: lecturePageNo,
+            sortType: "",
+            institutionNo: institutionNo,
+            mainCategoryNo: mainCategoryNo,
+            subCategoryNo: subCategoryNo,
+            searchText: "",
+            searchDivision: [],
+            searchState: []
+        }
         const lectureList = async () => {
             await axios({
                 method: "POST",
@@ -223,13 +333,13 @@ const LectureRoomWrite = () => {
                 headers: {'Content-type': 'application/json'}
             }).then((res):void => {
                 setLectureList(res.data.data.lectureList);
-                setTotalPage(res.data.data.totalPage);
+                setLectureTotalPage(res.data.data.totalPage);
             }).catch((err):void => {
                 console.log(err.message);
             });
         }
         setTimeout(() => {lectureList().then();}, 100);
-    }, [institutionNo, mainCategoryNo, subCategoryNo, pageNo]);
+    }, [institutionNo, mainCategoryNo, subCategoryNo, lecturePageNo]);
 
     return (
         <Styled.LectureEventWriteView style={{marginTop: "5%", marginLeft: "5%"}}>
@@ -252,6 +362,7 @@ const LectureRoomWrite = () => {
                     }
                 </div>
                 <div className="ew-lecture">
+                    <div>강좌리스트</div>
                     <div className="ew-list-select">
                         <select
                             value={institutionNo}
@@ -296,9 +407,9 @@ const LectureRoomWrite = () => {
                                 <table>
                                     <thead>
                                         <tr style={{height: "35px", fontWeight: "bold"}}>
-                                            <td style={{width: "80px"}}>순번</td>
+                                            <td style={{width: "80px"}}>No.</td>
                                             <td style={{width: "80px"}}>선택</td>
-                                            <td style={{width: "140px"}}>강의번호</td>
+                                            <td style={{width: "150px"}}>강의번호</td>
                                             <td style={{width: "150px"}}>기관명</td>
                                             <td style={{width: "350px"}}>강의제목</td>
                                             <td style={{width: "80px"}}>강사명</td>
@@ -308,12 +419,12 @@ const LectureRoomWrite = () => {
                                     {lectureList.map((lectures, idx) => {
                                         return (
                                             <tr key={lectures.lectureNo} style={{height: "30px"}}>
-                                                <td>{(idx+1) + (pageNo*10)}</td>
+                                                <td>{(idx+1) + (lecturePageNo*10)}</td>
                                                 <td>
                                                     <input type="checkbox" checked={eventLectureSelectArr.findIndex(
                                                         (item) => item.lectureNo === lectures.lectureNo) > -1 ? true : false}
                                                            onChange={({ target: { checked } }) =>
-                                                               changeEventLectureHandler(checked, lectures)}/>
+                                                               addAndRemoveLectureHandler(checked, lectures)}/>
                                                 </td>
                                                 <td>{lectures.lectureNo}</td>
                                                 <td>{lectures.lectureInstitution}</td>
@@ -328,7 +439,7 @@ const LectureRoomWrite = () => {
                                 </table>
                                 <div className="paging-view">
                                     <ul>
-                                        {pagination()}
+                                        {lectureListPagination()}
                                     </ul>
                                 </div>
                             </div>
@@ -344,12 +455,12 @@ const LectureRoomWrite = () => {
                                         <table>
                                             <thead>
                                                 <tr style={{height: "35px", fontWeight: "bold"}}>
-                                                    <td style={{width: "100px"}}>등록순번</td>
-                                                    <td style={{width: "100px"}}>강의번호</td>
-                                                    <td style={{width: "150px"}}>기관명</td>
-                                                    <td style={{width: "250px"}}>강의제목</td>
+                                                    <td style={{width: "30px"}}>No.</td>
+                                                    <td style={{width: "50px"}}>강의번호</td>
+                                                    <td style={{width: "60px"}}>기관명</td>
+                                                    <td style={{width: "200px"}}>강의제목</td>
                                                     <td style={{width: "50px"}}>강사명</td>
-                                                    <td style={{width: "20px"}}></td>
+                                                    <td style={{width: "30px"}}>선택</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -365,7 +476,7 @@ const LectureRoomWrite = () => {
                                                             <td>{events.lectureTeacher}</td>
                                                             <td style={{cursor: "pointer"}}
                                                                 onClick={() => setEventLectureSelectArr(eventLectureSelectArr.filter(
-                                                                    (elArr) => elArr.lectureNo !== events.lectureNo))}>x</td>
+                                                                    (elArr) => elArr.lectureNo !== events.lectureNo))}>X</td>
                                                         </tr>
                                                     )
                                                 })}
@@ -379,10 +490,107 @@ const LectureRoomWrite = () => {
                         <div className="write-insert">
                             <input type="text" onChange={(e) => setLectureEventName(e.target.value)} placeholder="이벤트이름" />
                             <input type="text" onChange={(e) => setLectureEventDesc(e.target.value)} placeholder="이벤트설명" />
-                            <button onClick={() => insertLectureEventHandler()}>이벤트 등록</button>
+                            <select onChange={(e) => setLectureEventType(e.target.value)}>
+                                {selectEventTypeView()}
+                            </select>
+                            <button style={{marginLeft: "10px"}} onClick={() => insertLectureEventHandler()}>이벤트 등록</button>
                         </div>
                     </div>
                 </div>
+                <div className="ew-event">
+                    <div>이벤트리스트</div>
+                    {
+                        eventList.length > 0 ?
+                            <div className="ew-list-view">
+                                <table>
+                                    <thead>
+                                        <tr style={{height: "35px", fontWeight: "bold"}}>
+                                            <td style={{width: "80px"}}>No.</td>
+                                            <td style={{width: "100px"}}>이벤트번호</td>
+                                            <td style={{width: "100px"}}>이벤트타입</td>
+                                            <td style={{width: "200px"}}>이벤트제목</td>
+                                            <td style={{width: "200px"}}>이벤트설명</td>
+                                            <td style={{width: "80px"}}>선택</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {eventList.map((events, idx) => {
+                                            return (
+                                                <tr key={events.lectureEventNo} style={{height: "30px"}}>
+                                                    <td>{(idx+1) + (eventPageNo*10)}</td>
+                                                    <td>{events.lectureEventNo}</td>
+                                                    <td>{events.lectureEventType}</td>
+                                                    <td style={{cursor: "pointer"}}
+                                                        onClick={() => navigate("/lectureEventList/" + events.lectureEventNo,
+                                                            { state: {institutionNo: events.lectureInstitutionNo, eventNo: events.lectureEventNo}})}>
+                                                        {events.lectureEventName}</td>
+                                                    <td>{events.lectureEventDesc}</td>
+                                                    <td>
+                                                        <span style={{cursor: "pointer"}}
+                                                              onClick={() => catalogLectureViewHandler(events.lectureEventNo, events.lectureEventName)}>
+                                                            목록
+                                                        </span>
+                                                        <span style={{margin: "0 5px"}}>/</span>
+                                                        <span style={{cursor: "pointer"}}
+                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo)}>
+                                                            X
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                                <div className="paging-view">
+                                    <ul>
+                                        {eventListPagination()}
+                                    </ul>
+                                </div>
+                            </div>
+                            :
+                            <div />
+                    }
+                    <div className="ew-catalog-box">
+                        {catalogList.length > 0 ?
+                            <div>
+                                <div style={{margin: "10px 10px", fontWeight: "bold"}}>{catalogTitle}</div>
+                                <table>
+                                    <thead>
+                                        <tr style={{height: "35px", fontWeight: "bold"}}>
+                                            <td style={{width: "50px"}}>No.</td>
+                                            <td style={{width: "70px"}}>강의번호</td>
+                                            <td style={{width: "200px"}}>강의제목</td>
+                                            <td style={{width: "80px"}}>강사명</td>
+                                            <td style={{width: "50px"}}>선택</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {catalogList.map((item, idx) => {
+                                            return (
+                                                <tr key={idx} style={{height: "30px"}}>
+                                                    <td>{(idx+1) + (eventPageNo*10)}</td>
+                                                    <td>{item.lectureNo}</td>
+                                                    <td style={{cursor: "pointer"}}
+                                                        onClick={() => navigate("/lectureDetail/" + item.lectureNo,
+                                                            { state: {lectureNo: item.lectureNo}})}>
+                                                        {item.lectureTitle}</td>
+                                                    <td>{item.lectureTeacher}</td>
+                                                    <td style={{cursor: "pointer"}}
+                                                        onClick={() => catalogLectureDeleteHandler(item.lectureNo)}>X</td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                            :
+                            <div/>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div className="ew-sub-view">
+
             </div>
         </Styled.LectureEventWriteView>
     )

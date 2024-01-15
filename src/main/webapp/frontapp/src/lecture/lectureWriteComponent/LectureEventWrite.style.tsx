@@ -1,25 +1,35 @@
 import styled from "styled-components";
 
 export const LectureEventWriteView = styled.div`
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    li {
-      float: left;
-      margin-right: 5px;
-      cursor: pointer;
+  box-sizing: border-box;
+  
+  .paging-view {
+    width: fit-content;
+    margin: 10px auto 0;
+    
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      li {
+        float: left;
+        margin-right: 10px;
+        cursor: pointer;
+      }
     }
   }
   
   .ew-main-view {
     display: flex;
+    width: 1440px;
     
     .ew-thumbnail {
+      width: 220px;
       margin-bottom: 20px;
     }
     
     .ew-lecture {
+      margin-right: 40px;
 
       .ew-list-select {
         
@@ -49,11 +59,6 @@ export const LectureEventWriteView = styled.div`
             background-color: rgba(80, 80, 80, 0.8);
             color: #fff;
           }
-        }
-
-        .paging-view {
-          width: fit-content;
-          margin: 10px auto 0;
         }
       }
       
@@ -92,6 +97,35 @@ export const LectureEventWriteView = styled.div`
           margin: 30px auto 0;
           
         }
+      }
+    }
+    
+    .ew-event {
+      width: 800px;
+      
+      table {
+        width: 100%;
+        text-align: center;
+        color: ${({theme}) => theme.textColor};
+
+        tbody tr {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      
+      .ew-list-view {
+        height: fit-content;
+        max-height: 250px;
+        width: 700px;
+        margin: auto ;
+        overflow: auto;
+      }
+      
+      .ew-catalog-box {
+        margin-top: 20px;
+        border: 2px solid gray;
       }
     }
   }

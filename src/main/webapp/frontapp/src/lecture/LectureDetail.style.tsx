@@ -22,6 +22,8 @@ export const LectureDetailView = styled.div`
       margin-top: 30px;
       
       img {
+        max-height: 600px;
+        max-width: 600px;
         border: none;
         border-radius: 10px;
         object-fit: cover;

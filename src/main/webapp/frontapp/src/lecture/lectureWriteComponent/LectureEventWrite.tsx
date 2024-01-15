@@ -561,43 +561,41 @@ const LectureRoomWrite = () => {
                             :
                             <div />
                     }
-                    <div className="ew-catalog-box">
-                        {catalogList.length > 0 ?
-                            <div>
-                                <div style={{margin: "10px 10px", fontWeight: "bold"}}>이벤트제목 : {catalogTitle}</div>
-                                <table>
-                                    <thead>
-                                        <tr style={{height: "35px", fontWeight: "bold"}}>
-                                            <td style={{width: "50px"}}>No.</td>
-                                            <td style={{width: "80px"}}>강의번호</td>
-                                            <td style={{width: "200px"}}>강의제목</td>
-                                            <td style={{width: "80px"}}>강사명</td>
-                                            <td style={{width: "50px"}}>선택</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {catalogList.map((item, idx) => {
-                                            return (
-                                                <tr key={idx} style={{height: "30px"}}>
-                                                    <td>{(idx+1) + (eventPageNo*10)}</td>
-                                                    <td>{item.lectureNo}</td>
-                                                    <td style={{cursor: "pointer"}}
-                                                        onClick={() => navigate("/lectureDetail/" + item.lectureNo,
-                                                            { state: {lectureNo: item.lectureNo}})}>
-                                                        {item.lectureTitle}</td>
-                                                    <td>{item.lectureTeacher}</td>
-                                                    <td style={{cursor: "pointer"}}
-                                                        onClick={() => catalogLectureDeleteHandler(item.lectureNo)}>X</td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                            :
-                            <div/>
-                        }
-                    </div>
+                    {catalogList.length > 0 ?
+                        <div className="ew-catalog-box">
+                            <div style={{margin: "10px 10px", fontWeight: "bold"}}>이벤트제목 : {catalogTitle}</div>
+                            <table>
+                                <thead>
+                                    <tr style={{height: "35px", fontWeight: "bold"}}>
+                                        <td style={{width: "50px"}}>No.</td>
+                                        <td style={{width: "80px"}}>강의번호</td>
+                                        <td style={{width: "200px"}}>강의제목</td>
+                                        <td style={{width: "80px"}}>강사명</td>
+                                        <td style={{width: "50px"}}>선택</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {catalogList.map((item, idx) => {
+                                        return (
+                                            <tr key={idx} style={{height: "30px"}}>
+                                                <td>{(idx+1) + (eventPageNo*10)}</td>
+                                                <td>{item.lectureNo}</td>
+                                                <td style={{cursor: "pointer"}}
+                                                    onClick={() => navigate("/lectureDetail/" + item.lectureNo,
+                                                        { state: {lectureNo: item.lectureNo}})}>
+                                                    {item.lectureTitle}</td>
+                                                <td>{item.lectureTeacher}</td>
+                                                <td style={{cursor: "pointer"}}
+                                                    onClick={() => catalogLectureDeleteHandler(item.lectureNo)}>X</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                        :
+                        <div/>
+                    }
                 </div>
             </div>
             <div className="ew-sub-view">

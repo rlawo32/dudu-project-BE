@@ -5,13 +5,10 @@ import App from './App';
 import axios from "axios";
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
+import ScrollToTop from "./ScrollToTop";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.withCredentials = true;
-// axios.interceptors.response.use(req => {
-//     axios.defaults.headers.common["Authorization"] = axios.defaults.headers.common["Authorization"]?.toString();
-//     return req;
-// })
 
 
 const root = ReactDOM.createRoot(
@@ -19,6 +16,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <BrowserRouter>
+        <ScrollToTop />
         <App />
     </BrowserRouter>
 );

@@ -15,17 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardWriteRequestDto {
 
-    private String boardCategory;
     private Long boardInstitution;
     private LectureInstitution lectureInstitution;
+    private String boardCategory;
     private String boardTitle;
     private String boardContent;
     private List<ImageInsertRequestDto> boardImage;
 
     public Board toBoard() {
         return Board.builder()
-                .boardCategory(boardCategory)
                 .lectureInstitution(lectureInstitution)
+                .boardCategory(boardCategory)
                 .boardTitle(boardTitle)
                 .boardContent(boardContent)
                 .build();

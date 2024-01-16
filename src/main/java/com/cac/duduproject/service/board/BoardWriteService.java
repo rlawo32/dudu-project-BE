@@ -3,7 +3,6 @@ package com.cac.duduproject.service.board;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.repository.board.BoardRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureInstitutionRepository;
-import com.cac.duduproject.service.lecture.LectureImageService;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.board.BoardWriteRequestDto;
 import lombok.RequiredArgsConstructor;

@@ -22,13 +22,13 @@ public class Board {
     @Column(name = "board_no")
     private Long boardNo;
 
-    @Column(name = "board_category")
-    @NotBlank
-    private String boardCategory;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_no")
     private LectureInstitution lectureInstitution;
+
+    @Column(name = "board_category")
+    @NotBlank
+    private String boardCategory;
 
     @Column(name = "board_title")
     @NotBlank
@@ -48,9 +48,9 @@ public class Board {
     }
 
     @Builder
-    public Board(String boardCategory, LectureInstitution lectureInstitution, String boardTitle, String boardContent) {
-        this.boardCategory = boardCategory;
+    public Board(LectureInstitution lectureInstitution, String boardCategory, String boardTitle, String boardContent) {
         this.lectureInstitution = lectureInstitution;
+        this.boardCategory = boardCategory;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
     }

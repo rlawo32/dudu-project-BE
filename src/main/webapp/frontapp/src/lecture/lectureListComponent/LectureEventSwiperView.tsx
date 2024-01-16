@@ -76,13 +76,9 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
         lectureEventName:string;
         lectureEventDesc:string;
         lectureEventThumbnail:string;
-    }[]>([{
-        lectureEventNo: 0,
-        lectureInstitutionNo: 0,
-        lectureEventName: '',
-        lectureEventDesc: '',
-        lectureEventThumbnail: ''
-    }]);
+    }[]>([]);
+
+    console.log(lectureEventList)
 
     const lectureEventSwiper = ():any[] => {
         let result:any[] = [];
@@ -108,7 +104,7 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
     }
 
     useEffect(() => {
-        const lectureList = async () => {
+        const eventList = async () => {
             const getEventData:object = {
                 pageNo: 1,
                 sortType: '',
@@ -126,7 +122,7 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
                 console.log(err.message);
             });
         }
-        setTimeout(() => {lectureList().then();}, 100);
+        setTimeout(() => {eventList().then();}, 100);
     }, [props.institutionNo])
 
     return (

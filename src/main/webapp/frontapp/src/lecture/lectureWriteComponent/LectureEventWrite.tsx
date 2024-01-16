@@ -38,7 +38,8 @@ const LectureRoomWrite = () => {
         lectureEventType:string;
         lectureEventName:string;
         lectureEventDesc:string;
-        lectureEventImage:string;
+        lectureEventThumbnail:string;
+        lectureEventImageName:string;
     }[]>([]);
     const [catalogList, setCatalogList] = useState<{
         lectureNo:number;
@@ -556,7 +557,7 @@ const LectureRoomWrite = () => {
                                                         </span>
                                                         <span style={{margin: "0 5px"}}>/</span>
                                                         <span style={{cursor: "pointer"}}
-                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImage)}>
+                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImageName)}>
                                                             X
                                                         </span>
                                                     </td>

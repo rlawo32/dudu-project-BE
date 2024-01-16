@@ -9,6 +9,7 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 
 interface Props {
+    useType: string;
     content: string;
     setContent: React.Dispatch<React.SetStateAction<string>>;
     Image: {
@@ -149,7 +150,7 @@ const LectureQuillEditor = (props: Props) => {
                     fileSize += file[i].size;
                     const formData:FormData = new FormData();
                     formData.append('files', file[i]);
-                    formData.append('type', 'L');
+                    formData.append('type', props.useType);
 
                     await axios({
                         method: "POST",
@@ -157,7 +158,7 @@ const LectureQuillEditor = (props: Props) => {
                         data: formData,
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }).then((res):void => {
-                        const imgFileType:string = "L";
+                        const imgFileType:string = props.useType;
                         const imgFileName:string = res.data.data.imgName;
                         const imgFileUrl:string = res.data.data.imgUrl;
 
@@ -187,7 +188,7 @@ const LectureQuillEditor = (props: Props) => {
                 <span key={i} className="write-attach-item">
                     <img key={i} src={previewWriteImgUrlArr[i]} alt="업로드 이미지" className="write-attach-image" />
                     <FontAwesomeIcon icon={attachDelete} onClick={(e) =>
-                        attachImageDelete(previewWriteImgUrlArr[i], "L")} className="write-attach-delete"/>
+                        attachImageDelete(previewWriteImgUrlArr[i], props.useType)} className="write-attach-delete"/>
                 </span>);
         }
         return result;

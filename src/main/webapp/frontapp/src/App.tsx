@@ -32,14 +32,11 @@ function App() {
 
     useEffect(() => {
         const localTheme:string|null = window.localStorage.getItem("theme");
-
-        console.log(localTheme)
         if(localTheme === 'false') {
             setThemeMode(false);
         } else {
             setThemeMode(true);
         }
-
         reissue().then();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

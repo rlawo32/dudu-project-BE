@@ -17,7 +17,7 @@ const BoardWrite = () => {
         institutionContact:string;
     }[]>([]);
 
-    const [boardCategory, setBoardCategory] = useState<string>("");
+    const [boardCategory, setBoardCategory] = useState<string>("BI");
     const [boardInstitution, setBoardInstitution] = useState<string>("");
     const [boardTitle, setBoardTitle] = useState<string>("");
     const [boardContent, setBoardContent] = useState<string>("");
@@ -34,23 +34,31 @@ const BoardWrite = () => {
             boardInstitution: boardInstitution,
             boardTitle: boardTitle,
             boardContent: boardContent,
-            boardImageArr: boardImageArr
+            boardImage: boardImageArr
         }
-        if(window.confirm("작성하시겠습니까?") == true) {
-            axios({
-                method: "POST",
-                url: "/board/write",
-                data: JSON.stringify(boardData),
-                headers: {'Content-type': 'application/json'}
-            }).then((res):void => {
-                alert("작성 성공");
-                navigate("/");
-            }).catch((err):void => {
-                console.log(err.message);
-            })
-            return true;
-        } else {
+        if(boardTitle.length < 1) {
+            alert('제목을 작성해주세요.');
             return false;
+        } else if(boardContent.length < 1) {
+            alert('내용을 작성해주세요.');
+            return false;
+        } else {
+            if(window.confirm("작성하시겠습니까?") == true) {
+                axios({
+                    method: "POST",
+                    url: "/board/boardWrite",
+                    data: JSON.stringify(boardData),
+                    headers: {'Content-type': 'application/json'}
+                }).then((res):void => {
+                    alert("작성이 완료되었습니다.");
+                    navigate("/");
+                }).catch((err):void => {
+                    console.log(err.message);
+                })
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -103,7 +111,7 @@ const BoardWrite = () => {
                 <div className="bw-write">
                     <div className="wr-content">
                         <div className="item-title">내용 작성</div>
-                        <LectureQuillEditor content={boardContent} setContent={setBoardContent}
+                        <LectureQuillEditor useType={"B"} content={boardContent} setContent={setBoardContent}
                                             Image={boardImageArr} setImage={setBoardImageArr}/>
                     </div>
                 </div>

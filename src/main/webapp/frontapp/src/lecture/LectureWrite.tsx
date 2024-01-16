@@ -190,11 +190,11 @@ const LectureWrite = () => {
         }
         axios({
             method: "POST",
-            url: "/lecture/write",
+            url: "/lecture/lectureWrite",
             data: JSON.stringify(lectureData),
             headers: {'Content-type': 'application/json'}
         }).then((res):void => {
-            alert("작성 성공");
+            alert("작성이 완료되었습니다.");
             navigate("/");
         }).catch((err):void => {
             console.log(err.message);
@@ -236,20 +236,7 @@ const LectureWrite = () => {
             })
         }
         setTimeout(() => {selectDataList().then();}, 100);
-        // (() => {
-        //     window.addEventListener('beforeunload', listener);
-        // })();
-        //
-        // return () => {
-        //     window.removeEventListener('beforeunload', listener);
-        // };
     }, [])
-
-    const listener = (e:Event):void => {
-        navigate("/");
-        e.preventDefault();
-        e.returnValue = false;
-    }
 
     // lectureRoomList useEffect
     useEffect(() => {
@@ -464,7 +451,8 @@ const LectureWrite = () => {
                             내용 작성
                         </div>
                         <div className="lt-description">
-                            <LectureQuillEditor content={lectureDescription} setContent={setLectureDescription} Image={lectureImageArr} setImage={setLectureImageArr}/>
+                            <LectureQuillEditor useType={"L"} content={lectureDescription} setContent={setLectureDescription}
+                                                Image={lectureImageArr} setImage={setLectureImageArr}/>
                         </div>
                     </div>
                     <div className="lt-write-additional">

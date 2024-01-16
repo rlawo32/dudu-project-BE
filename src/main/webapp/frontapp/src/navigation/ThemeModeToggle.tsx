@@ -104,7 +104,6 @@ const ThemeModeToggle = () => {
     const {themeMode, setThemeMode} = useThemeToggleStore();
 
     const onChangeToggle = (checked:boolean):void => {
-        console.log(checked)
         setThemeMode(checked);
         window.localStorage.setItem("theme", `${checked}`);
     }

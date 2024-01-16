@@ -18,6 +18,8 @@ import LectureEventWrite from "./lecture/lectureWriteComponent/LectureEventWrite
 import LectureEventListView from "./lecture/lectureListComponent/LectureEventListView";
 // board
 import BoardWrite from "./community/BoardWrite";
+import BoardList from "./community/BoardList";
+import BoardDetail from "./community/BoardDetail";
 
 //
 import {GlobalStyle} from "./styles/GlobalStyles";
@@ -63,6 +65,8 @@ function App() {
                 <Route path="/lectureDetail/:lectureNo" element={<LectureDetailView />} />
 
                 <Route path="/boardWrite" element={<BoardWrite />} />
+                <Route path="/boardList" element={<BoardList />} />
+                <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
             </Routes>
         </ThemeProvider>
     </>

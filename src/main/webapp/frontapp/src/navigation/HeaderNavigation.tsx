@@ -30,7 +30,7 @@ const StyledHeaderNavigation = styled.div<{$getRole:string}>`
   width: 100%;
   height: 7%;
   background: ${({theme}) => theme.headerBgColor};
-  z-index: 2;
+  z-index: 99;
 
   .header-left {
     display: flex;
@@ -99,7 +99,7 @@ const HeaderNavigation = ():any => {
                             <StyledLink to="/" style={{marginLeft: '30px'}}>
                                 이용안내
                             </StyledLink>
-                            <StyledLink to="/" style={{marginLeft: '30px'}}>
+                            <StyledLink to="/boardList" style={{marginLeft: '30px'}}>
                                 커뮤니티
                             </StyledLink>
                             <StyledLink to="/lectureWrite" style={{marginLeft: '30px'}}>

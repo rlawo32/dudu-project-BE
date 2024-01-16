@@ -14,7 +14,6 @@ import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureWrite.style";
-import reissue from "../reissue";
 
 const LectureWrite = () => {
     const navigate = useNavigate();

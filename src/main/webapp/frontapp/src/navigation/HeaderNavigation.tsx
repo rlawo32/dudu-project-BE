@@ -82,7 +82,6 @@ const HeaderNavigation = ():any => {
 
     return (
         <>
-
             {
                 memberRole === 'ROLE_ADMIN' ?
                     <StyledHeaderNavigation $getRole={memberRole}>
@@ -108,6 +107,9 @@ const HeaderNavigation = ():any => {
                             </StyledLink>
                             <StyledLink to="/lectureEventWrite" style={{marginLeft: '30px'}}>
                                 강좌이벤트개설
+                            </StyledLink>
+                            <StyledLink to="/boardWrite" style={{marginLeft: '30px'}}>
+                                게시글작성
                             </StyledLink>
                         </div>
 

@@ -325,7 +325,7 @@ public class LectureListService {
 
             LectureDetailResponseDto lectureDetailResponseDto = new LectureDetailResponseDto(lecture);
 
-            return CommonResponseDto.setSuccess("LectureEvent List", lectureDetailResponseDto);
+            return CommonResponseDto.setSuccess("Lecture Detail", lectureDetailResponseDto);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

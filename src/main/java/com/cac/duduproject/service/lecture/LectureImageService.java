@@ -9,7 +9,6 @@ import com.cac.duduproject.jpa.repository.lecture.LectureEventRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureImageRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureEventWriteRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

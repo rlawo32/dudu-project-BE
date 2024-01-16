@@ -1,0 +1,63 @@
+package com.cac.duduproject.service.board;
+
+import com.cac.duduproject.jpa.domain.board.Board;
+import com.cac.duduproject.jpa.domain.board.BoardImage;
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
+import com.cac.duduproject.jpa.domain.lecture.LectureEventImage;
+import com.cac.duduproject.jpa.domain.lecture.LectureImage;
+import com.cac.duduproject.jpa.repository.board.BoardImageRepository;
+import com.cac.duduproject.jpa.repository.board.BoardRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureEventImageRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureEventRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureImageRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
+import com.cac.duduproject.web.dto.ImageInsertRequestDto;
+import com.cac.duduproject.web.dto.lecture.LectureEventWriteRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@Service
+public class BoardImageService {
+
+    private final BoardRepository boardRepository;
+    private final BoardImageRepository boardImageRepository;
+
+    @Transactional
+    public void boardImageInsert(Long boardNo, List<ImageInsertRequestDto> requestDto) {
+        try {
+            Board board = boardRepository.findById(boardNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + boardNo));
+
+            for(int i=0; i<requestDto.size(); i++) {
+                String boardImageType= requestDto.get(i).getImgType();
+                String boardImageName = requestDto.get(i).getImgName();
+                String boardImageUrl = requestDto.get(i).getImgUrl();
+                Long boardImageSize = requestDto.get(i).getImgSize();
+                String originName = boardImageName.substring(boardImageName.lastIndexOf("_")+1);
+                String customName = boardImageName.substring(boardImageName.lastIndexOf("/")+1);
+                String urlName = boardImageUrl;
+                String extension = boardImageName.substring(boardImageName.lastIndexOf(".")+1);
+
+                BoardImage boardImage = BoardImage.builder()
+                        .boardImageType(boardImageType)
+                        .board(board)
+                        .boardImageOrigin(originName)
+                        .boardImageCustom(customName)
+                        .boardImageUrl(urlName)
+                        .boardImageExtension(extension)
+                        .boardImageSize(boardImageSize)
+                        .build();
+
+                boardImageRepository.save(boardImage);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}

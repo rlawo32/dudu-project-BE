@@ -1,9 +1,11 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import dompurify from "dompurify";
+import axios from "axios";
 
 import * as Styled from "./BoardDetail.style";
-import axios from "axios/index";
+import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
 
 const BoardDetail = () => {
     const location = useLocation();
@@ -14,16 +16,9 @@ const BoardDetail = () => {
     // 사용자 접속시 그 악성코드가 실행되는 것을 크로스 사이드 스크립트, 보안을 위해 추가
 
     const [boardDetail, setBoardDetail] = useState<{
-        lectureNo:number; lectureStateNo:number; lectureTitle:string; lectureThumbnail:string;
-        lectureInstitution:string; lectureDivision:string; lectureTeacher:string; lecturePeriod:string;
-        lectureTime:string; lectureCount:number; lectureCapacity:number; lectureRoom:string;
-        lectureFee:number; lectureReception:string; lectureContact:string; lectureDescription:string;
-    }>({
-        lectureNo: 0, lectureStateNo: 0, lectureTitle: '', lectureThumbnail: '',
-        lectureInstitution: '', lectureDivision: '', lectureTeacher: '', lecturePeriod: '',
-        lectureTime: '', lectureCount: 0, lectureCapacity: 0, lectureRoom: '',
-        lectureFee: 0, lectureReception: '', lectureContact: '', lectureDescription: ''
-    });
+        boardNo:number; institutionName:string; boardCategory:string;
+        boardTitle:string; boardContent:string; boardCreatedDate:string;
+    }>();
 
     useEffect(() => {
         const boardDetail = async () => {
@@ -40,9 +35,17 @@ const BoardDetail = () => {
         setTimeout(() => {boardDetail().then();}, 100);
     }, [])
 
+    console.log(boardDetail)
+
     return (
         <Styled.BoardDetailView>
+            <HeaderNavigation />
 
+            <div>
+
+            </div>
+
+            <FooterNavigation />
         </Styled.BoardDetailView>
     )
 }

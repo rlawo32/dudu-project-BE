@@ -2,18 +2,9 @@ package com.cac.duduproject.service.board;
 
 import com.cac.duduproject.jpa.domain.board.Board;
 import com.cac.duduproject.jpa.domain.board.BoardImage;
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
-import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
-import com.cac.duduproject.jpa.domain.lecture.LectureEventImage;
-import com.cac.duduproject.jpa.domain.lecture.LectureImage;
 import com.cac.duduproject.jpa.repository.board.BoardImageRepository;
 import com.cac.duduproject.jpa.repository.board.BoardRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureEventImageRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureEventRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureImageRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureEventWriteRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

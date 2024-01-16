@@ -99,8 +99,8 @@ public class LectureWriteService {
 
             Long lectureNo = lectureRepository.save(requestDto.toLecture()).getLectureNo();
 
-            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureImage());
-            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureThumbnail());
+            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureImage(), "L");
+            lectureImageService.lectureImageInsert(lectureNo, requestDto.getLectureThumbnail(), "L");
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
@@ -149,7 +149,7 @@ public class LectureWriteService {
 
                 Long lectureEventNo = lectureEventRepository.save(requestDto.toLectureEvent()).getLectureEventNo();
 
-                lectureImageService.lectureEventImageInsert(lectureEventNo, requestDto);
+                lectureImageService.lectureImageInsert(lectureEventNo, requestDto.getLectureEventThumbnail(), "E");
 
                 LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureEventNo));

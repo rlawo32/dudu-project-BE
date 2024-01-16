@@ -14,8 +14,7 @@ public class LectureEventListResponseDto {
     private String lectureEventType;
     private String lectureEventName;
     private String lectureEventDesc;
-    private String lectureEventThumbnail;
-    private String lectureEventImageName;
+    private String lectureEventImage;
 
     public LectureEventListResponseDto(LectureEvent lectureEvent) {
         this.lectureEventNo = lectureEvent.getLectureEventNo();
@@ -23,7 +22,6 @@ public class LectureEventListResponseDto {
         this.lectureEventType = lectureEvent.getLectureEventType();
         this.lectureEventName = lectureEvent.getLectureEventName();
         this.lectureEventDesc = lectureEvent.getLectureEventDesc();
-        this.lectureEventThumbnail = lectureEvent.getLectureEventThumbnail();
-        this.lectureEventImageName = lectureEvent.getLectureEventImages().get(0).getLectureEventImageCustom();
+        this.lectureEventImage = lectureEvent.getLectureEventImages().get(0).getLectureEventImageCustom();
     }
 }

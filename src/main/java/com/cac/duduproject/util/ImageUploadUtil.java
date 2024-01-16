@@ -2,16 +2,23 @@ package com.cac.duduproject.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.cac.duduproject.web.dto.CommonResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +42,46 @@ public class ImageUploadUtil {
         return convertedFile;
     }
 
+    @Transactional
+    public CommonResponseDto<?> imageUploadS3(MultipartFile files, String type) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            //동일한 사진을 업로드 하였을 때 사진이 덮어씌워지는 것을 방지하기 위함
+            UUID uuid = UUID.randomUUID();
+            String imageFileName = uuid + "_" + files.getOriginalFilename();
+            String uploadDir = "*";
+
+            if(type.equals("T")) {
+                uploadDir = "/lectureThumbnailImage";
+            } else if(type.equals("L")) {
+                uploadDir = "/lectureContentImage";
+            } else if(type.equals("C")) {
+                uploadDir = "/lectureCategoryImage";
+            } else if(type.equals("E")) {
+                uploadDir = "/lectureEventImage";
+            } else if(type.equals("B")) {
+                uploadDir = "/boardContentImage";
+            }
+
+            File file = convertMultiPartFileToFile(files);
+
+            s3Client.putObject(new PutObjectRequest(bucketName + uploadDir, imageFileName, file));
+            file.delete();
+
+            URL url = s3Client.getUrl(bucketName + uploadDir, imageFileName);
+            String urlText = "" + url;
+
+            result.put("imgName", imageFileName);
+            result.put("imgUrl", urlText);
+
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("LectureImage Upload Success! ", result);
+    }
+
     public void ImageDeleteS3(HttpServletRequest request) {
         try {
             String type = request.getParameter("type");
@@ -48,6 +95,8 @@ public class ImageUploadUtil {
                 deleteDir = "/lectureCategoryImage";
             } else if(type.equals("E")) {
                 deleteDir = "/lectureEventImage";
+            } else if(type.equals("B")) {
+                deleteDir = "/boardContentImage";
             }
 
             String imageFileName = request.getParameter("imageFileName");

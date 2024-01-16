@@ -38,8 +38,7 @@ const LectureRoomWrite = () => {
         lectureEventType:string;
         lectureEventName:string;
         lectureEventDesc:string;
-        lectureEventThumbnail:string;
-        lectureEventImageName:string;
+        lectureEventImage:string;
     }[]>([]);
     const [catalogList, setCatalogList] = useState<{
         lectureNo:number;
@@ -64,6 +63,12 @@ const LectureRoomWrite = () => {
     const [lectureEventDesc, setLectureEventDesc] = useState<string>("");
     const [eventThumbnailName, setEventThumbnailName] = useState<string>("");
     const [eventThumbnailUrl, setEventThumbnailUrl] = useState<string>("");
+    const [lectureEventThumbnail, setLectureEventThumbnail] = useState<{
+        imgType:string;
+        imgName:string;
+        imgUrl:string;
+        imgSize:number;
+    }[]>([]);
     const [eventLectureSelectArr, setEventLectureSelectArr] = useState<{
         lectureNo:number;
         lectureInstitution:string;
@@ -120,10 +125,18 @@ const LectureRoomWrite = () => {
                 data: formData,
                 headers: { 'Content-Type': 'multipart/form-data' }
             }).then((res):void => {
+                const imgFileType:string = "E";
                 const imgFileName:string = res.data.data.imgName;
                 const imgFileUrl:string = res.data.data.imgUrl;
                 setEventThumbnailName(imgFileName);
                 setEventThumbnailUrl(imgFileUrl);
+
+                setLectureEventThumbnail([{
+                    imgType: imgFileType,
+                    imgName: imgFileName,
+                    imgUrl: imgFileUrl,
+                    imgSize: file[0].size
+                }]);
             }).catch((err):void => {
                 console.log(err.message);
             })
@@ -133,6 +146,7 @@ const LectureRoomWrite = () => {
     const deleteEventThumbnailHandler = (thumbnailName:string, deleteType:string):void => {
         setEventThumbnailName("");
         setEventThumbnailUrl("");
+        setLectureEventThumbnail([]);
 
         const deleteObj:object = {
             imageFileName: thumbnailName,
@@ -219,8 +233,7 @@ const LectureRoomWrite = () => {
             lectureEventName: lectureEventName,
             lectureEventDesc: lectureEventDesc,
             lectureEventList: eventLectureSelectArr,
-            lectureEventThumbnail: eventThumbnailUrl,
-            lectureEventImageName: eventThumbnailName
+            lectureEventThumbnail: lectureEventThumbnail,
         }
         axios({
             method: "POST",
@@ -543,7 +556,7 @@ const LectureRoomWrite = () => {
                                                         </span>
                                                         <span style={{margin: "0 5px"}}>/</span>
                                                         <span style={{cursor: "pointer"}}
-                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImageName)}>
+                                                              onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImage)}>
                                                             X
                                                         </span>
                                                     </td>

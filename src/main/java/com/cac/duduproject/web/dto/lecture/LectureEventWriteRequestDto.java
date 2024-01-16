@@ -2,6 +2,7 @@ package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
+import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,7 @@ public class LectureEventWriteRequestDto {
     private String lectureEventName;
     private String lectureEventDesc;
     private List<lectureEventItemList> lectureEventList;
-    private String lectureEventThumbnail;
-    private String lectureEventImageName;
+    private List<ImageInsertRequestDto> lectureEventThumbnail;
 
     @Data
     public static class lectureEventItemList {
@@ -37,7 +37,7 @@ public class LectureEventWriteRequestDto {
                 .lectureEventType(lectureEventType)
                 .lectureEventName(lectureEventName)
                 .lectureEventDesc(lectureEventDesc)
-                .lectureEventThumbnail(lectureEventThumbnail)
+                .lectureEventThumbnail(lectureEventThumbnail.get(0).getImgUrl())
                 .build();
     }
 }

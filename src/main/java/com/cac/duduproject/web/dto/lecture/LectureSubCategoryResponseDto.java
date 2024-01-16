@@ -1,11 +1,7 @@
 package com.cac.duduproject.web.dto.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
 import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
-import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 public class LectureSubCategoryResponseDto {

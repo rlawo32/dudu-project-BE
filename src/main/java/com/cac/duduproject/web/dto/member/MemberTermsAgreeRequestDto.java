@@ -2,10 +2,8 @@ package com.cac.duduproject.web.dto.member;
 
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.domain.member.MemberTerms;
-import com.cac.duduproject.util.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @NoArgsConstructor

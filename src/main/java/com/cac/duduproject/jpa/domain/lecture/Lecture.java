@@ -1,7 +1,6 @@
 package com.cac.duduproject.jpa.domain.lecture;
 
 import com.cac.duduproject.jpa.domain.member.Member;
-import com.cac.duduproject.util.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

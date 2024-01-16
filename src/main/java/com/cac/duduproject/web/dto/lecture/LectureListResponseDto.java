@@ -1,11 +1,7 @@
 package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
-import com.cac.duduproject.jpa.domain.lecture.LectureImage;
-import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class LectureListResponseDto {

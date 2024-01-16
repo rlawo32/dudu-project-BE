@@ -1,9 +1,7 @@
 package com.cac.duduproject.web.dto.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.domain.lecture.LectureRoom;
-import com.cac.duduproject.jpa.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

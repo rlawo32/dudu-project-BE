@@ -1,7 +1,7 @@
 package com.cac.duduproject.jpa.repository.board;
 
 import com.cac.duduproject.jpa.domain.board.Board;
-import com.cac.duduproject.jpa.domain.lecture.*;
+import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.repository.lecture.LectureInstitutionRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -15,7 +15,6 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.util.List;
 
 import static com.cac.duduproject.jpa.domain.board.QBoard.board;
-import static com.cac.duduproject.jpa.domain.lecture.QLecture.lecture;
 
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
 

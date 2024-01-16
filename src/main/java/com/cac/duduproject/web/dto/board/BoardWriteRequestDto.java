@@ -1,8 +1,7 @@
 package com.cac.duduproject.web.dto.board;
 
 import com.cac.duduproject.jpa.domain.board.Board;
-import com.cac.duduproject.jpa.domain.lecture.*;
-import com.cac.duduproject.jpa.domain.member.Member;
+import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;

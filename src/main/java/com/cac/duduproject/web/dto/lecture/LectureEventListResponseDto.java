@@ -3,8 +3,6 @@ package com.cac.duduproject.web.dto.lecture;
 import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
 import lombok.Getter;
 
-import java.util.List;
-
 
 @Getter
 public class LectureEventListResponseDto {

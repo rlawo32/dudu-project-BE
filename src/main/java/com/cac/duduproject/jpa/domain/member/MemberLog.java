@@ -1,12 +1,10 @@
 package com.cac.duduproject.jpa.domain.member;
 
-import com.cac.duduproject.util.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

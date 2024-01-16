@@ -1,17 +1,11 @@
 package com.cac.duduproject.jpa.domain.lecture;
 
-import com.cac.duduproject.jpa.domain.member.Member;
-import com.cac.duduproject.jpa.repository.lecture.LectureInstitutionRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @NoArgsConstructor
 @Entity

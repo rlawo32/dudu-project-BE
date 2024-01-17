@@ -12,6 +12,9 @@ export const lightTheme = {
     headerTextColor: "#f0eef6",
     datePickerSelectColor: "#2d94ed",
     datePickerHoverColor: "#2d94ed",
+    rgbaLight: "rgba(0,0,0,0.1)",
+    rgbaMedium: "rgba(0,0,0,0.5)",
+    rgbaBold: "rgba(0,0,0,1)"
 };
 
 export const darkTheme = {
@@ -27,6 +30,9 @@ export const darkTheme = {
     headerBgColor: "rgba(255,255,255, 0.8)",
     headerTextColor: "#333333",
     datePickerSelectColor: "#e0440b",
+    rgbaLight: "rgba(255,255,255,0.1)",
+    rgbaMedium: "rgba(255,255,255,0.5)",
+    rgbaBold: "rgba(255,255,255,1)"
 };
 
 export const theme = {

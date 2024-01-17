@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
 import FooterNavigation from "../navigation/FooterNavigation";
 
 import * as Styled from "./BoardList.style";
-import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronDown as arrow} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown as arrow, faSearch as searchIcon} from "@fortawesome/free-solid-svg-icons";
 
 const BoardList = () => {
     const navigate = useNavigate();
@@ -15,11 +15,14 @@ const BoardList = () => {
     const sortList:any = useRef<any>();
     const sortBtn:any = useRef<any>([]);
     const selectArrow:any = useRef<any>();
+    const categoryBtn:any = useRef<any>([]);
 
     const [pageNo, setPageNo] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
     const [isSortBoxShow, setIsSortBoxShow] = useState<boolean>(false);
     const [sortSelect, setSortSelect] = useState<number>(0);
+    const [categorySelect, setCategorySelect] = useState<number>(0);
+    const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
     const [institutionList, setInstitutionList] = useState<{
         institutionNo:number;
@@ -96,7 +99,7 @@ const BoardList = () => {
             });
         }
         setTimeout(() => {boardList().then();}, 0);
-    }, [pageNo, institutionNo, searchCategory])
+    }, [pageNo, institutionNo, searchCategory, isSearchActive])
 
     useEffect(() => {
         if(isSortBoxShow) {
@@ -121,7 +124,16 @@ const BoardList = () => {
         }
     }, [sortSelect])
 
-    console.log(sortBtn)
+    useEffect(() => {
+        categoryBtn.current[categorySelect].className = categoryBtn.current[categorySelect].className.replace(' category-active', '');
+        categoryBtn.current[categorySelect].className += ' category-active';
+
+        for(let i:number=0; i<categoryBtn.current.length; i++) {
+            if(i !== categorySelect) {
+                categoryBtn.current[i].className = categoryBtn.current[i].className.replace(' category-active', '');
+            }
+        }
+    }, [categorySelect])
 
     return (
         <Styled.BoardListView>
@@ -133,18 +145,22 @@ const BoardList = () => {
                         공지사항/이벤트
                     </div>
                     <div className="bl-sub-input">
-                        <input type="text" value={searchText}
+                        <input type="text" value={searchText} placeholder={"검색어를 입력해주세요"}
                                onChange={(e) => setSearchText(e.target.value)}/>
+                        <FontAwesomeIcon icon={searchIcon} className="icon-custom"
+                                         onClick={() => setIsSearchActive(!isSearchActive)}/>
                     </div>
                 </div>
             </div>
             <div className="bl-main-view">
                 <div className="bl-main">
                     <div className="bl-category">
-                        <div className="bl-category-inform" onClick={() => setSearchCategory("BI")}>
+                        <div className="bl-category-inform" onClick={() => (setSearchCategory("BI"), setCategorySelect(0))}
+                             ref={btn => (categoryBtn.current[0] = btn)}>
                             공지사항
                         </div>
-                        <div className="bl-category-event" onClick={() => setSearchCategory("BE")}>
+                        <div className="bl-category-event" onClick={() => (setSearchCategory("BE"), setCategorySelect(1))}
+                             ref={btn => (categoryBtn.current[1] = btn)}>
                             이벤트
                         </div>
                     </div>

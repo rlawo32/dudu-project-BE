@@ -13,16 +13,32 @@ export const BoardListView = styled.div`
       text-align: center;
 
       .bl-sub-title {
-        font-size: 38px;
+        font-size: 58px;
       }
       
       .bl-sub-input {
+        position: relative;
         width: 600px;
         margin: 40px auto 0;
         
         input {
           box-sizing: border-box;
+          height: 68px;
           width: 100%;
+          padding: 0 90px 0 25px;
+          background-color: ${({theme}) => theme.boxBgColor};
+          color: ${({theme}) => theme.textColor};
+          border: 1px solid ${({theme}) => theme.textColor};
+          border-radius: 30px;
+          font-size: 22px;
+        }
+        
+        .icon-custom {
+          position: absolute;
+          top: 15px;
+          right: 30px;
+          font-size: 35px;
+          cursor: pointer;
         }
       }
     }
@@ -42,7 +58,7 @@ export const BoardListView = styled.div`
         .bl-category-inform {
           width: 50%;
           padding: 20px 0;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
+          border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
           font-size: 20px;
           text-align: center;
           cursor: pointer;
@@ -51,10 +67,15 @@ export const BoardListView = styled.div`
         .bl-category-event {
           width: 50%;
           padding: 20px 0;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
+          border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
           font-size: 20px;
           text-align: center;
           cursor: pointer;
+        }
+        
+        .bl-category-inform.category-active, .bl-category-event.category-active {
+          border-bottom: 2px solid ${({theme}) => theme.rgbaBold};
+          font-weight: bold;
         }
       }
       
@@ -176,12 +197,12 @@ export const BoardListView = styled.div`
             align-items: center;
             width: 100%;
             padding: 32px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
             transition: border .3s ease;
             cursor: pointer;
             
             &:hover {
-              border-bottom: 1px solid rgba(0,0,0,0.5);
+              border-bottom: 1px solid ${({theme}) => theme.rgbaMedium};
             }
             
             .bl-item-title {

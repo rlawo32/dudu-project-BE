@@ -14,5 +14,8 @@ declare module "styled-components" {
         headerBgColor: string;
         headerTextColor: string;
         datePickerSelectColor: string;
+        rgbaLight: string;
+        rgbaMedium: string;
+        rgbaBold: string;
     }
 }

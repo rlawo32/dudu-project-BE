@@ -10,7 +10,7 @@ export const BoardWriteView = styled.div`
   
   .bw-view {
     width: 1160px;
-    margin: 5% auto;
+    margin: 8% auto 5%;
     
     .bw-select {
       display: flex;

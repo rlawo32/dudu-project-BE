@@ -180,7 +180,7 @@ const BoardList = () => {
                                         sortSelect === 0 ?
                                             "전체"
                                             :
-                                            institutionList[sortSelect].institutionName
+                                            institutionList[sortSelect-1].institutionName
                                     }
                                     <div className="select-arrow" ref={selectArrow}>
                                         <FontAwesomeIcon icon={arrow} />

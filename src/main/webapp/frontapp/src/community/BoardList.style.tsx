@@ -30,7 +30,7 @@ export const BoardListView = styled.div`
           color: ${({theme}) => theme.textColor};
           border: 1px solid ${({theme}) => theme.textColor};
           border-radius: 30px;
-          font-size: 22px;
+          font-size: 20px;
         }
         
         .icon-custom {

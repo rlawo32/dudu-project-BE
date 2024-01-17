@@ -1,11 +1,10 @@
 package com.cac.duduproject.service.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
-import com.cac.duduproject.jpa.domain.lecture.LectureEvent;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
+import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
 import com.cac.duduproject.jpa.repository.lecture.*;
-import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,11 +33,7 @@ public class LectureListService {
     private final LectureRoomRepository lectureRoomRepository;
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
-    private final LectureEventRepository lectureEventRepository;
-    private final LectureEventImageRepository lectureEventImageRepository;
     private final LectureStateRepository lectureStateRepository;
-
-    private final ImageUploadUtil imageUploadUtil;
 
     @Transactional
     public CommonResponseDto<?> findAllLectureInstitution() {
@@ -59,7 +54,7 @@ public class LectureListService {
         try {
             Long institutionNo = Long.valueOf(request.getParameter("institutionNo"));
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + institutionNo));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
 
             list = lectureRoomRepository.findAllByLectureInstitution(lectureInstitution).stream()
                     .map(LectureRoomResponseDto::new)
@@ -89,7 +84,7 @@ public class LectureListService {
         try {
             Long mainCategoryNo = Long.valueOf(request.getParameter("mainCategoryNo"));
             LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + mainCategoryNo));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
 
             list = lectureSubCategoryRepository.findAllByLectureMainCategory(lectureMainCategory).stream()
                     .map(LectureSubCategoryResponseDto::new)
@@ -196,6 +191,37 @@ public class LectureListService {
             LectureDetailResponseDto lectureDetailResponseDto = new LectureDetailResponseDto(lecture);
 
             return CommonResponseDto.setSuccess("Lecture Detail", lectureDetailResponseDto);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findLectureEventType(LectureListRequestDto requestDto) {
+        try {
+            Map<String, Object> result = new HashMap<>();
+
+            Long mainCategoryNo = requestDto.getMainCategoryNo();
+            Long subCategoryNo = requestDto.getSubCategoryNo();
+
+            LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
+
+            LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
+
+            Page<Lecture> pageable = lectureRepository.findAllByLectureMainCategoryAndLectureSubCategory
+                    (lectureMainCategory, lectureSubCategory, PageRequest.of(0, 10));
+            int totalPage = pageable.getTotalPages();
+
+            List<LectureListResponseDto> list = pageable.stream()
+                    .map(LectureListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            result.put("eventList", list);
+            result.put("totalPage", totalPage);
+
+            return CommonResponseDto.setSuccess("Lecture Detail", result);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

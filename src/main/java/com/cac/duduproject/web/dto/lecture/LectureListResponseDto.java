@@ -16,6 +16,7 @@ public class LectureListResponseDto {
     //
     private Long lectureStateNo;
     private int lectureCount;
+    private String lectureEventType;
     private String lectureThumbnail;
 
     public LectureListResponseDto(Lecture lecture) {
@@ -28,6 +29,7 @@ public class LectureListResponseDto {
         this.lectureInstitution = lecture.getLectureInstitution().getInstitutionName();
         this.lectureStateNo = lecture.getLectureState().getLectureStateNo();
         this.lectureCount = lecture.getLectureCount();
+        this.lectureEventType = lecture.getLectureEventType();
         for(int i=0; i<lecture.getLectureImages().size(); i++) {
             if(lecture.getLectureImages().get(i).getLectureImageType().equals("T")) {
                 this.lectureThumbnail = lecture.getLectureImages().get(i).getLectureImageUrl();

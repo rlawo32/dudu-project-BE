@@ -43,7 +43,7 @@ export const BoardWriteView = styled.div`
       }
       
       .sl-title {
-        width: 70%;
+        width: 65%;
         margin-right: 15px;
 
         input {
@@ -52,7 +52,7 @@ export const BoardWriteView = styled.div`
       }
       
       .sl-category {
-        width: 10%;
+        width: 15%;
         margin-right: 15px;
       }
 

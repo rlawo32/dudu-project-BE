@@ -2,7 +2,6 @@ package com.cac.duduproject.service.board;
 
 import com.cac.duduproject.jpa.domain.board.Board;
 import com.cac.duduproject.jpa.repository.board.BoardRepository;
-import com.cac.duduproject.jpa.repository.lecture.LectureInstitutionRepository;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.board.BoardDetailResponseDto;
 import com.cac.duduproject.web.dto.board.BoardListRequestDto;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 public class BoardListService {
 
     private final BoardRepository boardRepository;
-    private final LectureInstitutionRepository lectureInstitutionRepository;
 
     @Transactional
     public CommonResponseDto<?> findAllBoardList(BoardListRequestDto requestDto) {
@@ -37,7 +35,7 @@ public class BoardListService {
             String searchText = requestDto.getSearchText();
 
             Page<Board> pageable = boardRepository.findBySearch(institutionNo, searchCategory,
-                    searchText, PageRequest.of(0, (15*pageNo), Sort.by("boardCreatedDate").descending()));
+                    searchText, PageRequest.of(0, (10*pageNo), Sort.by("boardCreatedDate").descending()));
             Long totalPage = Long.valueOf(pageable.getTotalElements());
 
             List<BoardListResponseDto> list = pageable.stream()

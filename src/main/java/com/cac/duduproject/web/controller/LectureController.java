@@ -1,6 +1,6 @@
 package com.cac.duduproject.web.controller;
 
-import com.cac.duduproject.service.lecture.LectureImageService;
+import com.cac.duduproject.service.lecture.LectureEventService;
 import com.cac.duduproject.service.lecture.LectureListService;
 import com.cac.duduproject.service.lecture.LectureWriteService;
 import com.cac.duduproject.service.member.MemberService;
@@ -19,8 +19,9 @@ public class LectureController {
 
     private final LectureWriteService lectureWriteService;
     private final LectureListService lectureListService;
-    private final LectureImageService lectureImageService;
+    private final LectureEventService lectureEventService;
     private final MemberService memberService;
+
     private final ImageUploadUtil imageUploadUtil;
 
     @PostMapping("/lectureWrite")
@@ -40,7 +41,7 @@ public class LectureController {
 
     @GetMapping("/lectureRoomList")
     public CommonResponseDto<?> lectureRoomList(HttpServletRequest request) {
-        return lectureListService.findAllLectureRoom(request);
+        return lectureListService.findLectureRoom(request);
     }
 
     @GetMapping("/lectureMainCategoryList")
@@ -55,7 +56,12 @@ public class LectureController {
 
     @GetMapping("/lectureSubCategoryList")
     public CommonResponseDto<?> lectureSubCategoryList(HttpServletRequest request) {
-        return lectureListService.findAllLectureSubCategory(request);
+        return lectureListService.findLectureSubCategory(request);
+    }
+
+    @GetMapping("/lectureSubCategoryListAll")
+    public CommonResponseDto<?> lectureSubCategoryListAll() {
+        return lectureListService.findAllLectureSubCategory();
     }
 
     @GetMapping("/lectureTeacherList")
@@ -75,32 +81,32 @@ public class LectureController {
 
     @GetMapping("/lectureEventOne")
     public CommonResponseDto<?> lectureEventOne(HttpServletRequest request) {
-        return lectureListService.findLectureEvent(request);
+        return lectureEventService.findLectureEventDetail(request);
     }
 
     @PostMapping("/lectureEventAll")
     public CommonResponseDto<?> lectureEventAll(LectureEventListRequestDto requestDto) {
-        return lectureListService.findAllLectureEvent(requestDto);
+        return lectureEventService.findAllLectureEvent(requestDto);
     }
 
     @PostMapping("/lectureEventList")
     public CommonResponseDto<?> lectureEventList(@RequestBody LectureEventListRequestDto requestDto) {
-        return lectureListService.findLectureEventList(requestDto);
+        return lectureEventService.findLectureEventList(requestDto);
     }
 
     @GetMapping("/lectureEventCatalog")
     public CommonResponseDto<?> lectureEventCatalog(HttpServletRequest request) {
-        return lectureListService.findLectureEventCatalog(request);
+        return lectureEventService.findLectureEventCatalog(request);
     }
 
     @DeleteMapping("/lectureDeleteEvent")
     public void lectureDeleteEvent(HttpServletRequest request) {
-        lectureListService.lectureEventDelete(request);
+        lectureEventService.lectureEventDelete(request);
     }
 
     @DeleteMapping("/lectureDeleteEventList")
     public void lectureDeleteEventList(HttpServletRequest request) {
-        lectureListService.lectureEventListDelete(request);
+        lectureEventService.lectureEventListDelete(request);
     }
 
     @GetMapping("/lectureStateList")

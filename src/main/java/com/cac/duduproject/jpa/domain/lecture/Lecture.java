@@ -74,6 +74,10 @@ public class Lecture {
     @NotNull
     private int lectureCount;
 
+    @Column(name = "lecture_event_type")
+    @NotBlank
+    private String lectureEventType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")
     private Member member;
@@ -113,11 +117,17 @@ public class Lecture {
     @PrePersist
     public void onPrePersist() {
         this.lectureCurrentPerson = 0;
+        this.lectureEventType = "L";
         this.lectureCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
     }
 
     public Lecture lectureEventUpdate(LectureEvent lectureEvent) {
         this.lectureEvent = lectureEvent;
+        return this;
+    }
+
+    public Lecture lectureEventTypeUpdate(String type) {
+        this.lectureEventType = type;
         return this;
     }
 

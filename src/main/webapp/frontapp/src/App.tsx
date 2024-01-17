@@ -14,7 +14,7 @@ import JoinComplete from "./member/signUpComponent/JoinComplete";
 import LectureWrite from "./lecture/LectureWrite";
 import LectureList from "./lecture/LectureList";
 import LectureDetailView from "./lecture/LectureDetail";
-import LectureEventWrite from "./lecture/lectureWriteComponent/LectureEventWrite";
+import LectureEventWrite from "./lecture/LectureEventWrite";
 import LectureEventListView from "./lecture/lectureListComponent/LectureEventListView";
 // board
 import BoardWrite from "./community/BoardWrite";

@@ -7,7 +7,11 @@ import FooterNavigation from "../navigation/FooterNavigation";
 
 import * as Styled from "./BoardList.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronDown as arrow, faSearch as searchIcon} from "@fortawesome/free-solid-svg-icons";
+import {
+    faChevronDown as arrow,
+    faExclamation as emptyIcon, faQuoteLeft as quoteLeft, faQuoteRight as quoteRight,
+    faSearch as searchIcon
+} from "@fortawesome/free-solid-svg-icons";
 
 const BoardList = () => {
     const navigate = useNavigate();
@@ -189,20 +193,57 @@ const BoardList = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="bl-list-body">
-                            {boardList.map((item, idx) => (
-                                <div className="bl-list-item" key={idx}
-                                     onClick={() => navigate("/boardDetail/" + item.boardNo,
-                                    { state: {boardNo: item.boardNo}})}>
-                                    <div className="bl-item-title">
-                                        {item.boardTitle}
-                                    </div>
-                                    <div className="bl-item-date">
-                                        {item.boardCreatedDate.substring(0, 10)}
+                        {
+                            totalPage !== 0 ?
+                                <div className="bl-list-body">
+                                    {boardList.map((item, idx) => (
+                                        <div className="bl-list-item" key={idx}
+                                             onClick={() => navigate("/boardDetail/" + item.boardNo,
+                                                 { state: {boardNo: item.boardNo}})}>
+                                            <div className="bl-item-title">
+                                                {item.boardTitle}
+                                            </div>
+                                            <div className="bl-item-date">
+                                                {item.boardCreatedDate.substring(0, 10)}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                :
+                                <div className="db-list-empty">
+                                    <div>
+                                        <FontAwesomeIcon icon={emptyIcon} className="icon-custom" />
+                                        {
+                                            searchText.length > 0 ?
+                                                <div className="empty-text">
+                                                    <FontAwesomeIcon icon={quoteLeft} className="icon-custom" />
+                                                    <span className="search-text">
+                                                        {searchText}
+                                                    </span>
+                                                    <FontAwesomeIcon icon={quoteRight} className="icon-custom" />
+                                                    <span className="default-text">
+                                                        에 대한
+                                                    </span>
+                                                    <div className="default-text">
+                                                        검색결과가 없어요.
+                                                    </div>
+                                                </div>
+                                                :
+                                                <div className="default-text">
+                                                    게시글이 없습니다.
+                                                </div>
+                                        }
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                        }
+                        {
+                            totalPage > boardList.length ?
+                                <div className="db-more-btn" onClick={() => setPageNo(pageNo + 1)}>
+                                    더보기 <FontAwesomeIcon icon={arrow} />
+                                </div>
+                                :
+                                <div />
+                        }
                     </div>
                 </div>
             </div>

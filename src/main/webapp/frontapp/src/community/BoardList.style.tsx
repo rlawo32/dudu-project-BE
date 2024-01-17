@@ -13,7 +13,7 @@ export const BoardListView = styled.div`
       text-align: center;
 
       .bl-sub-title {
-        font-size: 58px;
+        font-size: 48px;
       }
       
       .bl-sub-input {
@@ -23,9 +23,9 @@ export const BoardListView = styled.div`
         
         input {
           box-sizing: border-box;
-          height: 68px;
+          height: 52px;
           width: 100%;
-          padding: 0 90px 0 25px;
+          padding: 0 80px 0 25px;
           background-color: ${({theme}) => theme.boxBgColor};
           color: ${({theme}) => theme.textColor};
           border: 1px solid ${({theme}) => theme.textColor};
@@ -35,9 +35,9 @@ export const BoardListView = styled.div`
         
         .icon-custom {
           position: absolute;
-          top: 15px;
+          top: 10px;
           right: 30px;
-          font-size: 35px;
+          font-size: 30px;
           cursor: pointer;
         }
       }
@@ -214,6 +214,45 @@ export const BoardListView = styled.div`
               opacity: 0.5;
             }
           }
+        }
+
+        .db-list-empty {
+          margin: 60px auto;
+          text-align: center;
+          color: grey;
+          font-size: 25px;
+
+          .icon-custom {
+            margin: 15px 0 15px 0;
+            font-size: 70px;
+          }
+
+          .empty-text {
+
+            .search-text {
+              color: ${({theme}) => theme.textColor};
+              font-weight: bold;
+            }
+
+            .icon-custom {
+              margin: 8px 3px 8px 3px;
+              color: ${({theme}) => theme.textColor};
+              font-size: 20px;
+            }
+          }
+
+        }
+
+        .db-more-btn {
+          width: 25%;
+          margin: 40px auto 0;
+          padding: 10px 15px 10px 15px;
+          border: 1px solid ${({theme}) => theme.textColor};
+          border-radius: 10px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+          cursor: pointer;
         }
       }
     }

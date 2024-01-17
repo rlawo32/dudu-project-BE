@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import dompurify from "dompurify";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ import HeaderNavigation from "../navigation/HeaderNavigation";
 import FooterNavigation from "../navigation/FooterNavigation";
 
 const BoardDetail = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const boardNo:number = location.state.boardNo;
 
@@ -41,8 +42,36 @@ const BoardDetail = () => {
         <Styled.BoardDetailView>
             <HeaderNavigation />
 
-            <div>
-
+            <div className="bd-main-view">
+                <div className="bd-head">
+                    <div className="head-top">
+                        <div className="head-item bd-category">
+                            {
+                                boardDetail?.boardCategory === 'BI' ? "공지사항" : "이벤트"
+                            }
+                        </div>
+                        <div className="head-item bd-institution">
+                            {boardDetail?.institutionName}
+                        </div>
+                        <div className="head-item bd-date">
+                            {boardDetail?.boardCreatedDate.substring(0, 10)}
+                        </div>
+                    </div>
+                    <div className="head-bottom">
+                        <div className="bd-title">
+                            {boardDetail?.boardTitle}
+                        </div>
+                    </div>
+                </div>
+                <div className="bd-body">
+                    <div className="bd-content"
+                         dangerouslySetInnerHTML={{ __html : sanitizer(`${boardDetail?.boardContent}`) }} />
+                </div>
+                <div className="bd-foot">
+                    <button onClick={() => navigate("/boardList")}>
+                        목록으로
+                    </button>
+                </div>
             </div>
 
             <FooterNavigation />

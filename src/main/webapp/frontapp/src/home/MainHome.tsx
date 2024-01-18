@@ -1,15 +1,18 @@
 import {useSearchParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {setCookie} from "./Cookie";
+import {setCookie} from "../Cookie";
 import axios from "axios";
 
-import HeaderNavigation from "./navigation/HeaderNavigation";
-import FooterNavigation from "./navigation/FooterNavigation";
+import * as Styled from "./MainHome.style";
+
+import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
+import MainRecommendEvent from "./homeComponent/MainRecommendEvent";
+import MainCategoryEvent from "./homeComponent/MainCategoryEvent";
+import MainRecentEvent from "./homeComponent/MainRecentEvent";
+import MainInformEvent from "./homeComponent/MainInformEvent";
 
 const MainHome = ():any => {
-    // else if(axios.defaults.headers.common["Authorization"]?.toString() === undefined) {
-    //     alert('재로그인을 해주세요');
-    // }
 
     // 간편로그인 성공 시 생성되는 토큰들을 헤더와 쿠키에 넣어주는 작업
     const [searchParams, setSearchParams] = useSearchParams();
@@ -42,11 +45,19 @@ const MainHome = ():any => {
     // 간편로그인 성공 시 생성되는 토큰들을 헤더와 쿠키에 넣어주는 작업
 
     return (
-        <div>
+        <Styled.MainHomeView>
             <HeaderNavigation />
 
+            <MainRecommendEvent />
+
+            <MainCategoryEvent />
+
+            <MainRecentEvent />
+
+            <MainInformEvent />
+
             {/*<FooterNavigation />*/}
-        </div>
+        </Styled.MainHomeView>
     )
 }
 

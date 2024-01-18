@@ -155,10 +155,8 @@ export const LectureEventWriteView = styled.div`
   }
   
   .ew-sub-view {
-    display: flex;
     height: 760px;
-    width: fit-content;
-    margin: 50px auto 0;
+    margin: 50px 0;
 
     table {
       width: 100%;
@@ -189,48 +187,59 @@ export const LectureEventWriteView = styled.div`
     }
     
     .em-view {
-      width: 700px;
-      margin-right: 40px;
+      display: flex;
+      justify-content: left;
+      flex-wrap: wrap;
+      width: 1440px;
+      margin: 0 auto;
 
-      table {
-
-        tbody td:nth-child(6) {
-          text-align: left;
-          padding-left: 20px;
-        }
-      }
-    }
-    
-    .em-category-event-box {
-      width: 700px;
-      margin-right: 40px;
-
-      table {
-
-        tbody td:nth-child(4) {
-          text-align: left;
-          padding-left: 20px;
-        }
-      }
-
-      button {
-        float: right;
-        margin-top: 10px ;
-      }
-      
-      .box-insert-list {
-        
-      }
-      
       .box-delete-list {
         margin: 20px 0;
       }
-    }
-    
-    .em-recommend-event-box {
-      width: 350px;
-      margin-right: 40px;
-      
+
+      .em-list-event-box {
+        width: 700px;
+        margin-right: 40px;
+
+        table {
+
+          tbody td:nth-child(6) {
+            text-align: left;
+            padding-left: 20px;
+          }
+        }
+      }
+
+      .em-category-event-box {
+        width: 700px;
+
+        table {
+
+          tbody td:nth-child(4) {
+            text-align: left;
+            padding-left: 20px;
+          }
+        }
+
+        button {
+          float: right;
+          margin-top: 10px ;
+        }
+
+        .box-insert-list {
+
+        }
+      }
+
+      .em-recommend-event-box {
+        width: 700px;
+        margin: 20px 0;
+        
+        button {
+          float: right;
+          margin-top: 10px ;
+        }
+      }
     }
   }
 `;

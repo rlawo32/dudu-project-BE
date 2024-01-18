@@ -16,7 +16,9 @@ public interface LectureRepository extends JpaRepository<Lecture, Long>, Lecture
     List<Lecture> findAllLectureNoAndLectureReception();
     Page<Lecture> findAllByLectureEvent(LectureEvent lectureEvent, Pageable pageable);
 
-    Page<Lecture> findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventType
+    List<Lecture> findAllByLectureEventTypeContaining(String eventType);
+
+    Page<Lecture> findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventTypeContaining
             (LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory,
              String eventType, Pageable pageable);
     @Modifying

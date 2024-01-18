@@ -206,22 +206,30 @@ public class LectureListService {
             Long mainCategoryNo = requestDto.getMainCategoryNo();
             Long subCategoryNo = requestDto.getSubCategoryNo();
 
-            LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
+            if(mainCategoryNo == 0 && subCategoryNo == 0) {
+                List<LectureListResponseDto> list = lectureRepository.findAllByLectureEventTypeContaining(eventType).stream()
+                        .map(LectureListResponseDto::new)
+                        .collect(Collectors.toList());
 
-            LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
+                result.put("eventList", list);
+            } else {
+                LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
 
-            Page<Lecture> pageable = lectureRepository.findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventType
-                    (lectureMainCategory, lectureSubCategory, eventType, PageRequest.of(pageNo, 10));
-            int totalPage = pageable.getTotalPages();
+                LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
 
-            List<LectureListResponseDto> list = pageable.stream()
-                    .map(LectureListResponseDto::new)
-                    .collect(Collectors.toList());
+                Page<Lecture> pageable = lectureRepository.findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventTypeContaining
+                        (lectureMainCategory, lectureSubCategory, eventType, PageRequest.of(pageNo, 10));
+                int totalPage = pageable.getTotalPages();
 
-            result.put("eventList", list);
-            result.put("totalPage", totalPage);
+                List<LectureListResponseDto> list = pageable.stream()
+                        .map(LectureListResponseDto::new)
+                        .collect(Collectors.toList());
+
+                result.put("eventList", list);
+                result.put("totalPage", totalPage);
+            }
 
             return CommonResponseDto.setSuccess("Lecture Detail", result);
         } catch(Exception e) {

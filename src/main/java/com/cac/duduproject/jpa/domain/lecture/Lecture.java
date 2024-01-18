@@ -76,7 +76,7 @@ public class Lecture {
 
     @Column(name = "lecture_event_type")
     @NotBlank
-    private String lectureEventType;
+    private String lectureEventType; // L : 기본값, M : 메인 카테고리 이벤트값, R : 메인 추천 이벤트값
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")

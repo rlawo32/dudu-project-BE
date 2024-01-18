@@ -30,6 +30,7 @@ public class LectureEventWriteRequestDto {
         private String lectureInstitution;
         private String lectureTitle;
         private String lectureTeacher;
+        private String lectureEventType;
     }
 
     public LectureEvent toLectureEvent() {

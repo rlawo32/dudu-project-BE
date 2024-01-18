@@ -187,17 +187,36 @@ public class LectureWriteService {
         try {
             for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
                 Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
+                String eventType = requestDto.getLectureEventList().get(i).getLectureEventType();
                 Lecture lecture = lectureRepository.findById(lectureNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
 
-                lecture.lectureEventTypeUpdate(requestDto.getLectureEventType());
+                if(requestDto.getLectureEventType().equals("R")) {
+                    lecture.lectureEventTypeUpdate(eventType.substring(0, 1) + requestDto.getLectureEventType());
+                } else {
+                    if(eventType.contains("R")) {
+                        lecture.lectureEventTypeUpdate(requestDto.getLectureEventType() + eventType.substring(1, 2));
+                    } else {
+                        lecture.lectureEventTypeUpdate(requestDto.getLectureEventType());
+                    }
+                }
             }
             for(int i=0; i<requestDto.getLectureEventRemoveList().size(); i++) {
                 Long lectureNo = requestDto.getLectureEventRemoveList().get(i).getLectureNo();
+                String eventType = requestDto.getLectureEventRemoveList().get(i).getLectureEventType();
                 Lecture lecture = lectureRepository.findById(lectureNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
 
-                lecture.lectureEventTypeUpdate("L");
+
+                if(requestDto.getLectureEventType().equals("R")) {
+                    lecture.lectureEventTypeUpdate(eventType.substring(0, 1));
+                } else {
+                    if(eventType.length() > 1) {
+                        lecture.lectureEventTypeUpdate("LR");
+                    } else {
+                        lecture.lectureEventTypeUpdate("L");
+                    }
+                }
             }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");

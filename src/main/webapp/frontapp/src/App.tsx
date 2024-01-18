@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
 import {ThemeProvider} from "styled-components";
 
-import MainHome from './MainHome';
+import MainHome from './home/MainHome';
 // member
 import SignIn from "./member/SignIn";
 import SignUp from "./member/SignUp";

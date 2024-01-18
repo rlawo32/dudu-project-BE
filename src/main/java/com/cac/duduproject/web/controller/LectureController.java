@@ -79,8 +79,8 @@ public class LectureController {
         return lectureWriteService.insertLectureEvent(requestDto);
     }
 
-    @GetMapping("/lectureEventOne")
-    public CommonResponseDto<?> lectureEventOne(HttpServletRequest request) {
+    @GetMapping("/lectureEventDetail")
+    public CommonResponseDto<?> lectureEventDetail(HttpServletRequest request) {
         return lectureEventService.findLectureEventDetail(request);
     }
 
@@ -127,5 +127,15 @@ public class LectureController {
     @GetMapping("/lectureDetail")
     public CommonResponseDto<?> lectureDetail(HttpServletRequest request) {
         return lectureListService.findLectureDetail(request);
+    }
+
+    @PostMapping("/lectureEventType")
+    public CommonResponseDto<?> lectureEventType(@RequestBody LectureListRequestDto requestDto) {
+        return lectureListService.findLectureEventType(requestDto);
+    }
+
+    @PostMapping("/insertMainEvent")
+    public CommonResponseDto<?> insertMainEvent(@RequestBody LectureEventWriteRequestDto requestDto) {
+        return lectureWriteService.insertLectureMainEvent(requestDto);
     }
 }

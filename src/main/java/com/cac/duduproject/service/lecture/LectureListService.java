@@ -201,6 +201,8 @@ public class LectureListService {
         try {
             Map<String, Object> result = new HashMap<>();
 
+            int pageNo = requestDto.getPageNo();
+            String eventType = requestDto.getSortType();
             Long mainCategoryNo = requestDto.getMainCategoryNo();
             Long subCategoryNo = requestDto.getSubCategoryNo();
 
@@ -210,8 +212,8 @@ public class LectureListService {
             LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(subCategoryNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + subCategoryNo));
 
-            Page<Lecture> pageable = lectureRepository.findAllByLectureMainCategoryAndLectureSubCategory
-                    (lectureMainCategory, lectureSubCategory, PageRequest.of(0, 10));
+            Page<Lecture> pageable = lectureRepository.findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventType
+                    (lectureMainCategory, lectureSubCategory, eventType, PageRequest.of(pageNo, 10));
             int totalPage = pageable.getTotalPages();
 
             List<LectureListResponseDto> list = pageable.stream()

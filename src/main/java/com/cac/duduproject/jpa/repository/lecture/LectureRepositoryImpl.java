@@ -70,12 +70,13 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
     }
 
     private BooleanExpression eqListType(String listType) {
-        if(listType.equals("E")) {
+        if(listType.equals("E")) { // 이벤트 추가가 안된 데이터 출력
             return lecture.lectureEvent.isNull();
-        } else if(listType.equals("L")) {
+        } else if(listType.equals("A")) { // 모든 데이터 출력
+            return null;
+        } else {
             return null;
         }
-        return null;
     }
 
     private BooleanBuilder eqDivision(List<LectureListRequestDto.DivisionItemList> searchDivision) {

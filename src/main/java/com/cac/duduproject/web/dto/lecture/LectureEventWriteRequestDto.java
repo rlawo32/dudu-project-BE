@@ -21,6 +21,7 @@ public class LectureEventWriteRequestDto {
     private String lectureEventName;
     private String lectureEventDesc;
     private List<lectureEventItemList> lectureEventList;
+    private List<lectureEventItemList> lectureEventRemoveList;
     private List<ImageInsertRequestDto> lectureEventThumbnail;
 
     @Data

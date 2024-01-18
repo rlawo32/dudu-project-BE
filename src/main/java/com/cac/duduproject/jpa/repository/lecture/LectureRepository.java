@@ -16,9 +16,9 @@ public interface LectureRepository extends JpaRepository<Lecture, Long>, Lecture
     List<Lecture> findAllLectureNoAndLectureReception();
     Page<Lecture> findAllByLectureEvent(LectureEvent lectureEvent, Pageable pageable);
 
-    Page<Lecture> findAllByLectureMainCategoryAndLectureSubCategory(LectureMainCategory lectureMainCategory,
-                                                                    LectureSubCategory lectureSubCategory,
-                                                                    Pageable pageable);
+    Page<Lecture> findAllByLectureMainCategoryAndLectureSubCategoryAndLectureEventType
+            (LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory,
+             String eventType, Pageable pageable);
     @Modifying
     @Query("UPDATE Lecture l SET l.lectureEvent = null WHERE l.lectureEvent = :lectureEvent")
     void updateByLectureEvent(@Param("lectureEvent") LectureEvent lectureEvent);

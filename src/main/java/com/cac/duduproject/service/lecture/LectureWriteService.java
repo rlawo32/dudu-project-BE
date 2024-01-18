@@ -181,4 +181,27 @@ public class LectureWriteService {
         }
         return CommonResponseDto.setSuccess("Insert Success", null);
     }
+
+    @Transactional
+    public CommonResponseDto<?> insertLectureMainEvent(LectureEventWriteRequestDto requestDto) {
+        try {
+            for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
+                Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
+                Lecture lecture = lectureRepository.findById(lectureNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+
+                lecture.lectureEventTypeUpdate(requestDto.getLectureEventType());
+            }
+            for(int i=0; i<requestDto.getLectureEventRemoveList().size(); i++) {
+                Long lectureNo = requestDto.getLectureEventRemoveList().get(i).getLectureNo();
+                Lecture lecture = lectureRepository.findById(lectureNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+
+                lecture.lectureEventTypeUpdate("L");
+            }
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("Insert Success", null);
+    }
 }

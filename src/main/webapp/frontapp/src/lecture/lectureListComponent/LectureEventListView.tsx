@@ -159,19 +159,9 @@ const LectureEventListView = () => {
         lectureInstitution:string;
         lectureStateNo:number;
         lectureCount:number;
+        lectureEventType:string;
         lectureThumbnail:string;
-    }[]>([{
-        lectureNo: 0,
-        lectureTitle: '',
-        lectureDivision: '',
-        lectureTeacher: '',
-        lectureTime: '',
-        lectureFee: 0,
-        lectureInstitution: '',
-        lectureStateNo: 0,
-        lectureCount: 0,
-        lectureThumbnail: ''
-    }]);
+    }[]>([]);
 
     const [lectureEventOne, setLectureEventOne] = useState<{
         lectureEventNo:number;
@@ -208,7 +198,7 @@ const LectureEventListView = () => {
             });
             await axios({
                 method: "GET",
-                url: '/lecture/lectureEventOne',
+                url: '/lecture/lectureEventDetail',
                 params: {lectureEventNo: lectureEventNo}
             }).then((res):void => {
                 setLectureEventOne(res.data.data);

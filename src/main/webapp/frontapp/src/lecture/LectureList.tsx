@@ -24,11 +24,7 @@ const LectureList = () => {
         institutionNo:number;
         institutionName:string;
         institutionContact:string;
-    }[]>([{
-        institutionNo: 0,
-        institutionName: '',
-        institutionContact: ''
-    }]);
+    }[]>([]);
     const [lectureList, setLectureList] = useState<{
         lectureNo:number;
         lectureTitle:string;
@@ -39,19 +35,9 @@ const LectureList = () => {
         lectureInstitution:string;
         lectureStateNo:number;
         lectureCount:number;
+        lectureEventType:string;
         lectureThumbnail:string;
-    }[]>([{
-        lectureNo: 0,
-        lectureTitle: '',
-        lectureDivision: '',
-        lectureTeacher: '',
-        lectureTime: '',
-        lectureFee: 0,
-        lectureInstitution: '',
-        lectureStateNo: 0,
-        lectureCount: 0,
-        lectureThumbnail: ''
-    }]);
+    }[]>([]);
 
     const [pageNo, setPageNo] = useState<number>(1);
     const [sortType, setSortType] = useState<string>("1");
@@ -65,18 +51,6 @@ const LectureList = () => {
 
     const {searchButton, searchText,
         ltDivisionArr, ltStateArr} = useLectureSearchDataStore();
-
-    const getListData:object = {
-        listType: "L",
-        pageNo: pageNo,
-        sortType: sortType,
-        institutionNo: institutionNo,
-        mainCategoryNo: mainCategoryNo,
-        subCategoryNo: subCategoryNo,
-        searchText: searchText,
-        searchDivision: ltDivisionArr,
-        searchState: ltStateArr
-    }
 
     const customInstitutionSelectBox = ():any => {
         const result:any[] = [];
@@ -121,6 +95,17 @@ const LectureList = () => {
     }, [])
 
     useEffect(() => {
+        const getListData:object = {
+            listType: "A",
+            pageNo: pageNo,
+            sortType: sortType,
+            institutionNo: institutionNo,
+            mainCategoryNo: mainCategoryNo,
+            subCategoryNo: subCategoryNo,
+            searchText: searchText,
+            searchDivision: ltDivisionArr,
+            searchState: ltStateArr
+        }
         const lectureList = async () => {
            await axios({
                method: "POST",

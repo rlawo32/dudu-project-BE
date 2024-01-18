@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+
 import useLectureEventWriteDataStore from "../../stores/useLectureEventWriteDataStore";
 
 const LectureEventDelete = () => {
@@ -106,48 +107,48 @@ const LectureEventDelete = () => {
     }, [eventPageNo]);
 
     return (
-        <div className="ew-event">
+        <div className="ed-view">
             <div>이벤트리스트</div>
             {
                 eventList.length > 0 ?
-                    <div className="ew-list-view">
+                    <div className="ed-list-view">
                         <table>
                             <thead>
-                            <tr style={{height: "35px", fontWeight: "bold"}}>
-                                <td style={{width: "80px"}}>No.</td>
-                                <td style={{width: "100px"}}>이벤트번호</td>
-                                <td style={{width: "100px"}}>이벤트타입</td>
-                                <td style={{width: "200px"}}>이벤트제목</td>
-                                <td style={{width: "200px"}}>이벤트설명</td>
-                                <td style={{width: "80px"}}>선택</td>
-                            </tr>
+                                <tr style={{height: "35px", fontWeight: "bold"}}>
+                                    <td style={{width: "40px"}}>No.</td>
+                                    <td style={{width: "60px"}}>이벤트번호</td>
+                                    <td style={{width: "60px"}}>이벤트타입</td>
+                                    <td style={{width: "150px"}}>이벤트제목</td>
+                                    <td style={{width: "150px"}}>이벤트설명</td>
+                                    <td style={{width: "50px"}}>선택</td>
+                                </tr>
                             </thead>
                             <tbody>
-                            {eventList.map((events, idx) => {
-                                return (
-                                    <tr key={events.lectureEventNo} style={{height: "30px"}}>
-                                        <td>{(idx+1) + (eventPageNo*10)}</td>
-                                        <td>{events.lectureEventNo}</td>
-                                        <td>{events.lectureEventType}</td>
-                                        <td style={{cursor: "pointer"}}
-                                            onClick={() => navigate("/lectureEventList/" + events.lectureEventNo,
-                                                { state: {institutionNo: events.lectureInstitutionNo, eventNo: events.lectureEventNo}})}>
-                                            {events.lectureEventName}</td>
-                                        <td>{events.lectureEventDesc}</td>
-                                        <td>
-                                                        <span style={{cursor: "pointer"}}
-                                                              onClick={() => catalogLectureViewHandler(events.lectureEventNo, events.lectureEventName)}>
-                                                            목록
-                                                        </span>
-                                            <span style={{margin: "0 5px"}}>/</span>
-                                            <span style={{cursor: "pointer"}}
-                                                  onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImageName)}>
-                                                            X
-                                                        </span>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
+                                {eventList.map((events, idx) => {
+                                    return (
+                                        <tr key={events.lectureEventNo} style={{height: "30px"}}>
+                                            <td>{(idx+1) + (eventPageNo*10)}</td>
+                                            <td>{events.lectureEventNo}</td>
+                                            <td>{events.lectureEventType}</td>
+                                            <td style={{cursor: "pointer"}}
+                                                onClick={() => navigate("/lectureEventList/" + events.lectureEventNo,
+                                                    { state: {institutionNo: events.lectureInstitutionNo, eventNo: events.lectureEventNo}})}>
+                                                {events.lectureEventName}</td>
+                                            <td>{events.lectureEventDesc}</td>
+                                            <td>
+                                                <span style={{cursor: "pointer"}}
+                                                      onClick={() => catalogLectureViewHandler(events.lectureEventNo, events.lectureEventName)}>
+                                                    목록
+                                                </span>
+                                                <span style={{margin: "0 5px"}}>/</span>
+                                                <span style={{cursor: "pointer"}}
+                                                      onClick={() => catalogEventDeleteHandler(events.lectureEventNo, events.lectureEventImageName)}>
+                                                    X
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                         <div className="paging-view">
@@ -160,34 +161,34 @@ const LectureEventDelete = () => {
                     <div />
             }
             {catalogList.length > 0 ?
-                <div className="ew-catalog-box">
+                <div className="ed-catalog-box">
                     <div style={{margin: "10px 10px", fontWeight: "bold"}}>이벤트제목 : {catalogTitle}</div>
                     <table>
                         <thead>
-                        <tr style={{height: "35px", fontWeight: "bold"}}>
-                            <td style={{width: "50px"}}>No.</td>
-                            <td style={{width: "80px"}}>강의번호</td>
-                            <td style={{width: "200px"}}>강의제목</td>
-                            <td style={{width: "80px"}}>강사명</td>
-                            <td style={{width: "50px"}}>선택</td>
-                        </tr>
+                            <tr style={{height: "35px", fontWeight: "bold"}}>
+                                <td style={{width: "40px"}}>No.</td>
+                                <td style={{width: "60px"}}>강의번호</td>
+                                <td style={{width: "200px"}}>강의제목</td>
+                                <td style={{width: "80px"}}>강사명</td>
+                                <td style={{width: "40px"}}>선택</td>
+                            </tr>
                         </thead>
                         <tbody>
-                        {catalogList.map((item, idx) => {
-                            return (
-                                <tr key={idx} style={{height: "30px"}}>
-                                    <td>{(idx+1) + (eventPageNo*10)}</td>
-                                    <td>{item.lectureNo}</td>
-                                    <td style={{cursor: "pointer"}}
-                                        onClick={() => navigate("/lectureDetail/" + item.lectureNo,
-                                            { state: {lectureNo: item.lectureNo}})}>
-                                        {item.lectureTitle}</td>
-                                    <td>{item.lectureTeacher}</td>
-                                    <td style={{cursor: "pointer"}}
-                                        onClick={() => catalogLectureDeleteHandler(item.lectureNo)}>X</td>
-                                </tr>
-                            )
-                        })}
+                            {catalogList.map((item, idx) => {
+                                return (
+                                    <tr key={idx} style={{height: "30px"}}>
+                                        <td>{(idx+1) + (eventPageNo*10)}</td>
+                                        <td>{item.lectureNo}</td>
+                                        <td style={{cursor: "pointer"}}
+                                            onClick={() => navigate("/lectureDetail/" + item.lectureNo,
+                                                { state: {lectureNo: item.lectureNo}})}>
+                                            {item.lectureTitle}</td>
+                                        <td>{item.lectureTeacher}</td>
+                                        <td style={{cursor: "pointer"}}
+                                            onClick={() => catalogLectureDeleteHandler(item.lectureNo)}>X</td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 </div>

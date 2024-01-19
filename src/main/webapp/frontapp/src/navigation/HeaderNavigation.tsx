@@ -141,7 +141,7 @@ const HeaderNavigation = ():any => {
                                 <StyledLink to="/" style={{marginLeft: '30px'}}>
                                     이용안내
                                 </StyledLink>
-                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                <StyledLink to="/boardList" style={{marginLeft: '30px'}}>
                                     커뮤니티
                                 </StyledLink>
                             </div>
@@ -173,7 +173,7 @@ const HeaderNavigation = ():any => {
                                 <StyledLink to="/" style={{marginLeft: '30px'}}>
                                     이용안내
                                 </StyledLink>
-                                <StyledLink to="/" style={{marginLeft: '30px'}}>
+                                <StyledLink to="/boardList" style={{marginLeft: '30px'}}>
                                     커뮤니티
                                 </StyledLink>
                             </div>

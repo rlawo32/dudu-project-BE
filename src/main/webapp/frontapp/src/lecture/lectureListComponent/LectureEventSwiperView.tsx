@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -7,7 +8,6 @@ import {Autoplay, Navigation, Pagination} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import {useNavigate} from "react-router-dom";
 
 const LectureEventView = styled.div`
   position: relative;
@@ -77,8 +77,6 @@ const LectureEventSwiperView = (props : {institutionNo:number;}) => {
         lectureEventDesc:string;
         lectureEventThumbnail:string;
     }[]>([]);
-
-    console.log(lectureEventList)
 
     const lectureEventSwiper = ():any[] => {
         let result:any[] = [];

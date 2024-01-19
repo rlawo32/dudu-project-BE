@@ -32,6 +32,7 @@ const MainRecommendEventView = styled.div`
   
   .el-list {
     display: flex;
+    margin: 54px auto 0;
 
     .el-list-item {
       height: 100%;
@@ -45,12 +46,12 @@ const MainRecommendEventView = styled.div`
         width: 100%;
         border-bottom: 1px solid gray;
       }
-      margin: 30px 3px 0 0;
+      margin-right: 32px;
       padding: 5px;
       cursor: pointer;
 
       .el-list-image {
-        height: 250px;
+        height: 350px;
         @media screen and (max-width: 1024px) {
           height: 100%;
           width: 35%;
@@ -87,7 +88,7 @@ const MainRecommendEventView = styled.div`
             border-radius: 10px;
             margin-right: 6px;
             padding: 3px 7px 3px 7px;
-            font-size: 11px;
+            font-size: 14px;
             font-weight: bold;
           }
 
@@ -95,7 +96,7 @@ const MainRecommendEventView = styled.div`
             border: none;
             border-radius: 10px;
             padding: 3px 7px 3px 7px;
-            font-size: 11px;
+            font-size: 14px;
             font-weight: bold;
             background-color: lightgray;
             color: black;
@@ -112,7 +113,7 @@ const MainRecommendEventView = styled.div`
             white-space: normal;
             word-break: keep-all;
             line-height: 1.5;
-            font-size: 16px;
+            font-size: 22px;
             font-weight: bold;
 
             display: -webkit-box;
@@ -123,14 +124,14 @@ const MainRecommendEventView = styled.div`
 
         .el-list-division {
           margin-top: 6px;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 500;
           opacity: 0.9;
         }
 
         .el-list-time {
           margin-top: 3px;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 500;
           opacity: 0.9;
 
@@ -144,8 +145,8 @@ const MainRecommendEventView = styled.div`
         }
 
         .el-list-fee {
-          margin-top: 3px;
-          font-size: 14px;
+          margin-top: 13px;
+          font-size: 15px;
           font-weight: bold;
         }
       }
@@ -199,9 +200,7 @@ const MainRecommendEvent = () => {
                 console.log(err.message);
             });
         }
-        setTimeout(() => {
-            dataList().then();
-        }, 100);
+        setTimeout(() => {dataList().then();}, 100);
     }, []);
 
     return (

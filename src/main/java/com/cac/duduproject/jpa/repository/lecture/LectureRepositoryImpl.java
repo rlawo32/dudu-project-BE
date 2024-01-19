@@ -21,6 +21,8 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
     @Autowired
     private JPAQueryFactory queryFactory;
     @Autowired
+    private LectureInstitutionRepository lectureInstitutionRepository;
+    @Autowired
     private LectureStateRepository lectureStateRepository;
     @Autowired
     private LectureMainCategoryRepository lectureMainCategoryRepository;
@@ -32,13 +34,13 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
     }
 
     @Override
-    public Page<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
+    public Page<Lecture> findBySearch(Long institutionNo, String searchText,
                                       Long mainCategoryNo, Long subCategoryNo, String listType,
                                       List<LectureListRequestDto.DivisionItemList> searchDivision,
                                       List<LectureListRequestDto.StateItemList> searchState,
                                       Pageable pageable) {
         JPAQuery<Lecture> query = queryFactory.selectFrom(lecture)
-                .where(lecture.lectureInstitution.eq(lectureInstitution),
+                .where(eqLectureInstitution(institutionNo),
                         lecture.lectureTitle.contains(searchText),
                         eqMainCategory(mainCategoryNo),
                         eqSubCategory(subCategoryNo),
@@ -47,6 +49,16 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                         (eqState(searchState)));
         List<Lecture> lectures = this.getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<Lecture>(lectures, pageable, query.fetchCount());
+    }
+
+    private BooleanExpression eqLectureInstitution(Long institutionNo) {
+        if(institutionNo == 0) {
+            return null;
+        } else {
+            LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
+            return lecture.lectureInstitution.eq(lectureInstitution);
+        }
     }
 
     private BooleanExpression eqMainCategory(Long mainCategoryNo) {

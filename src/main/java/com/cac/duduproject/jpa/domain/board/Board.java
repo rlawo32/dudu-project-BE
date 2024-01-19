@@ -28,7 +28,7 @@ public class Board {
 
     @Column(name = "board_category")
     @NotBlank
-    private String boardCategory;
+    private String boardCategory; // BI : 공지사항, BE : 이벤트
 
     @Column(name = "board_title")
     @NotBlank

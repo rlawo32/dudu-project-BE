@@ -34,8 +34,14 @@ public class BoardListService {
             String searchCategory = requestDto.getSearchCategory();
             String searchText = requestDto.getSearchText();
 
-            Page<Board> pageable = boardRepository.findBySearch(institutionNo, searchCategory,
-                    searchText, PageRequest.of(0, (10*pageNo), Sort.by("boardCreatedDate").descending()));
+            Page<Board> pageable = null;
+            if(pageNo == 0) {
+                pageable = boardRepository.findBySearch(institutionNo, searchCategory,
+                        searchText, PageRequest.of(0, 4, Sort.by("boardCreatedDate").descending()));
+            } else {
+                pageable = boardRepository.findBySearch(institutionNo, searchCategory,
+                        searchText, PageRequest.of(0, (10*pageNo), Sort.by("boardCreatedDate").descending()));
+            }
             Long totalPage = Long.valueOf(pageable.getTotalElements());
 
             List<BoardListResponseDto> list = pageable.stream()

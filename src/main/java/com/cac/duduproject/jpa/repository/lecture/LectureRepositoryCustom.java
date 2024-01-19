@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface LectureRepositoryCustom {
 
-    Page<Lecture> findBySearch(LectureInstitution lectureInstitution, String searchText,
+    Page<Lecture> findBySearch(Long institutionNo, String searchText,
                                Long mainCategoryNo, Long subCategoryNo, String listType,
                                List<LectureListRequestDto.DivisionItemList> searchDivision,
                                List<LectureListRequestDto.StateItemList> searchState,

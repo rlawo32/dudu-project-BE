@@ -123,9 +123,6 @@ public class LectureListService {
             List<LectureListRequestDto.DivisionItemList> searchDivision = requestDto.getSearchDivision();
             List<LectureListRequestDto.StateItemList> searchState = requestDto.getSearchState();
 
-            LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(institutionNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + institutionNo));
-
             Sort sort = Sort.by("lecturePeriod").ascending();
 
             if(sortType.equals("1")) {
@@ -143,16 +140,22 @@ public class LectureListService {
             Page<Lecture> pageable = null;
             Long totalPage = 0L;
             if(listType.equals("E")) {
-                pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
+                pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
-                        PageRequest.of(pageNo, (10), sort));
+                        PageRequest.of(pageNo, 10, sort));
                 totalPage = Long.valueOf(pageable.getTotalPages());
             } else if(listType.equals("L")) {
-                pageable = lectureRepository.findBySearch(lectureInstitution, searchText,
+                pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
                         PageRequest.of(0, (20*pageNo), sort));
+                totalPage = pageable.getTotalElements();
+            } else if(listType.equals("M")) {
+                pageable = lectureRepository.findBySearch(institutionNo, searchText,
+                        mainCategoryNo, subCategoryNo, listType,
+                        searchDivision, searchState,
+                        PageRequest.of(0, 20, Sort.by("lectureCreatedDate").descending()));
                 totalPage = pageable.getTotalElements();
             }
 

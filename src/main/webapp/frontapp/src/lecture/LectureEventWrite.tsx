@@ -201,12 +201,6 @@ const LectureRoomWrite = () => {
                 url: "/lecture/lectureMainCategoryList"
             }).then((res):void => {
                 setLectureMainCategoryList(res.data.data);
-                setLectureMainCategoryList((prevList) => [...prevList, {
-                    lectureMainCategoryNo: 0,
-                    lectureMainCategoryName: '전체',
-                    lectureMainCategoryDesc: '*'
-                }]);
-                setMainCategoryNo(res.data.data[0].lectureMainCategoryNo + "");
             }).catch((err):void => {
                 console.log(err.message);
             })
@@ -238,18 +232,17 @@ const LectureRoomWrite = () => {
                 url: "/lecture/lectureSubCategoryList",
                 params: {mainCategoryNo: mainCategoryNo}
             }).then((res):void => {
-                if(mainCategoryNo !== "0") {
-                    setLectureSubCategoryList(res.data.data);
-                    setSubCategoryNo(res.data.data[0].lectureSubCategoryNo + "");
-                } else {
-                    setLectureSubCategoryList([]);
-                    setSubCategoryNo("0");
-                }
+                setLectureSubCategoryList(res.data.data);
             }).catch((err):void => {
                 console.log(err.message);
             })
         }
-        setTimeout(() => {subCategoryList().then();}, 100);
+        if(mainCategoryNo !== "0") {
+            setTimeout(() => {subCategoryList().then();}, 100);
+        } else {
+            setSubCategoryNo("0");
+            setLectureSubCategoryList([]);
+        }
     }, [mainCategoryNo]);
 
     useEffect(() => {
@@ -314,12 +307,9 @@ const LectureRoomWrite = () => {
                             ))}
                         </select>
                         <select
-                            value={mainCategoryNo}
                             onChange={(e) => setMainCategoryNo(e.target.value)}
                         >
-                            <option key={0} value={"0"}>
-                                전체
-                            </option>
+                            <option key={"0"} value={"0"}>전체</option>
                             {lectureMainCategoryList.map((option) => (
                                 <option key={option.lectureMainCategoryNo} value={option.lectureMainCategoryNo}>
                                     {option.lectureMainCategoryName}
@@ -327,12 +317,9 @@ const LectureRoomWrite = () => {
                             ))}
                         </select>
                         <select
-                            value={subCategoryNo}
                             onChange={(e) => setSubCategoryNo(e.target.value)}
                         >
-                            <option key={0} value={"0"}>
-                                전체
-                            </option>
+                            <option key={"0"} value={"0"}>전체</option>
                             {lectureSubCategoryList.map((option) => (
                                 <option key={option.lectureSubCategoryNo} value={option.lectureSubCategoryNo}>
                                     {option.lectureSubCategoryName}

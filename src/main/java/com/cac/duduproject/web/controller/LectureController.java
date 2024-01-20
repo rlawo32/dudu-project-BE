@@ -138,4 +138,9 @@ public class LectureController {
     public CommonResponseDto<?> insertMainEvent(@RequestBody LectureEventWriteRequestDto requestDto) {
         return lectureWriteService.insertLectureMainEvent(requestDto);
     }
+
+    @GetMapping("/eventCategoryList")
+    public CommonResponseDto<?> eventCategoryList(HttpServletRequest request) {
+        return lectureListService.findEventCategoryList(request);
+    }
 }

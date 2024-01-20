@@ -83,12 +83,19 @@ public class LectureListService {
         List<LectureSubCategoryResponseDto> list = new ArrayList<>();
         try {
             Long mainCategoryNo = Long.valueOf(request.getParameter("mainCategoryNo"));
-            LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
 
-            list = lectureSubCategoryRepository.findAllByLectureMainCategory(lectureMainCategory).stream()
-                    .map(LectureSubCategoryResponseDto::new)
-                    .collect(Collectors.toList());
+            if(mainCategoryNo != 0) {
+                LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(mainCategoryNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + mainCategoryNo));
+
+                list = lectureSubCategoryRepository.findAllByLectureMainCategory(lectureMainCategory).stream()
+                        .map(LectureSubCategoryResponseDto::new)
+                        .collect(Collectors.toList());
+            } else {
+                list = lectureSubCategoryRepository.findAll().stream()
+                        .map(LectureSubCategoryResponseDto::new)
+                        .collect(Collectors.toList());
+            }
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
@@ -238,6 +245,20 @@ public class LectureListService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findEventCategoryList(HttpServletRequest request) {
+        try {
+            Long selectCategory = Long.valueOf(request.getParameter("selectCategory"));
+
+            LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(selectCategory)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + selectCategory));
+
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("Lecture Detail", null);
     }
 
     @Transactional

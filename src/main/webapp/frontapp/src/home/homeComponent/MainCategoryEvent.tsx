@@ -37,8 +37,13 @@ const MainCategoryEvent = () => {
                     일상을 빛낼 취향을 <br />발견하세요!
                 </div>
             </div>
-            <div className="el-list">
+            <div className="el-wrapper">
+                <div className="el-select">
 
+                </div>
+                <div className="el-list">
+
+                </div>
             </div>
         </MainCategoryEventView>
     )

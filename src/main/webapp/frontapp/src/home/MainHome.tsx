@@ -11,6 +11,8 @@ import MainRecommendEvent from "./homeComponent/MainRecommendEvent";
 import MainCategoryEvent from "./homeComponent/MainCategoryEvent";
 import MainRecentEvent from "./homeComponent/MainRecentEvent";
 import MainInformEvent from "./homeComponent/MainInformEvent";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
 
 const MainHome = ():any => {
 
@@ -47,6 +49,10 @@ const MainHome = ():any => {
     return (
         <Styled.MainHomeView>
             <HeaderNavigation />
+
+            <div className="top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <FontAwesomeIcon icon={topIcon} className="icon-custom" />
+            </div>
 
             <MainRecommendEvent />
 

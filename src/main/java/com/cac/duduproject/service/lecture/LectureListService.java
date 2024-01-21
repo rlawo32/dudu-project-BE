@@ -249,16 +249,20 @@ public class LectureListService {
 
     @Transactional
     public CommonResponseDto<?> findEventCategoryList(HttpServletRequest request) {
+        List<LectureListResponseDto> list = new ArrayList<>();
         try {
             Long selectCategory = Long.valueOf(request.getParameter("selectCategory"));
 
             LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(selectCategory)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + selectCategory));
 
+            list = lectureRepository.findAllByLectureEventTypeContainingAndLectureSubCategory("R", lectureSubCategory).stream()
+                    .map(LectureListResponseDto::new)
+                    .collect(Collectors.toList());
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
-        }
-        return CommonResponseDto.setSuccess("Lecture Detail", null);
+        };
+        return CommonResponseDto.setSuccess("Lecture Detail", list);
     }
 
     @Transactional

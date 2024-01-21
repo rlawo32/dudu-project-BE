@@ -49,12 +49,6 @@ const MainCategoryEventView = styled.div<{$imageUrl:string}>`
         object-fit: cover;
         overflow: hidden;
       }
-      
-      .el-select-section {
-      // background-image: url(${({$imageUrl}) => $imageUrl.length > 0 ? $imageUrl : ""});
-      // background-repeat: no-repeat;
-      // background-position: left;
-      // background-size: cover;
 
       .el-select-box {
         position: absolute;
@@ -137,7 +131,7 @@ const MainCategoryEventView = styled.div<{$imageUrl:string}>`
           display: inline-block;
           float: left;
         }
-        
+
         .select-arrow {
           display: inline-block;
           font-size: 21px;
@@ -167,7 +161,6 @@ const MainCategoryEventView = styled.div<{$imageUrl:string}>`
           transform: rotate(180deg);
         }
       }
-    }
     }
     
     .el-list {
@@ -461,24 +454,22 @@ const MainCategoryEvent = () => {
             <div className="el-wrapper">
                 <div className="el-select">
                     <img src={selectCategoryImage} alt={"카테고리 이미지"} />
-                    <div className="el-select-section">
-                        <div className="el-select-box">
-                            <button onClick={() => setIsSelectBoxShow(!isSelectBoxShow)}>
-                                <div className="select-name">
-                                    {
-                                        subCategoryList.find((item) =>
-                                            item.lectureSubCategoryNo === selectCategory)?.lectureSubCategoryName
-                                    }
-                                </div>
-                                <div className="select-arrow" ref={selectArrow}>
-                                    <FontAwesomeIcon icon={arrow} />
-                                </div>
-                            </button>
-                            <div className="select-box" ref={selectBox}>
-                                <ul className="select-list" ref={selectList}>
-                                    {mainCategoryEventSelectBox()}
-                                </ul>
+                    <div className="el-select-box">
+                        <button onClick={() => setIsSelectBoxShow(!isSelectBoxShow)}>
+                            <div className="select-name">
+                                {
+                                    subCategoryList.find((item) =>
+                                        item.lectureSubCategoryNo === selectCategory)?.lectureSubCategoryName
+                                }
                             </div>
+                            <div className="select-arrow" ref={selectArrow}>
+                                <FontAwesomeIcon icon={arrow} />
+                            </div>
+                        </button>
+                        <div className="select-box" ref={selectBox}>
+                            <ul className="select-list" ref={selectList}>
+                                {mainCategoryEventSelectBox()}
+                            </ul>
                         </div>
                     </div>
                 </div>

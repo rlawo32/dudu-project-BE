@@ -69,18 +69,18 @@ const LectureListMainView = (props : Props) => {
                                         <div className="lt-list-time">
                                             <FontAwesomeIcon icon={clockIcon} className="icon-custom" />
                                             <span>
-                                            {
-                                                lectures.lectureTime.substring(13, 14) === '1' ? '월' :
-                                                    lectures.lectureTime.substring(13, 14) === '2' ? '화' :
-                                                        lectures.lectureTime.substring(13, 14) === '3' ? '수' :
-                                                            lectures.lectureTime.substring(13, 14) === '4' ? '목' :
-                                                                lectures.lectureTime.substring(13, 14) === '5' ? '금' :
-                                                                    lectures.lectureTime.substring(13, 14) === '6' ? '토' : '일'
-                                            }
-                                        </span>
+                                                {
+                                                    lectures.lectureTime.substring(13, 14) === '1' ? '월' :
+                                                        lectures.lectureTime.substring(13, 14) === '2' ? '화' :
+                                                            lectures.lectureTime.substring(13, 14) === '3' ? '수' :
+                                                                lectures.lectureTime.substring(13, 14) === '4' ? '목' :
+                                                                    lectures.lectureTime.substring(13, 14) === '5' ? '금' :
+                                                                        lectures.lectureTime.substring(13, 14) === '6' ? '토' : '일'
+                                                }
+                                            </span>
                                             <span>
-                                            {lectures.lectureTime.substring(0, 11)},
-                                        </span>
+                                                {lectures.lectureTime.substring(0, 11)},
+                                            </span>
                                             <span>총 {lectures.lectureCount}회</span>
                                         </div>
                                         <div className="lt-list-fee">

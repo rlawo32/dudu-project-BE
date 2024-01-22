@@ -41,13 +41,13 @@ const MainCategoryEventView = styled.div<{$imageUrl:string}>`
       width: 70%;
       border-radius: 0 12px 12px 0;
       overflow: hidden;
-      transition: border-radius .3s ease;
       
       img {
         height: 100%;
         border-radius: 0 12px 12px 0;
         object-fit: cover;
         overflow: hidden;
+        transition: border-radius 3s ease;
       }
 
       .el-select-box {
@@ -160,6 +160,15 @@ const MainCategoryEventView = styled.div<{$imageUrl:string}>`
         .select-arrow.show-list {
           transform: rotate(180deg);
         }
+      }
+
+      .select-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: '';
+        height: 1px;
+        width: 100%;
       }
     }
     
@@ -303,6 +312,7 @@ const MainCategoryEvent = () => {
     const selectList:any = useRef<any>();
     const selectBtn:any = useRef<any>([]);
     const selectArrow:any = useRef<any>();
+    const selectBottom:any = useRef<any>();
 
     const [mainCategoryList, setMainCategoryList] = useState<{
         lectureMainCategoryNo:number;
@@ -382,6 +392,15 @@ const MainCategoryEvent = () => {
             })
         }
         setTimeout(() => {dataList().then();}, 100);
+
+        console.log(selectBottom.current.offsetY)
+        const scrollEvent = () => {
+            const box3OffsetTop = selectBottom.current.offsetTop;
+            window.scrollY > box3OffsetTop ? console.log('도착') : console.log('아직');
+        };
+
+        window.addEventListener('scroll', scrollEvent);
+        return () => window.removeEventListener('scroll', scrollEvent);
     }, []);
 
     useEffect(() => {
@@ -472,6 +491,7 @@ const MainCategoryEvent = () => {
                             </ul>
                         </div>
                     </div>
+                    <div className="select-bottom" ref={selectBottom} />
                 </div>
                 <div className="el-list">
                     <div className="el-list-view">

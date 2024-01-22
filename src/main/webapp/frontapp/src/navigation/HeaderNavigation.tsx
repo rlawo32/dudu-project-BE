@@ -40,6 +40,9 @@ const StyledHeaderNavigation = styled.div<{$getRole:string}>`
   }
 
   .header-center {
+    @media screen and (max-width: 720px) {
+      display: none;
+    }
     display: flex;
     align-items: center;
     font-size: 16px;

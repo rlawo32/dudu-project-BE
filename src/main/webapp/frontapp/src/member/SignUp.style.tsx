@@ -35,6 +35,9 @@ export const TermsAgreeView = styled.div`
   
   textarea {
     width: 400px;
+    @media screen and (max-width: 750px) {
+      width: 300px;
+    }
     border-radius: 10px;
     resize: none;
   }
@@ -177,7 +180,13 @@ export const EnterInfoButtonF = styled.button`
 export const JoinCompleteView = styled.div`
   position: relative;
   height: 500px;
-  width: 1000px;
+  width: 700px;
+  @media screen and (max-width: 1024px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 750px) {
+    width: 300px;
+  }
   margin: auto;
   
   display: flex;

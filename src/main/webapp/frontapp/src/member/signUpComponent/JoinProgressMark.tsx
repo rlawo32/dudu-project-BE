@@ -7,12 +7,18 @@ import { faCircleCheck as unChecked } from "@fortawesome/free-regular-svg-icons"
 import useJoinProgressStore from "../../stores/useJoinProgressStore";
 
 const ProgressMarkBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   height: 50px;
   width: 680px;
   margin: 120px auto 0;
   border: 2px solid ${({theme}) => theme.textColor};
   border-radius: 20px;
   font-size: 20px;
+  @media screen and (max-width: 750px) {
+    height: 100px;
+    width: 380px;
+  }
   
   display: flex;
   justify-content: center;
@@ -35,9 +41,14 @@ const ProgressMarkBox = styled.div`
   }
   
   .line-custom {
-    
     width: 30px;
     border-top: 1px solid ${({theme}) => theme.textColor};
+  }
+  
+  .line-custom:nth-child(4) {
+    @media screen and (max-width: 750px) {
+      display: none;
+    }
   }
 `;
 

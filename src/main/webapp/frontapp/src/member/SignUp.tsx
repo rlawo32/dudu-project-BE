@@ -1,12 +1,15 @@
+import React from "react";
 import styled from "styled-components";
 
+import useJoinProgressStore from "../stores/useJoinProgressStore";
+
 import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
 import JoinProgressMark from "./signUpComponent/JoinProgressMark";
 import TermsAgree from "./signUpComponent/TermsAgree";
 import EmailAuth from "./signUpComponent/EmailAuth";
 import EnterInfo from "./signUpComponent/EnterInfo";
 import JoinComplete from "./signUpComponent/JoinComplete";
-import useJoinProgressStore from "../stores/useJoinProgressStore";
 
 const JoinProgressView = styled.div`
   position: relative;
@@ -40,6 +43,8 @@ const SignUp = ():any => {
             <JoinProgressView style={ activeProgressTab === 'joinProgress4' ? {display: "block"} : {display: "none"}}>
                 <JoinComplete />
             </JoinProgressView>
+
+            <FooterNavigation />
         </div>
     )
 

@@ -219,7 +219,6 @@ export const MainCategoryEventView = styled.div`
         padding: 0;
         margin: 0;
         flex-direction: column;
-        border-bottom: 1px solid gray;
       }
       
       .el-list-view {
@@ -239,7 +238,7 @@ export const MainCategoryEventView = styled.div`
           .item-thumbnail {
             width: 45%;
             @media screen and (max-width: 1024px) {
-              height: 100%;
+              height: 250px;
               width: 35%;
             }
             overflow: hidden;
@@ -256,10 +255,13 @@ export const MainCategoryEventView = styled.div`
           }
           
           .item-info {
-            width: 65%;
+            width: 55%;
             padding: 56px 50px 62px;
             @media screen and (max-width: 1440px) {
               padding: 28px 25px 31px;
+            }
+            @media screen and (max-width: 1024px) {
+              width: 65%;
             }
             background: ${({theme}) => theme.boxBgColor};
             

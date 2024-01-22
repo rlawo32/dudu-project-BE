@@ -7,10 +7,17 @@ export const MainRecommendEventView = styled.div`
     width: 1024px;
     margin: 10% auto;
   }
+  @media screen and (max-width: 1024px) {
+    width: fit-content;
+  }
 
   .el-title {
     word-break: keep-all;
     overflow-wrap: break-word;
+    @media screen and (max-width: 1024px) {
+      width: fit-content;
+      margin: 0 0 0 5%;
+    }
 
     .title-top {
       margin-bottom: 10px;
@@ -50,15 +57,16 @@ export const MainRecommendEventView = styled.div`
     .el-list-item {
       height: 100%;
       width: calc((100% - 48px) / 4);
+      margin-right: 32px;
+      padding: 5px;
+      cursor: pointer;
       @media screen and (max-width: 1024px) {
         display: flex;
         flex-direction: row;
         width: 100%;
+        margin: 0;
         border-bottom: 1px solid gray;
       }
-      margin-right: 32px;
-      padding: 5px;
-      cursor: pointer;
 
       .el-list-image {
         height: 350px;
@@ -67,7 +75,7 @@ export const MainRecommendEventView = styled.div`
         }
         @media screen and (max-width: 1024px) {
           height: 250px;
-          width: 25%;
+          width: 30%;
         }
         border-radius: 10px;
         overflow: hidden;
@@ -87,7 +95,7 @@ export const MainRecommendEventView = styled.div`
       .el-list-info {
         @media screen and (max-width: 1024px) {
           height: 100%;
-          width: calc(60% - 16px);
+          width: calc(70% - 16px);
           margin-left: 16px;
           padding: 0 0 25px;
         }

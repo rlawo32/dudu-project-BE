@@ -119,7 +119,9 @@ const LectureList = () => {
                console.log(err.message);
            });
         }
-        setTimeout(() => {lectureList().then();}, 0);
+        if(institutionNo > 0) {
+            setTimeout(() => {lectureList().then();}, 0);
+        }
     }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton, pageNo, sortType])
 
     useEffect(() => {
@@ -156,7 +158,7 @@ const LectureList = () => {
                 <div className="lt-list-header">
                     <div className="custom-selectBox">
                         <div className="select-btn" onClick={() => setIsSelectBoxShow(!isSelectBoxShow)}>
-                            {institutionList[institutionNo-1].institutionName}
+                            {institutionList.length > 0 ? institutionList[institutionNo-1].institutionName : <div/>}
                             <div className="select-arrow" ref={selectArrow}>
                                 <FontAwesomeIcon icon={arrow} />
                             </div>

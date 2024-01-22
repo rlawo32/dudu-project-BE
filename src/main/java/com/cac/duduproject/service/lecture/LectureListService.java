@@ -146,19 +146,19 @@ public class LectureListService {
 
             Page<Lecture> pageable = null;
             Long totalPage = 0L;
-            if(listType.equals("E")) {
+            if(listType.equals("E")) { // event write load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
                         PageRequest.of(pageNo, 10, sort));
                 totalPage = Long.valueOf(pageable.getTotalPages());
-            } else if(listType.equals("L")) {
+            } else if(listType.equals("A")) { // lecture list all load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,
                         PageRequest.of(0, (20*pageNo), sort));
                 totalPage = pageable.getTotalElements();
-            } else if(listType.equals("M")) {
+            } else if(listType.equals("M")) { // main recent event load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
                         searchDivision, searchState,

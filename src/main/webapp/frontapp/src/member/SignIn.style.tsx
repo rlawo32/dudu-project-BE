@@ -17,6 +17,12 @@ export const SignInMain = styled.div`
   
   .login-view {
     display: flex;
+    @media screen and (max-width: 1024px) {
+      flex-direction: column-reverse;
+      width: 100%;
+      margin: 0;
+      border-bottom: 1px solid gray;
+    }
   }
   
   .signUp-view {
@@ -25,6 +31,9 @@ export const SignInMain = styled.div`
     align-items: center;
     height: 100vh;
     width: 100%;
+    @media screen and (max-width: 1024px) {
+      height: 50vh;
+    }
     background-image: url("https://react-project-bucket.s3.ap-northeast-2.amazonaws.com/defaultImage/signup-image1.jpg");
     background-repeat: no-repeat;
     background-position: center;

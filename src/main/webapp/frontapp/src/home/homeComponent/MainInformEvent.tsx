@@ -1,84 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
 import dompurify from "dompurify";
 
+import * as Styled from "./MainInformEvent.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronRight as arrowIcon} from "@fortawesome/free-solid-svg-icons";
-
-const MainInformEventView = styled.div`
-  width: 1440px;
-  margin: 160px auto;
-  
-  .el-list {
-    display: flex;
-    
-    .el-list-item {
-      position: relative;
-      min-height: 150px;
-      width: calc((100% - 126px) / 4);
-      padding: 40px 40px 85px 40px;
-      margin: 0 16px;
-      border: 1px solid #d8c9c9;
-      border-radius: 8px;
-      cursor: pointer;
-      
-      .el-list-title {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        padding: 0;
-        margin-bottom: 8px;
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 32px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-      }
-      
-      .el-list-content {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        padding: 0;
-        margin: 0;
-        font-size: 16px;
-        font-weight: normal;
-        line-height: 26px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-      }
-      
-      .el-list-date {
-        position: absolute;
-        bottom: 30px;
-        left: 40px;
-        padding: 0;
-        margin: 0;
-        font-size: 14px;
-        line-height: 22px;
-      }
-    }
-  }
-  
-  .el-more {
-    position: relative;
-    padding-right: 40px;
-    margin-top: 40px;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 32px;
-    cursor: pointer;
-    
-    .icon-custom {
-      margin-left: 20px;
-      font-size: 20px;
-    }
-  }
-`;
 
 const MainInformEvent = () => {
     const navigate = useNavigate();
@@ -117,7 +44,11 @@ const MainInformEvent = () => {
     }, [])
 
     return (
-        <MainInformEventView>
+        <Styled.MainInformEventView>
+            <div className="el-title" onClick={() => navigate("/boardList")}>
+                <div className="inform-title">공지사항</div>
+                <FontAwesomeIcon icon={arrowIcon} className="icon-custom" />
+            </div>
             <div className="el-list">
                 {
                     boardList.map((item) => {
@@ -141,7 +72,7 @@ const MainInformEvent = () => {
             <div className="el-more" onClick={() => navigate("/boardList")}>
                 이외의 다양한 소식을 확인해보세요! <FontAwesomeIcon icon={arrowIcon} className="icon-custom" />
             </div>
-        </MainInformEventView>
+        </Styled.MainInformEventView>
     )
 }
 

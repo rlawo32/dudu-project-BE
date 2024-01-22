@@ -1,163 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
 
+import * as Styled from "./MainRecommendEvent.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock as clockIcon} from "@fortawesome/free-regular-svg-icons";
-
-const MainRecommendEventView = styled.div`
-  width: 1440px;
-  margin: 5% auto;
-  
-  .el-title {
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    
-    .title-top {
-      margin-bottom: 10px;
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 32px;
-      letter-spacing: -.6px;
-    }
-    
-    .title-bottom {
-      font-size: 64px;
-      font-weight: lighter;
-      line-height: 80px;
-      letter-spacing: -4.8px;
-    }
-  }
-  
-  .el-list {
-    display: flex;
-    margin: 54px auto 0;
-
-    .el-list-item {
-      height: 100%;
-      width: calc(100% / 4);
-      @media screen and (max-width: 1280px) {
-        width: calc((100% - 48px) / 3);
-      }
-      @media screen and (max-width: 1024px) {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        border-bottom: 1px solid gray;
-      }
-      margin-right: 32px;
-      padding: 5px;
-      cursor: pointer;
-
-      .el-list-image {
-        height: 350px;
-        @media screen and (max-width: 1024px) {
-          height: 100%;
-          width: 35%;
-        }
-        border-radius: 10px;
-        overflow: hidden;
-
-        img {
-          height: 100%;
-          width: 100%;
-          border: none;
-          border-radius: 10px;
-          object-fit: cover;
-          vertical-align: top;
-
-          transition: transform .4s ease;
-        }
-      }
-
-      .el-list-info {
-        @media screen and (max-width: 1024px) {
-          height: 100%;
-          width: calc(65% - 16px);
-          margin-left: 16px;
-          padding: 0 0 25px;
-        }
-
-        .el-list-state {
-          height: 100%;
-          margin-top: 10px;
-
-          .span-elState {
-            border: none;
-            border-radius: 10px;
-            margin-right: 6px;
-            padding: 3px 7px 3px 7px;
-            font-size: 14px;
-            font-weight: bold;
-          }
-
-          .span-elInstitution {
-            border: none;
-            border-radius: 10px;
-            padding: 3px 7px 3px 7px;
-            font-size: 14px;
-            font-weight: bold;
-            background-color: lightgray;
-            color: black;
-          }
-        }
-
-        .el-list-title {
-          min-height: 50px;
-
-          p {
-            margin: 10px 0 0 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-            word-break: keep-all;
-            line-height: 1.5;
-            font-size: 22px;
-            font-weight: bold;
-
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-          }
-        }
-
-        .el-list-division {
-          margin-top: 6px;
-          font-size: 16px;
-          font-weight: 500;
-          opacity: 0.9;
-        }
-
-        .el-list-time {
-          margin-top: 3px;
-          font-size: 16px;
-          font-weight: 500;
-          opacity: 0.9;
-
-          .icon-custom {
-            margin-right: 4px;
-          }
-
-          span {
-            margin-right: 4px;
-          }
-        }
-
-        .el-list-fee {
-          margin-top: 13px;
-          font-size: 15px;
-          font-weight: bold;
-        }
-      }
-
-      &:hover img {
-        transform: scale(1.1);
-        transition: transform .4s ease;
-      }
-    }
-  }
-`;
 
 const MainRecommendEvent = () => {
     const navigate = useNavigate();
@@ -204,7 +51,7 @@ const MainRecommendEvent = () => {
     }, []);
 
     return (
-        <MainRecommendEventView>
+        <Styled.MainRecommendEventView>
             <div className="el-title">
                 <div className="title-top">
                     추천강좌
@@ -277,7 +124,7 @@ const MainRecommendEvent = () => {
                     })
                 }
             </div>
-        </MainRecommendEventView>
+        </Styled.MainRecommendEventView>
     )
 }
 

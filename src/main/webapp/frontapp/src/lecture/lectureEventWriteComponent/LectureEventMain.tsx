@@ -74,7 +74,7 @@ const LectureEventMain = () => {
 
     const addAndRemoveCategoryEventHandler = (checked:boolean, item:any):void => {
         if(checked) {
-            if(eventCategorySelectArr.length !== 4) {
+            if(eventCategorySelectArr.length !== 2) {
                 setEventCategorySelectArr((prevList) => [...prevList, {
                     lectureNo:item.lectureNo,
                     lectureInstitution:item.lectureInstitution,

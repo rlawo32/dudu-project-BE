@@ -72,6 +72,11 @@ const MainInformEventView = styled.div`
     font-weight: bold;
     line-height: 32px;
     cursor: pointer;
+    
+    .icon-custom {
+      margin-left: 20px;
+      font-size: 20px;
+    }
   }
 `;
 
@@ -134,7 +139,7 @@ const MainInformEvent = () => {
                 }
             </div>
             <div className="el-more" onClick={() => navigate("/boardList")}>
-                이외의 다양한 소식을 확인해보세요! <FontAwesomeIcon icon={arrowIcon} />
+                이외의 다양한 소식을 확인해보세요! <FontAwesomeIcon icon={arrowIcon} className="icon-custom" />
             </div>
         </MainInformEventView>
     )

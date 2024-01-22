@@ -390,7 +390,6 @@ const MainCategoryEvent = () => {
         }
         setTimeout(() => {dataList().then();}, 100);
 
-
         // const scrollEvent = () => {
         //     const box3OffsetTop = selectBottom.current.offsetTop;
         //     window.scrollY > box3OffsetTop ? console.log('도착') : console.log('아직');
@@ -407,7 +406,6 @@ const MainCategoryEvent = () => {
                 url: "/lecture/eventCategoryList",
                 params: {selectCategory: selectCategory}
             }).then((res):void => {
-                console.log(res.data.data)
                 setEventList(res.data.data);
                 const imageUrl:{
                     lectureMainCategoryNo: number;

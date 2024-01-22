@@ -12,8 +12,14 @@ const StyledFooterNavigation = styled.div`
   z-index: 99;
   
   .footer-view {
-    width: 1440px;
-    margin: 0 auto;
+    width: fit-content;
+    margin-left: 250px;
+    @media screen and (max-width: 1440px) {
+      margin-left: 150px;
+    }
+    @media screen and (max-width: 1024px) {
+      margin-left: 50px;
+    }
     
     .footer-top {
       font-size: 16px;

@@ -200,7 +200,6 @@ const EnterInfo = ():any => {
                 headers: {'Content-type': 'application/json'}
             }).then((res) => {
                 window.alert("회원가입 완료");
-                window.location.reload();
                 setActiveProgressTab("joinProgress4");
             }).catch((err):void => {
                 console.log(err.message);

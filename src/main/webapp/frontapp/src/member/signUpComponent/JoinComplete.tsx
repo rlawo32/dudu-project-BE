@@ -15,7 +15,7 @@ const JoinComplete = ():any => {
     return (
         <>
             <Styled.JoinCompleteView onMouseDown={(e) => setXY({x:e.clientX-500, y:e.clientY-500})}>
-                <h1>가입완료{ activeProgressTab === 'joinProgress4' ? <FixedConfettiEffect /> : <div />}</h1>
+                <h1>가입완료 !!{ activeProgressTab === 'joinProgress4' ? <FixedConfettiEffect /> : <div />}</h1>
 
                 <ClickConfettiEffect coordinate={xy}/>
                 {/*{ activeProgressTab === 'joinProgress4' ? <ClickConfettiEffect coordinate={xy}/> : <div />}*/}

@@ -324,7 +324,7 @@ const LectureQuillEditor = (props: Props) => {
                 <div className="write-image-attach-header">
                     <span>이미지 첨부</span>
                     <span style={{marginLeft: '10px'}}>{attachImageArray().length} 개</span>
-                    <span style={{marginLeft: '10px'}}>({attachImageSize()} / 50.00MB)</span>
+                    <span style={{marginLeft: '10px'}}>({attachImageSize()} / 5.00MB)</span>
                 </div>
                 <div className="write-image-attach-body">
                     {attachImageArray()}

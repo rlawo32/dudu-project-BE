@@ -29,12 +29,12 @@ export const LectureListMain = styled.div<{
     .lt-list-image {
       height: 250px;
       @media screen and (max-width: 1024px) {
-        height: 100%;
+        height: 200px;
         width: 35%;
       }
       border-radius: 10px;
       overflow: hidden;
-
+ 
       img {
         height: 100%;
         width: 100%;

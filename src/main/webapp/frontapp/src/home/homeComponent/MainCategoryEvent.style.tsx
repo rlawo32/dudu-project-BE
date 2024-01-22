@@ -45,6 +45,8 @@ export const MainCategoryEventView = styled.div`
     display: flex;
     @media screen and (max-width: 1024px) {
       display: block;
+      padding-bottom: 50px;
+      border-bottom: 1px solid gray;
     }
     overflow: hidden;
     
@@ -101,8 +103,8 @@ export const MainCategoryEventView = styled.div`
           font-weight: bold;
           cursor: pointer;
           @media screen and (max-width: 1024px) {
-            border: 2px solid #333333;
-            color: #333333;
+            border: 2px solid ${({theme}) => theme.textColor};
+            color: ${({theme}) => theme.textColor};
           }
         }
 

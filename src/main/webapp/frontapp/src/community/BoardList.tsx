@@ -45,7 +45,6 @@ const BoardList = () => {
 
     const sortItemList = ():any[] => {
         let result:any[] = [];
-
         for(let i:number=0; i<=institutionList.length; i++) {
             if(i === 0) {
                 result.push(<li key={i}

@@ -5,20 +5,34 @@ export const BoardListView = styled.div`
   
   .bl-sub-view {
     padding: 60px 0 80px;
+    @media screen and (max-width: 1024px) {
+      padding: 60px 0 0;
+    }
     margin: 5% auto 0;
 
     .bl-sub {
       width: 1160px;
+      @media screen and (max-width: 1280px) {
+        width: 100%;
+      }
       margin: 0 auto;
       text-align: center;
 
       .bl-sub-title {
         font-size: 48px;
+        @media screen and (max-width: 1024px) {
+          font-size: 32px;
+        }
       }
       
       .bl-sub-input {
         position: relative;
         width: 600px;
+        @media screen and (max-width: 1024px) {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 0 20px;
+        }
         margin: 40px auto 0;
         
         input {
@@ -39,6 +53,9 @@ export const BoardListView = styled.div`
           right: 30px;
           font-size: 30px;
           cursor: pointer;
+          @media screen and (max-width: 1024px) {
+            right: 50px;
+          }
         }
       }
     }
@@ -46,31 +63,39 @@ export const BoardListView = styled.div`
   
   .bl-main-view {
     padding: 40px 0 200px;
+    @media screen and (max-width: 1024px) {
+      padding: 0 0 100px;
+    }
 
     .bl-main {
       width: 1160px;
+      @media screen and (max-width: 1280px) {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 30px;
+      }
       margin: 0 auto;
 
       .bl-category {
         display: flex;
         width: 100%;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
+        @media screen and (max-width: 1024px) {
+          font-size: 16px;
+        }
         
         .bl-category-inform {
           width: 50%;
           padding: 20px 0;
           border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
-          font-size: 20px;
-          text-align: center;
-          cursor: pointer;
         }
         
         .bl-category-event {
           width: 50%;
           padding: 20px 0;
           border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
-          font-size: 20px;
-          text-align: center;
-          cursor: pointer;
         }
         
         .bl-category-inform.category-active, .bl-category-event.category-active {
@@ -89,7 +114,10 @@ export const BoardListView = styled.div`
           margin-top: 40px;
           
           .bl-total {
-            
+            font-size: 16px;
+            @media screen and (max-width: 1024px) {
+              font-size: 13px;
+            }
           }
           
           .bl-sort {
@@ -100,6 +128,9 @@ export const BoardListView = styled.div`
               background: none;
               color: ${({theme}) => theme.textColor};
               font-size: 16px;
+              @media screen and (max-width: 1024px) {
+                font-size: 13px;
+              }
               font-weight: bold;
               cursor: pointer;
             }
@@ -131,7 +162,7 @@ export const BoardListView = styled.div`
               color: ${({theme}) => theme.textColor};
               text-align: center;
               cursor: pointer;
-              z-index: 2;
+              z-index: 3;
               user-select: none;
               list-style:none;
               transition: all 0.3s ease-in;
@@ -200,6 +231,10 @@ export const BoardListView = styled.div`
             border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
             transition: border .3s ease;
             cursor: pointer;
+            @media screen and (max-width: 1024px) {
+              display: block;
+              padding: 16px 0;
+            }
             
             &:hover {
               border-bottom: 1px solid ${({theme}) => theme.rgbaMedium};
@@ -207,11 +242,18 @@ export const BoardListView = styled.div`
             
             .bl-item-title {
               font-size: 20px;
+              @media screen and (max-width: 1024px) {
+                font-size: 16px;
+              }
             }
             
             .bl-item-date {
               font-size: 13px;
               opacity: 0.5;
+              @media screen and (max-width: 1024px) {
+                margin-top: 15px;
+                font-size: 11px;
+              }
             }
           }
         }

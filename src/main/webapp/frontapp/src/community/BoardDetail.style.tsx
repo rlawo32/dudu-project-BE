@@ -6,6 +6,11 @@ export const BoardDetailView = styled.div`
   
   .bd-main-view {
     width: 1160px;
+    @media screen and (max-width: 1280px) {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 20px;
+    }
     padding: 60px 0 200px;
     margin: 0 auto;
     

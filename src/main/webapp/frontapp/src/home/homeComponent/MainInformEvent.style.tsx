@@ -112,18 +112,18 @@ export const MainInformEventView = styled.div`
   .el-more {
     position: relative;
     padding-right: 40px;
-    margin-top: 40px;
+    margin: 40px 16px;
     font-size: 24px;
     font-weight: bold;
     line-height: 32px;
     cursor: pointer;
+    @media screen and (min-width: 1024px) {
+      display: block;
+    }
     @media screen and (max-width: 1024px) {
       display: none;
       width: fit-content;
       margin: 0 0 0 5%;
-    }
-    @media screen and (min-width: 1024px) {
-      display: block;
     }
     
     .icon-custom {

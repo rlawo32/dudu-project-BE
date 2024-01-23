@@ -62,8 +62,8 @@ const LectureEventList = styled.div`
           height: 400px;
         }
         @media screen and (max-width: 1024px) {
-          height: 100%;
-          width: 35%;
+          height: 170px;
+          width: 30%;
         }
       }
     }

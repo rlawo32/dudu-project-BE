@@ -22,7 +22,7 @@ public class BoardWriteService {
     public CommonResponseDto<?> boardWrite(BoardWriteRequestDto requestDto) {
         try {
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getBoardInstitution())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getBoardInstitution()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getBoardInstitution()));
             requestDto.setLectureInstitution(lectureInstitution);
 
             Long boardNo = boardRepository.save(requestDto.toBoard()).getBoardNo();
@@ -31,6 +31,6 @@ public class BoardWriteService {
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("Lecture Write Success", null);
+        return CommonResponseDto.setSuccess("Board Write Success", null);
     }
 }

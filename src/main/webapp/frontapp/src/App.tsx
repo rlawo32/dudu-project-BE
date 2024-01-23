@@ -20,6 +20,11 @@ import LectureEventListView from "./lecture/lectureListComponent/LectureEventLis
 import BoardWrite from "./community/BoardWrite";
 import BoardList from "./community/BoardList";
 import BoardDetail from "./community/BoardDetail";
+// information
+import FaqWrite from "./information/FaqWrite";
+import FaqList from "./information/FaqList";
+import BranchInfoWrite from "./information/BranchInfoWrite";
+import BranchInfoList from "./information/BranchInfoList";
 
 //
 import {GlobalStyle} from "./styles/GlobalStyles";
@@ -67,6 +72,11 @@ function App() {
                 <Route path="/boardWrite" element={<BoardWrite />} />
                 <Route path="/boardList" element={<BoardList />} />
                 <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
+
+                <Route path="/faqWrite" element={<FaqWrite />} />
+                <Route path="/faqList" element={<FaqList />} />
+                <Route path="/branchWrite" element={<BranchInfoWrite />} />
+                <Route path="/branchList" element={<BranchInfoList />} />
             </Routes>
         </ThemeProvider>
     </>

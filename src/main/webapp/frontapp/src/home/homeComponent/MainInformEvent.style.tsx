@@ -15,6 +15,7 @@ export const MainInformEventView = styled.div`
     font-weight: bold;
     line-height: 32px;
     cursor: pointer;
+    
     @media screen and (max-width: 1024px) {
       display: flex;
       justify-content: space-between;
@@ -24,7 +25,6 @@ export const MainInformEventView = styled.div`
     @media screen and (min-width: 1024px) {
       display: none;
     }
-
     .icon-custom {
       margin-right: 20px;
       font-size: 20px;

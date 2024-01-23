@@ -57,7 +57,7 @@ export const MainCategoryEventView = styled.div`
       width: 70%;
       border-radius: 0 12px 12px 0;
       @media screen and (max-width: 1440px) {
-        width: 40%;
+        width: 45%;
       }
       @media screen and (min-width: 1024px) {
         overflow: hidden;
@@ -214,6 +214,9 @@ export const MainCategoryEventView = styled.div`
       width: calc(50% - 30px);
       padding: 100px;
       margin-left: 30px;
+      @media screen and (max-width: 1440px) {
+        padding: 40px;
+      }
       @media screen and (max-width: 1024px) {
         width: 100%;
         padding: 0;

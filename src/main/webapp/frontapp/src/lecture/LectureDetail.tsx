@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
+import dayjs from "dayjs";
 import dompurify from "dompurify";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
 
 import * as Styled from "./LectureDetail.style";
-import dayjs from "dayjs";
-import FooterNavigation from "../navigation/FooterNavigation";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowUpLong as topIcon, faChevronDown as arrow} from "@fortawesome/free-solid-svg-icons";
 
 const LectureDetail = () => {
     const location = useLocation();
@@ -16,6 +18,15 @@ const LectureDetail = () => {
     const sanitizer = dompurify.sanitize;
     // 스크립트를 활용한 토큰 탈취 처럼 취약점을 노려서 javascript와 HTML로 악의적 코드를 웹 브라우저에 심어,
     // 사용자 접속시 그 악성코드가 실행되는 것을 크로스 사이드 스크립트, 보안을 위해 추가
+
+    const scheduleBox:any = useRef<any>();
+    const scheduleArrow:any = useRef<any>();
+    const materialsBox:any = useRef<any>();
+    const materialsArrow:any = useRef<any>();
+    const noticeBox:any = useRef<any>();
+    const noticeArrow:any = useRef<any>();
+    const remoteBtn:any = useRef<any>([]);
+    const remoteBox:any = useRef<any>([]);
 
     const [lectureDetail, setLectureDetail] = useState<{
         lectureNo:number; lectureStateNo:number; lectureTitle:string; lectureThumbnail:string;
@@ -42,6 +53,11 @@ const LectureDetail = () => {
         "강의 당일 무료주차를 위하여 개강 전일까지 회원정보수정 메뉴를 통해 차량번호 등록 바랍니다. (일부 점포 제외)",
         "문의 : 해당 점 데스크 (운영시간 점별 상이)"
     ];
+
+    const [isScheduleBoxShow, setIsScheduleBoxShow] = useState<boolean>(false);
+    const [isMaterialsBoxShow, setIsMaterialsBoxShow] = useState<boolean>(false);
+    const [isNoticeBoxShow, setIsNoticeBoxShow] = useState<boolean>(false);
+    const [isRemoteSelect, setIsRemoteSelect] = useState<boolean>(false);
 
     const onActiveArrangement = (result:any):void => {
         setLectureScheduleArr(result.lectureSchedule.split("^*"));
@@ -85,22 +101,109 @@ const LectureDetail = () => {
             });
         }
         setTimeout(() => {lectureDetail().then();}, 100);
+
+        const scrollObserver = new IntersectionObserver((e) => {
+            e.forEach((div, idx) => {
+                if(div.isIntersecting) {
+                    div.target.className += ' remote-active';
+                } else {
+                    div.target.className = div.target.className.replace(' remote-active', '');
+                }
+                setIsRemoteSelect(div.isIntersecting);
+            })
+
+        }, {threshold: 0.4});
+
+        remoteBox.current.forEach((ref: any) => {
+            scrollObserver.observe(ref);
+        });
     }, [])
 
+    useEffect(() => {
+        if(isScheduleBoxShow) {
+            scheduleBox.current.className += " show-list";
+            scheduleArrow.current.className += " show-list";
+        } else {
+            scheduleBox.current.className = scheduleBox.current.className.replace(' show-list', '');
+            scheduleArrow.current.className = scheduleArrow.current.className.replace(' show-list', '');
+        }
+    }, [isScheduleBoxShow])
+
+    useEffect(() => {
+        if(isMaterialsBoxShow) {
+            materialsBox.current.className += " show-list";
+            materialsArrow.current.className += " show-list";
+        } else {
+            materialsBox.current.className = materialsBox.current.className.replace(' show-list', '');
+            materialsArrow.current.className = materialsArrow.current.className.replace(' show-list', '');
+        }
+    }, [isMaterialsBoxShow])
+
+    useEffect(() => {
+        if(isNoticeBoxShow) {
+            noticeBox.current.className += " show-list";
+            noticeArrow.current.className += " show-list";
+        } else {
+            noticeBox.current.className = noticeBox.current.className.replace(' show-list', '');
+            noticeArrow.current.className = noticeArrow.current.className.replace(' show-list', '');
+        }
+    }, [isNoticeBoxShow])
+
+    useEffect(() => {
+        for(let i:number=0; i<remoteBox.current.length; i++) {
+            if(remoteBox.current[i].className === 'lt-detail-info-box remote-active') {
+                remoteBtn.current[1].className = remoteBtn.current[1].className.replace(' remote-active', '');
+                remoteBtn.current[0].className = remoteBtn.current[0].className.replace(' remote-active', '');
+                remoteBtn.current[0].className += ' remote-active';
+            } else if(remoteBox.current[i].className === 'lt-detail-content-box remote-active') {
+                remoteBtn.current[0].className = remoteBtn.current[0].className.replace(' remote-active', '');
+                remoteBtn.current[1].className = remoteBtn.current[1].className.replace(' remote-active', '');
+                remoteBtn.current[1].className += ' remote-active';
+            }
+        }
+    }, [isRemoteSelect])
+
     return (
-        <Styled.LectureDetailView>
+        <Styled.LectureDetailView $noticeBoxH={1}>
             <div className="header-navigation">
                 <HeaderNavigation />
             </div>
+            <div className="lt-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <FontAwesomeIcon icon={topIcon} className="icon-custom" />
+            </div>
 
+            <div className="detail-responsive lt-detail-top">
+                <img src={lectureDetail.lectureThumbnail} alt="썸네일 이미지" />
+            </div>
+            <div className="detail-responsive detail-remote">
+                <div className="remote-detail-info"
+                     ref={btn => (remoteBtn.current[0] = btn)}
+                     onClick={() => (setIsRemoteSelect(!isRemoteSelect),
+                         remoteBox.current[0].scrollIntoView({ behavior: "smooth", block: "start"}))}>
+                    강좌정보
+                </div>
+                <div className="remote-detail-content"
+                     ref={btn => (remoteBtn.current[1] = btn)}
+                     onClick={() => (setIsRemoteSelect(!isRemoteSelect),
+                         remoteBox.current[1].scrollIntoView({ behavior: "smooth", block: "start"}))}>
+                    강좌소개
+                </div>
+            </div>
             <div className="lt-detail-main">
-                <div className="lt-detail-content-box">
+                <div className="lt-detail-content-box" ref={boxContent => (remoteBox.current[1] = boxContent)}>
+                    <div className="detail-responsive section-title">강좌소개</div>
                     <div className="detail-content" dangerouslySetInnerHTML={{ __html : sanitizer(`${lectureDetail.lectureDescription}`) }} />
                     <div className="detail-schedule">
-                        <div className="detail-section-title">
-                            강의 일정
+                        <div className="detail-section-title"
+                             onClick={() => setIsScheduleBoxShow(!isScheduleBoxShow)}>
+                            <div className="box-title">
+                                강의 일정
+                            </div>
+                            <div className="detail-responsive box-arrow" ref={scheduleArrow}>
+                                <FontAwesomeIcon icon={arrow} />
+                            </div>
                         </div>
-                        <div className="detail-section-item">
+                        <div className="detail-section-item" ref={scheduleBox}>
                             <ul>
                                 {lectureScheduleArr.map((item, idx) => (
                                     <div className="schedule-item" key={idx}>
@@ -118,10 +221,16 @@ const LectureDetail = () => {
                         </div>
                     </div>
                     <div className="detail-materialsAndSignificant">
-                        <div className="detail-section-title">
-                            준비물 및 특이사항
+                        <div className="detail-section-title"
+                             onClick={() => setIsMaterialsBoxShow(!isMaterialsBoxShow)}>
+                            <div className="box-title">
+                                준비물 및 특이사항
+                            </div>
+                            <div className="detail-responsive box-arrow" ref={materialsArrow}>
+                                <FontAwesomeIcon icon={arrow} />
+                            </div>
                         </div>
-                        <div className="detail-section-item">
+                        <div className="detail-section-item" ref={materialsBox}>
                             <ul>
                                 {materialsAndSignificantArr.map((item, idx) => (
                                     <li key={idx}>
@@ -132,10 +241,16 @@ const LectureDetail = () => {
                         </div>
                     </div>
                     <div className="detail-notice">
-                        <div className="detail-section-title">
-                            유의사항
+                        <div className="detail-section-title"
+                             onClick={() => setIsNoticeBoxShow(!isNoticeBoxShow)}>
+                            <div className="box-title">
+                                유의사항
+                            </div>
+                            <div className="detail-responsive box-arrow" ref={noticeArrow}>
+                                <FontAwesomeIcon icon={arrow} />
+                            </div>
                         </div>
-                        <div className="detail-section-item">
+                        <div className="detail-section-item" ref={noticeBox}>
                             <ul>
                                 {noticeArr.map((item, idx) => (
                                     <li key={idx}>
@@ -146,7 +261,7 @@ const LectureDetail = () => {
                         </div>
                     </div>
                 </div>
-                <div className="lt-detail-info-box">
+                <div className="lt-detail-info-box" ref={boxContent => (remoteBox.current[0] = boxContent)}>
                     <div className="detail-info">
                         <div className="info-main">
 
@@ -180,6 +295,7 @@ const LectureDetail = () => {
                                 </div>
                             </div>
                             <div className="info-body">
+                                <div className="detail-responsive section-title">강좌정보</div>
                                 <div className="dl detail-institution">
                                     <div className="dt">지점</div>
                                     <div className="dd">{lectureDetail.lectureInstitution}</div>
@@ -248,7 +364,6 @@ const LectureDetail = () => {
                     </div>
                 </div>
             </div>
-
 
             <FooterNavigation />
         </Styled.LectureDetailView>

@@ -9,7 +9,7 @@ const StyledFooterNavigation = styled.div`
   padding: 20px 0 20px 0;
   background-color: #382f2d;
   color: #fff;
-  z-index: 99;
+  z-index: 50;
   
   .footer-view {
     width: fit-content;

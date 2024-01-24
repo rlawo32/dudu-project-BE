@@ -8,6 +8,7 @@ import FooterNavigation from "../navigation/FooterNavigation";
 import * as Styled from "./BoardList.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
+    faArrowUpLong as topIcon,
     faChevronDown as arrow,
     faExclamation as emptyIcon, faQuoteLeft as quoteLeft, faQuoteRight as quoteRight,
     faSearch as searchIcon
@@ -141,6 +142,10 @@ const BoardList = () => {
     return (
         <Styled.BoardListView>
             <HeaderNavigation />
+
+            <div className="top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <FontAwesomeIcon icon={topIcon} className="icon-custom" />
+            </div>
 
             <div className="bl-sub-view">
                 <div className="bl-sub">

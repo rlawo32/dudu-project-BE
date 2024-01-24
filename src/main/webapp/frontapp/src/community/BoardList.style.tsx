@@ -2,23 +2,47 @@ import styled from "styled-components";
 
 export const BoardListView = styled.div`
   position: relative;
+
+  .top-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid ${({theme}) => theme.boxBgColor};
+    border-radius: 50%;
+    background-color: ${({theme}) => theme.boxBgColor};
+    color: ${({theme}) => theme.textColor};;
+    text-align: center;
+    z-index: 99;
+    cursor: pointer;
+
+    .icon-custom {
+      position: relative;
+      top: 12px;
+      font-size: 25px;
+    }
+  }
   
   .bl-sub-view {
-    padding: 60px 0 80px;
+    height: 100%;
+    width: 100%;
+    background: rgba(216,201,201,0.5);
     @media screen and (max-width: 1024px) {
-      padding: 60px 0 0;
     }
-    margin: 5% auto 0;
 
     .bl-sub {
       width: 1160px;
       @media screen and (max-width: 1280px) {
         width: 100%;
+        padding: 60px 0 0;
       }
+      padding: 60px 0 80px;
       margin: 0 auto;
       text-align: center;
 
       .bl-sub-title {
+        margin: 7% auto 0;
         font-size: 48px;
         @media screen and (max-width: 1024px) {
           font-size: 32px;

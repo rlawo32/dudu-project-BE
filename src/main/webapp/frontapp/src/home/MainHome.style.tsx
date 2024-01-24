@@ -16,7 +16,7 @@ export const MainHomeView = styled.div`
     background-color: ${({theme}) => theme.boxBgColor};
     color: ${({theme}) => theme.textColor};;
     text-align: center;
-    z-index: 2;
+    z-index: 99;
     cursor: pointer;
 
     .icon-custom {

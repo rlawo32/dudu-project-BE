@@ -75,8 +75,8 @@ function App() {
 
                 <Route path="/faqWrite" element={<FaqWrite />} />
                 <Route path="/faqList" element={<FaqList />} />
-                <Route path="/branchWrite" element={<BranchInfoWrite />} />
-                <Route path="/branchList" element={<BranchInfoList />} />
+                <Route path="/branchInfoWrite" element={<BranchInfoWrite />} />
+                <Route path="/branchInfoList" element={<BranchInfoList />} />
             </Routes>
         </ThemeProvider>
     </>

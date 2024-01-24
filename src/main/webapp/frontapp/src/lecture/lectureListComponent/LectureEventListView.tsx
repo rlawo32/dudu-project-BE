@@ -8,6 +8,7 @@ import LectureListMainView from "./LectureListMainView";
 import LectureListToolView from "./LectureListToolView";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
+import FooterNavigation from "../../navigation/FooterNavigation";
 
 const LectureEventList = styled.div`
   position: relative;
@@ -18,11 +19,12 @@ const LectureEventList = styled.div`
     right: 40px;
     height: 50px;
     width: 50px;
-    border: 1px solid #d8d8d8;
+    border: 1px solid ${({theme}) => theme.boxBgColor};
     border-radius: 50%;
+    background-color: ${({theme}) => theme.boxBgColor};
+    color: ${({theme}) => theme.textColor};;
     text-align: center;
-    vertical-align: center;
-    z-index: 2;
+    z-index: 99;
     cursor: pointer;
 
     .icon-custom {
@@ -42,7 +44,7 @@ const LectureEventList = styled.div`
       width: calc(100% - 4rem);
     }
     padding: 0;
-    margin: 2% auto;
+    margin: 2% auto 10%;
     
     .lt-list-item {
       width: 370px;
@@ -212,6 +214,7 @@ const LectureEventListView = () => {
     return (
         <LectureEventList>
             <HeaderNavigation />
+
             <div className="lt-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                 <FontAwesomeIcon icon={topIcon} className="icon-custom" />
             </div>
@@ -241,6 +244,7 @@ const LectureEventListView = () => {
                 <LectureListMainView ltCount={lectureList.length} lectureList={lectureList} />
             </div>
 
+            <FooterNavigation />
         </LectureEventList>
     )
 }

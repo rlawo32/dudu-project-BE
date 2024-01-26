@@ -28,14 +28,11 @@ export const BoardListView = styled.div`
     height: 100%;
     width: 100%;
     background: rgba(216,201,201,0.5);
-    @media screen and (max-width: 1024px) {
-    }
 
     .bl-sub {
       width: 1160px;
       @media screen and (max-width: 1280px) {
         width: 100%;
-        padding: 60px 0 0;
       }
       padding: 60px 0 80px;
       margin: 0 auto;

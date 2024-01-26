@@ -93,7 +93,7 @@ export const FaqListView = styled.div`
     .faq-list-sub-view {
       width: 1160px;
       @media screen and (max-width: 1280px) {
-        padding: 60px 0 0;
+        width: 100%;
       }
       padding: 60px 0 80px;
       margin: 0 auto;

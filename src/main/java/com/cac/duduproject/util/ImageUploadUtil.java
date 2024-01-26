@@ -51,7 +51,7 @@ public class ImageUploadUtil {
             //동일한 사진을 업로드 하였을 때 사진이 덮어씌워지는 것을 방지하기 위함
             UUID uuid = UUID.randomUUID();
             String imageFileName = uuid + "_" + files.getOriginalFilename();
-            String uploadDir = "*";
+            String uploadDir = "";
 
             if(type.equals("T")) {
                 uploadDir = "/lectureThumbnailImage";
@@ -63,6 +63,8 @@ public class ImageUploadUtil {
                 uploadDir = "/lectureEventImage";
             } else if(type.equals("B")) {
                 uploadDir = "/boardContentImage";
+            } else if(type.equals("I")) {
+                uploadDir = "/institutionImage";
             }
 
             File file = convertMultiPartFileToFile(files);
@@ -97,6 +99,8 @@ public class ImageUploadUtil {
                 deleteDir = "/lectureEventImage";
             } else if(type.equals("B")) {
                 deleteDir = "/boardContentImage";
+            } else if(type.equals("I")) {
+                deleteDir = "/institutionImage";
             }
 
             String imageFileName = request.getParameter("imageFileName");

@@ -1,6 +1,7 @@
 package com.cac.duduproject.web.controller;
 
 import com.cac.duduproject.service.lecture.LectureEventService;
+import com.cac.duduproject.service.lecture.LectureImageService;
 import com.cac.duduproject.service.lecture.LectureListService;
 import com.cac.duduproject.service.lecture.LectureWriteService;
 import com.cac.duduproject.service.member.MemberService;
@@ -20,6 +21,7 @@ public class LectureController {
     private final LectureWriteService lectureWriteService;
     private final LectureListService lectureListService;
     private final LectureEventService lectureEventService;
+    private final LectureImageService lectureImageService;
     private final MemberService memberService;
 
     private final ImageUploadUtil imageUploadUtil;
@@ -142,5 +144,20 @@ public class LectureController {
     @GetMapping("/eventCategoryList")
     public CommonResponseDto<?> eventCategoryList(HttpServletRequest request) {
         return lectureListService.findEventCategoryList(request);
+    }
+
+    @PostMapping("/insertInstitutionImage")
+    public void insertInstitutionImage(@RequestBody LectureInstitutionRequestDto requestDto) {
+        lectureImageService.lectureImageInsert(requestDto.getInstitutionNo(), requestDto.getInstitutionImage(), "I");
+    }
+
+    @GetMapping("/lectureInstitutionImageList")
+    public CommonResponseDto<?> lectureInstitutionImageList(HttpServletRequest request) {
+        return lectureImageService.findLectureInstitutionImage(request);
+    }
+
+    @DeleteMapping("/lectureInstitutionImageDelete")
+    public CommonResponseDto<?> lectureInstitutionImageDelete(HttpServletRequest request) {
+        return lectureImageService.deleteLectureInstitutionImage(request);
     }
 }

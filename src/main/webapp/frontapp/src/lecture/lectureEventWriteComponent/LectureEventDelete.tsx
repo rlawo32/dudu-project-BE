@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-import useLectureEventWriteDataStore from "../../stores/useLectureEventWriteDataStore";
-
 const LectureEventDelete = () => {
     const navigate = useNavigate();
 
@@ -49,7 +47,7 @@ const LectureEventDelete = () => {
     }
 
     const catalogEventDeleteHandler = (eventNo:number, image:string):boolean => {
-        if(window.confirm("정말 삭제하시겠습니까??") == true) {
+        if(window.confirm("정말 삭제하시겠습니까??") === true) {
             axios({
                 method: "DELETE",
                 url: "/lecture/lectureDeleteEvent",
@@ -67,7 +65,7 @@ const LectureEventDelete = () => {
     }
 
     const catalogLectureDeleteHandler = (lectureNo:number):boolean => {
-        if(window.confirm("정말 삭제하시겠습니까??") == true) {
+        if(window.confirm("정말 삭제하시겠습니까??") === true) {
             axios({
                 method: "DELETE",
                 url: "/lecture/lectureDeleteEventList",

@@ -9,11 +9,12 @@ import LectureQuillEditor from "./lectureWriteComponent/LectureQuillEditor";
 import LectureItemAddition from "./lectureWriteComponent/LectureItemAddition";
 import * as timeSelectBox from "./lectureWriteComponent/LectureTimeSelectBox";
 import * as periodDatePicker from "./lectureWriteComponent/LecturePeriodDatePicker";
+
 import UseLectureDataStore from "../stores/useLectureWriteDataStore";
 
+import * as Styled from "./LectureWrite.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleXmark as attachDelete, faPlus as imagePlus} from "@fortawesome/free-solid-svg-icons";
-import * as Styled from "./LectureWrite.style";
 
 const LectureWrite = () => {
     const navigate = useNavigate();
@@ -236,6 +237,7 @@ const LectureWrite = () => {
             })
         }
         setTimeout(() => {selectDataList().then();}, 100);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // lectureRoomList useEffect

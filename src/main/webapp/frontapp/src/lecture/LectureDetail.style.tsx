@@ -37,6 +37,12 @@ export const LectureDetailView = styled.div<Props>`
     }
   }
   
+  .footer-navigation {
+    @media screen and (max-width: 1280px) {
+      margin-bottom: 95px;
+    }
+  }
+  
   .detail-responsive {
     @media screen and (min-width: 1280px) {
       display: none;
@@ -249,7 +255,7 @@ export const LectureDetailView = styled.div<Props>`
     
     .lt-detail-info-box {
       @media screen and (min-width: 1280px) {
-        width: calc(100% - 730px);
+        width: calc(100% - 780px);
       }
       @media screen and (max-width: 1280px) {
         width: 100%;
@@ -257,7 +263,9 @@ export const LectureDetailView = styled.div<Props>`
       
       .detail-info {
         @media screen and (min-width: 1280px) {
-          position: fixed;
+          position: sticky;
+          top: 100px;
+          right: 0;
           height: 600px;
           width: 420px;
           padding: 30px 20px 20px 30px;

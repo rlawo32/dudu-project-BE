@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
 import useJoinProgressStore from "../stores/useJoinProgressStore";
 import FindIdModal from "./signInComponent/FindIdModal";
 import FindPwModal from "./signInComponent/FindPwModal";
@@ -12,7 +13,6 @@ import * as Styled from "./SignIn.style";
 import * as Modal from "./signInComponent/Modal.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser as idIcon, faLock as pwIcon, faComment as kakaoIcon} from "@fortawesome/free-solid-svg-icons";
-import FooterNavigation from "../navigation/FooterNavigation";
 
 const SignIn = ():any => {
     const navigate = useNavigate();

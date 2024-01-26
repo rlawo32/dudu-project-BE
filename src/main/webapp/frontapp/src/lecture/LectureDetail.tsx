@@ -117,6 +117,7 @@ const LectureDetail = () => {
         remoteBox.current.forEach((ref: any) => {
             scrollObserver.observe(ref);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -178,14 +179,14 @@ const LectureDetail = () => {
             <div className="detail-responsive detail-remote">
                 <div className="remote-detail-info"
                      ref={btn => (remoteBtn.current[0] = btn)}
-                     onClick={() => (setIsRemoteSelect(!isRemoteSelect),
-                         remoteBox.current[0].scrollIntoView({ behavior: "smooth", block: "start"}))}>
+                     onClick={() => {setIsRemoteSelect(!isRemoteSelect);
+                         remoteBox.current[0].scrollIntoView({ behavior: "smooth", block: "start"});}}>
                     강좌정보
                 </div>
                 <div className="remote-detail-content"
                      ref={btn => (remoteBtn.current[1] = btn)}
-                     onClick={() => (setIsRemoteSelect(!isRemoteSelect),
-                         remoteBox.current[1].scrollIntoView({ behavior: "smooth", block: "start"}))}>
+                     onClick={() => {setIsRemoteSelect(!isRemoteSelect);
+                         remoteBox.current[1].scrollIntoView({ behavior: "smooth", block: "start"});}}>
                     강좌소개
                 </div>
             </div>
@@ -365,7 +366,9 @@ const LectureDetail = () => {
                 </div>
             </div>
 
-            <FooterNavigation />
+            <div className="footer-navigation">
+                <FooterNavigation />
+            </div>
         </Styled.LectureDetailView>
     )
 }

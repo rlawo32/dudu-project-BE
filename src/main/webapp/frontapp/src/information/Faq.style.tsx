@@ -146,6 +146,12 @@ export const FaqListView = styled.div`
   .faq-list-main {
     width: 1160px;
     margin: 5% auto 10%;
+    @media screen and (max-width: 1280px) {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 20px;
+      margin: 5% auto 10%;
+    }
     
     .faq-list-head {
       
@@ -190,6 +196,10 @@ export const FaqListView = styled.div`
       .faq-list-category {
         display: flex;
         border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
+        @media screen and (max-width: 1280px) {
+          justify-content: left;
+          flex-wrap: wrap;
+        }
         
         .category-item {
           width: auto;
@@ -219,6 +229,9 @@ export const FaqListView = styled.div`
           .faq-item-title {
             position: relative;
             padding: 32px 30px 32px 3px;
+            @media screen and (max-width: 1280px) {
+              padding: 16px 30px 16px 3px;
+            }
             color: ${({theme}) => theme.rgbaMedium};
             font-size: 16px;
             font-weight: 500;
@@ -245,6 +258,9 @@ export const FaqListView = styled.div`
 
           .faq-item-content.show-box {
             height: 40px;
+            @media screen and (max-width: 900px) {
+              height: 100%;
+            }
             padding: 10px 30px 25px 24px;
             transition: all 0.3s ease-in;
           }
@@ -260,7 +276,7 @@ export const FaqListView = styled.div`
       }
       
       .faq-more-btn {
-        width: 25%;
+        width: 300px;
         margin: 70px auto 0;
         padding: 10px 15px 10px 15px;
         border: 1px solid ${({theme}) => theme.textColor};

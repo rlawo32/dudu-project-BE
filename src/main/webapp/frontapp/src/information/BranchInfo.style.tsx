@@ -132,12 +132,22 @@ export const BranchInfoListView = styled.div`
   .bi-view-main {
     width: 1160px;
     margin: 2% auto 10%;
+    @media screen and (max-width: 1280px) {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 20px;
+    }
     
     .bi-main-category {
       display: flex;
       justify-content: center;
       align-items: center;
       border-bottom: 1px solid ${({theme}) => theme.rgbaLight};
+      @media screen and (max-width: 1024px) {
+        justify-content: left;
+        flex-wrap: wrap;
+        font-size: 14px;
+      }
 
       .bi-category-item {
         width: auto;
@@ -168,8 +178,8 @@ export const BranchInfoListView = styled.div`
         .bis-item {
           position: relative;
           height: 780px;
-          @media screen and (max-width: 1024px) {
-            height: 250px;
+          @media screen and (max-width: 1280px) {
+            height: 550px;
           }
           width: 100%;
           color: white;
@@ -222,6 +232,11 @@ export const BranchInfoListView = styled.div`
     }
 
     .bi-main-map {
+      @media screen and (max-width: 1280px) {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 20px;
+      }
 
       .bi-map-title {
         margin-bottom: 30px;

@@ -2,18 +2,19 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
+import FooterNavigation from "../navigation/FooterNavigation";
 import LectureEventSwiperView from "./lectureListComponent/LectureEventSwiperView";
 import LectureMainCategoryView from "./lectureListComponent/LectureMainCategoryView";
 import LectureSubCategoryView from "./lectureListComponent/LectureSubCategoryView";
 import LectureListMainView from "./lectureListComponent/LectureListMainView";
 import LectureListToolView from "./lectureListComponent/LectureListToolView";
 import LectureSearchBoxView from "./lectureListComponent/LectureSearchBoxView";
+
 import useLectureSearchDataStore from "../stores/useLectureSearchDataStore";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown as arrow, faArrowUpLong as topIcon} from "@fortawesome/free-solid-svg-icons";
 import * as Styled from "./LectureList.style";
-import FooterNavigation from "../navigation/FooterNavigation";
 
 const LectureList = () => {
     const selectBox:any = useRef<any>();
@@ -122,6 +123,7 @@ const LectureList = () => {
         if(institutionNo > 0) {
             setTimeout(() => {lectureList().then();}, 0);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [institutionNo, mainCategoryNo, subCategoryNo, searchButton, pageNo, sortType])
 
     useEffect(() => {

@@ -78,15 +78,15 @@ const FaqList = () => {
             if(i === 0) {
                 result.push(<div key={i} className="category-item"
                                  ref={btn => (categoryBtn.current[i] = btn)}
-                                 onClick={() => (setFaqCategory(""),
-                                     setCategorySelect(i))}>
+                                 onClick={() => {setFaqCategory("");
+                                     setCategorySelect(i);}}>
                     전체
                 </div>)
             } else {
                 result.push(<div key={i} className="category-item"
                                  ref={btn => (categoryBtn.current[i] = btn)}
-                                 onClick={() => (setFaqCategory(faqCategoryList[i-1].faqCategoryFlag),
-                                     setCategorySelect(i))}>
+                                 onClick={() => {setFaqCategory(faqCategoryList[i-1].faqCategoryFlag);
+                                     setCategorySelect(i);}}>
                     {faqCategoryList[i-1].faqCategoryName}
                 </div>)
             }
@@ -151,6 +151,7 @@ const FaqList = () => {
             });
         }
         setTimeout(() => {faqList().then();}, 0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo, faqCategory, isSearchActive])
 
     useEffect(() => {
@@ -166,6 +167,7 @@ const FaqList = () => {
         for(let i:number=0; i<faqList.length; i++) {
             faqItemBox.current[i].className = faqItemBox.current[i].className.replace(' show-box', '');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categorySelect])
 
     useEffect(() => {
@@ -186,6 +188,7 @@ const FaqList = () => {
                 }
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [faqBoxShow])
 
     return (
@@ -222,7 +225,18 @@ const FaqList = () => {
                             navigation
                             pagination={{ clickable: true }}
                             breakpoints={{
-
+                                480: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 25
+                                },
+                                880: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 25
+                                },
+                                1280: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 25
+                                },
                             }}>
                         {customFaqOftenSwiper()}
                     </Swiper>

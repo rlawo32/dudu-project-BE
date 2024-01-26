@@ -3,12 +3,12 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 import HeaderNavigation from "../navigation/HeaderNavigation";
-
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCircleXmark as attachDelete} from "@fortawesome/free-solid-svg-icons";
-import * as Styled from "./LectureEventWrite.style";
 import LectureEventDelete from "./lectureEventWriteComponent/LectureEventDelete";
 import LectureEventMain from "./lectureEventWriteComponent/LectureEventMain";
+
+import * as Styled from "./LectureEventWrite.style";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleXmark as attachDelete} from "@fortawesome/free-solid-svg-icons";
 
 const LectureRoomWrite = () => {
     const navigate = useNavigate();

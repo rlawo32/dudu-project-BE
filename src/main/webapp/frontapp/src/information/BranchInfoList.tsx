@@ -7,7 +7,7 @@ import * as Styled from "./BranchInfo.style";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faArrowUpLong as topIcon, faLocationDot as positionIcon,
-    faPhone as contactIcon, faDoorClosed as roomIcon, faQ as qIcon
+    faPhone as contactIcon, faDoorClosed as roomIcon
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -52,8 +52,8 @@ const BranchInfoList = () => {
         for(let i:number=0; i<institutionList.length; i++) {
             result.push(<div key={i} className="bi-category-item"
                              ref={btn => (institutionBtn.current[i] = btn)}
-                             onClick={() => (setInstitutionNo(institutionList[i].institutionNo),
-                                 setSelectInstitution(i))}>
+                             onClick={() => {setInstitutionNo(institutionList[i].institutionNo);
+                                 setSelectInstitution(i);}}>
                 {institutionList[i].institutionName}
             </div>)
         }
@@ -145,7 +145,6 @@ const BranchInfoList = () => {
                             speed={1000}
                             spaceBetween={25}
                             slidesPerView={1}
-                            loop={true}
                             navigation
                             breakpoints={{
 
@@ -173,13 +172,16 @@ const BranchInfoList = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bi-main-map">
-                    <div className="bi-map-title">
-                        {institutionList[selectInstitution].institutionName} 오시는 길
-                    </div>
-                    <BranchInfoMap mapPosition={institutionList[selectInstitution].institutionPosition}
-                                   mapName={institutionList[selectInstitution].institutionName}/>
-                </div>
+                {
+                    institutionList.length > 0 ?
+                        <div className="bi-main-map">
+                            <div className="bi-map-title">
+                                {institutionList[selectInstitution].institutionName} 오시는 길
+                            </div>
+                            <BranchInfoMap mapPosition={institutionList[selectInstitution].institutionPosition}
+                                           mapName={institutionList[selectInstitution].institutionName}/>
+                        </div> : <div />
+                }
             </div>
 
             <FooterNavigation />

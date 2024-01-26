@@ -21,13 +21,18 @@ public class LectureInstitution {
     @NotBlank
     private String institutionName;
 
+    @Column(name = "institution_position")
+    @NotBlank
+    private String institutionPosition;
+
     @Column(name = "institution_contact")
     @NotBlank
     private String institutionContact;
 
     @Builder
-    public LectureInstitution(String institutionName, String institutionContact) {
+    public LectureInstitution(String institutionName, String institutionPosition, String institutionContact) {
         this.institutionName = institutionName;
+        this.institutionPosition = institutionPosition;
         this.institutionContact = institutionContact;
     }
 }

@@ -76,7 +76,7 @@ const FooterNavigation = () => {
                 </div>
                 <div className="footer-bottom">
                     <div className="footer-loc">
-                        주소 : 인천광역시 부평구 부평동 / 대표이사 : 홍길동
+                        주소 : 인천광역시 부평구 부평동 / 대표이사 : 김성재
                     </div>
                     <div className="footer-cop">
                         COPYRIGHT © DUDUPROJECT.CO. ALL RIGHTS RESERVED

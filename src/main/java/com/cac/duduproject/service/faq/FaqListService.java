@@ -66,7 +66,6 @@ public class FaqListService {
     public CommonResponseDto<?> findFaqOftenList() {
         Map<String, Object> result = new HashMap<>();
         try {
-
             Page<Faq> pageable = faqRepository.findByFaqOftenList
                     (PageRequest.of(0, 5, Sort.by("faqViews").descending()));
             Long totalPage = Long.valueOf(pageable.getTotalElements());

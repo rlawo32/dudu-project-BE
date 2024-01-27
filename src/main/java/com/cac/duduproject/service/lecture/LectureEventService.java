@@ -140,7 +140,6 @@ public class LectureEventService {
     public CommonResponseDto<?> findLectureEventCatalog(HttpServletRequest request) {
         try {
             Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
-
             LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
             Page<Lecture> pageable = lectureRepository.findAllByLectureEvent(lectureEvent, PageRequest.of(0, 30));
@@ -160,7 +159,6 @@ public class LectureEventService {
     public CommonResponseDto<?> lectureEventDelete(HttpServletRequest request) {
         try {
             Long lectureEventNo = Long.valueOf(request.getParameter("lectureEventNo"));
-
             LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
             lectureRepository.updateByLectureEvent(lectureEvent);

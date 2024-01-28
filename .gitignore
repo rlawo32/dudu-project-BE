@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application-cloud.properties
 application-oauth.properties
+application-jwt.properties
 
 ### STS ###
 .apt_generated

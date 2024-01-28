@@ -33,7 +33,6 @@ public class LectureEventService {
     private final LectureInstitutionRepository lectureInstitutionRepository;
     private final LectureEventRepository lectureEventRepository;
     private final LectureEventImageRepository lectureEventImageRepository;
-
     private final ImageUploadUtil imageUploadUtil;
 
     // lecture_event 테이블에서 event_no에 매핑되는 데이터, 이벤트 페이지 구성에 사용

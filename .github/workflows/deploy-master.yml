@@ -1,0 +1,60 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: rlawo32/dudu-project
+          stage: main
+          yaml: >
+            name: dudu-project-be
+
+            app: java@17
+
+            options:
+              ports: 8080
+              env:
+                - name: DB_URL
+                  value: jdbc:mariadb://svc.sel5.cloudtype.app:30995/dudu_project
+                - name: DB_NAME
+                  value: root
+                - name: DB_PASSWORD
+                  value: root456321
+                - name: AUTH_SECRET
+                  value: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==
+                - name: AUTH_SECOND
+                  value: "86400"
+                - name: S3_ACCESS_KEY_ID
+                  value: AKIA34GK4P4GQRP5JAVQ
+                - name: S3_SECRET_KEY
+                  value: 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
+                - name: S3_BUCKET
+                  value: react-project-bucket
+                - name: GOOGLE_CLIENT_ID
+                  value: 125179384425-fjcq36el4gni54a629p876mmmr15bt5f.apps.googleusercontent.com
+                - name: GOOGLE_CLIENT_SECRET
+                  value: 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
+                - name: NAVER_CLIENT_ID
+                  value: 36IC4qRwjsQ495GBCm_C
+                - name: NAVER_CLIENT_SECRET
+                  value: Y6Ak5sR7fx
+                - name: KAKAO_CLIENT_ID
+                  value: ee0584f00f2a788d89d3d4e8f47a3206
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}

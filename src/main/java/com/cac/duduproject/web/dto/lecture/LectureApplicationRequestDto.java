@@ -24,6 +24,9 @@ public class LectureApplicationRequestDto {
         return LectureApplication.builder()
                 .lecture(lecture)
                 .member(member)
+                .lectureApplicationOrderId(orderId)
+                .lectureApplicationPaymentKey(paymentKey)
+                .lectureApplicationAmount(amount)
                 .build();
     }
 }

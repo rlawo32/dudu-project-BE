@@ -1,9 +1,6 @@
 package com.cac.duduproject.web.controller;
 
-import com.cac.duduproject.service.lecture.LectureEventService;
-import com.cac.duduproject.service.lecture.LectureImageService;
-import com.cac.duduproject.service.lecture.LectureListService;
-import com.cac.duduproject.service.lecture.LectureWriteService;
+import com.cac.duduproject.service.lecture.*;
 import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
@@ -19,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class LectureController {
 
     private final LectureWriteService lectureWriteService;
+    private final LectureApplicationService lectureApplicationService;
     private final LectureListService lectureListService;
     private final LectureEventService lectureEventService;
     private final LectureImageService lectureImageService;
@@ -159,5 +157,10 @@ public class LectureController {
     @DeleteMapping("/lectureInstitutionImageDelete")
     public CommonResponseDto<?> lectureInstitutionImageDelete(HttpServletRequest request) {
         return lectureImageService.deleteLectureInstitutionImage(request);
+    }
+
+    @PostMapping("/lectureApplicationInsert")
+    public CommonResponseDto<?> lectureApplicationInsert(LectureApplicationRequestDto requestDto) {
+        return lectureApplicationService.lectureApplicationWrite(requestDto);
     }
 }

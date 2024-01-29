@@ -4,6 +4,7 @@ import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.EmailUtil;
 import com.cac.duduproject.util.jwt.dto.JwtTokenRequestDto;
 import com.cac.duduproject.util.jwt.dto.JwtTokenResponseDto;
+import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.member.MemberSignInRequestDto;
 import com.cac.duduproject.web.dto.member.MemberSignUpRequestDto;
@@ -54,6 +55,12 @@ public class MemberController {
     @GetMapping("/getRole")
     public String getRole() {
         return memberService.getRole();
+    }
+
+    @GetMapping("/getMemberNo")
+    public Long getMemberNo() {
+        System.out.println(SecurityUtil.getCurrentMemberNo());
+        return SecurityUtil.getCurrentMemberNo();
     }
 
     @PostMapping("/findMemberId")

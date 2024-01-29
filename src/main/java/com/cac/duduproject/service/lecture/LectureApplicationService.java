@@ -23,9 +23,11 @@ public class LectureApplicationService {
     @Transactional
     public CommonResponseDto<?> lectureApplicationWrite(LectureApplicationRequestDto requestDto) {
         try {
-            Long lectureNo = Long.valueOf(requestDto.getOrderId().substring(requestDto.getOrderId().indexOf("_")));
+            Long lectureNo = Long.valueOf(requestDto.getOrderId().substring(requestDto.getOrderId().indexOf("_")+1));
             Lecture lecture = lectureRepository.findById(lectureNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
+
+            System.out.println(SecurityUtil.getCurrentMemberNo());
 
             Long memberNo = SecurityUtil.getCurrentMemberNo();
             Member member = memberRepository.findById(memberNo)

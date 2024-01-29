@@ -160,7 +160,7 @@ public class LectureController {
     }
 
     @PostMapping("/lectureApplicationInsert")
-    public CommonResponseDto<?> lectureApplicationInsert(LectureApplicationRequestDto requestDto) {
+    public CommonResponseDto<?> lectureApplicationInsert(@RequestBody LectureApplicationRequestDto requestDto) {
         return lectureApplicationService.lectureApplicationWrite(requestDto);
     }
 }

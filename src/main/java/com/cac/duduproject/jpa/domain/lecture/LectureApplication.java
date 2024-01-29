@@ -3,6 +3,7 @@ package com.cac.duduproject.jpa.domain.lecture;
 import com.cac.duduproject.jpa.domain.member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,18 @@ public class LectureApplication {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")
     private Member member;
+
+    @Column(name = "lecture_application_order_id")
+    @NotBlank
+    private String lectureApplicationOrderId;
+
+    @Column(name = "lecture_application_payment_key")
+    @NotBlank
+    private String lectureApplicationPaymentKey;
+
+    @Column(name = "lecture_application_amount")
+    @NotNull
+    private Long lectureApplicationAmount;
 
     @Column(name = "lecture_application_cancel_yn")
     @NotBlank
@@ -55,8 +68,12 @@ public class LectureApplication {
     }
 
     @Builder
-    public LectureApplication(Lecture lecture, Member member) {
+    public LectureApplication(Lecture lecture, Member member, String lectureApplicationOrderId,
+                              String lectureApplicationPaymentKey, Long lectureApplicationAmount) {
         this.lecture = lecture;
         this.member = member;
+        this.lectureApplicationOrderId = lectureApplicationOrderId;
+        this.lectureApplicationPaymentKey = lectureApplicationPaymentKey;
+        this.lectureApplicationAmount = lectureApplicationAmount;
     }
 }

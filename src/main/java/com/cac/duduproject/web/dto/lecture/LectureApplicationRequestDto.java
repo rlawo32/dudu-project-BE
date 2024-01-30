@@ -2,12 +2,9 @@ package com.cac.duduproject.web.dto.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.jpa.domain.member.Member;
-import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor

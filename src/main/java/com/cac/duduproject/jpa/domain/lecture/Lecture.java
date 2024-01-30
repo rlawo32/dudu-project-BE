@@ -1,6 +1,8 @@
 package com.cac.duduproject.jpa.domain.lecture;
 
 import com.cac.duduproject.jpa.domain.member.Member;
+import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureStateRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -133,6 +136,11 @@ public class Lecture {
 
     public Lecture lectureCurrentPersonUpdate() {
         this.lectureCurrentPerson += 1;
+        return this;
+    }
+
+    public Lecture lectureStateUpdate(LectureState lectureState) {
+        this.lectureState = lectureState;
         return this;
     }
 

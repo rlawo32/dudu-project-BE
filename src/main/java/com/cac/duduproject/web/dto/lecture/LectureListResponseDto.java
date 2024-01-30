@@ -11,6 +11,7 @@ public class LectureListResponseDto {
     private String lectureDivision;
     private String lectureTeacher;
     private String lectureTime;
+    private String lecturePeriod;
     private Long lectureFee;
     private String lectureInstitution;
     //
@@ -25,6 +26,7 @@ public class LectureListResponseDto {
         this.lectureDivision = lecture.getLectureDivision();
         this.lectureTeacher = lecture.getMember().getMemberName();
         this.lectureTime = lecture.getLectureTime();
+        this.lecturePeriod = lecture.getLecturePeriod();
         this.lectureFee = lecture.getLectureFee();
         this.lectureInstitution = lecture.getLectureInstitution().getInstitutionName();
         this.lectureStateNo = lecture.getLectureState().getLectureStateNo();

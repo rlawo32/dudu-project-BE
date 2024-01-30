@@ -91,7 +91,7 @@ public class LectureWriteService {
             requestDto.setLectureCount(lectureCount);
 
             if(now.compareTo(receptionStartDate) < 0) {
-                LectureState lectureState = lectureStateRepository.findById(1L)
+                LectureState lectureState = lectureStateRepository.findById(3L)
                         .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
                 requestDto.setLectureState(lectureState);
             } else if(now.compareTo(receptionStartDate) >= 0 && now.compareTo(receptionEndDate) <= 0) {

@@ -1,6 +1,5 @@
 package com.cac.duduproject.web.controller;
 
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
 import com.cac.duduproject.service.lecture.*;
 import com.cac.duduproject.service.member.MemberService;
 import com.cac.duduproject.util.ImageUploadUtil;

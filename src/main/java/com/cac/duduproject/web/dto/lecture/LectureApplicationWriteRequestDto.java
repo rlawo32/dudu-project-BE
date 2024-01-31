@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LectureApplicationRequestDto {
+public class LectureApplicationWriteRequestDto {
 
     private String paymentKey;
     private String orderId;

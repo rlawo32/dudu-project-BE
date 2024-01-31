@@ -160,7 +160,12 @@ public class LectureController {
     }
 
     @PostMapping("/lectureApplicationInsert")
-    public CommonResponseDto<?> lectureApplicationInsert(@RequestBody LectureApplicationRequestDto requestDto) {
+    public CommonResponseDto<?> lectureApplicationInsert(@RequestBody LectureApplicationWriteRequestDto requestDto) {
         return lectureApplicationService.lectureApplicationWrite(requestDto);
+    }
+
+    @PostMapping("/lectureApplicationList")
+    public CommonResponseDto<?> lectureApplicationList(@RequestBody LectureApplicationListRequestDto requestDto) {
+        return lectureApplicationService.findAllLectureApplicationList(requestDto);
     }
 }

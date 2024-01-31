@@ -6,11 +6,22 @@ import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureApplicationRequestDto;
+import com.cac.duduproject.web.dto.lecture.LectureApplicationListRequestDto;
+import com.cac.duduproject.web.dto.lecture.LectureApplicationListResponseDto;
+import com.cac.duduproject.web.dto.lecture.LectureApplicationWriteRequestDto;
 import com.cac.duduproject.web.dto.lecture.LectureListResponseDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +33,7 @@ public class LectureApplicationService {
     private final LectureApplicationRepository lectureApplicationRepository;
 
     @Transactional
-    public CommonResponseDto<?> lectureApplicationWrite(LectureApplicationRequestDto requestDto) {
+    public CommonResponseDto<?> lectureApplicationWrite(LectureApplicationWriteRequestDto requestDto) {
         try {
             Long lectureNo = Long.valueOf(requestDto.getOrderId().substring(requestDto.getOrderId().indexOf("_")+1));
             Lecture lecture = lectureRepository.findById(lectureNo)
@@ -49,6 +60,32 @@ public class LectureApplicationService {
                 return CommonResponseDto.setFailed("Lecture Capacity Over !!");
             }
         } catch (Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findAllLectureApplicationList(LectureApplicationListRequestDto requestDto) {
+        try {
+            Map<String, Object> result = new HashMap<>();
+
+            Long memberNo = SecurityUtil.getCurrentMemberNo();
+            int pageNo = requestDto.getPageNo();
+            String sortType = requestDto.getSortType();
+            String searchText = requestDto.getSearchText();
+
+            Page<LectureApplication> pageable = lectureApplicationRepository.findBySearch(memberNo, searchText, sortType,
+                    PageRequest.of(0, (2*pageNo), Sort.by("lectureApplicationCreatedDate").descending()));
+            Long totalPage = pageable.getTotalElements();
+
+            List<LectureApplicationListResponseDto> list = pageable.stream()
+                    .map(LectureApplicationListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            result.put("applicationList", list);
+            result.put("totalPage", totalPage);
+            return CommonResponseDto.setSuccess("Lecture List", result);
+        } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
     }

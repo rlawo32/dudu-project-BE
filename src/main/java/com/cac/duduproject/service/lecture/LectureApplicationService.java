@@ -87,7 +87,7 @@ public class LectureApplicationService {
 
             result.put("applicationList", list);
             result.put("totalPage", totalPage);
-            return CommonResponseDto.setSuccess("Lecture List", result);
+            return CommonResponseDto.setSuccess("LectureApplication List", result);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

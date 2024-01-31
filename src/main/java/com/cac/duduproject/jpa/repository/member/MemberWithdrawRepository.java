@@ -1,4 +1,8 @@
 package com.cac.duduproject.jpa.repository.member;
 
-public interface MemberWithdrawRepository {
+import com.cac.duduproject.jpa.domain.member.MemberWithdraw;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberWithdrawRepository extends JpaRepository<MemberWithdraw, Long> {
+
 }

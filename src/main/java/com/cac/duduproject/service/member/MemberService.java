@@ -263,6 +263,22 @@ public class MemberService {
         return CommonResponseDto.setSuccess("Find MemberList Success", list);
     }
 
+    // 회원 수정
+    @Transactional
+    public CommonResponseDto<?> memberInfoUpdate(MemberSignUpRequestDto requestDto) {
+        try {
+            Long memberNo = SecurityUtil.getCurrentMemberNo();
+            Member member = memberRepository.findById(memberNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + memberNo));
+
+            member.infoUpdate(requestDto.getMemberName(), requestDto.getMemberEmail(),
+                    requestDto.getMemberBirth(), requestDto.getMemberPhone(), requestDto.getMemberGender());
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("DataBase Error!!");
+        }
+        return CommonResponseDto.setSuccess("MemberInfo Update Success!!", null);
+    }
+
     // 비밀번호 변경
     @Transactional
     public CommonResponseDto<?> passwordUpdate(HttpServletRequest request) {
@@ -278,7 +294,7 @@ public class MemberService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("DataBase Error!!");
         }
-        return CommonResponseDto.setSuccess("Password Change Success!!", SecurityUtil.getCurrentMemberNo());
+        return CommonResponseDto.setSuccess("Password Change Success!!", null);
     }
 
     // 회원 탈퇴

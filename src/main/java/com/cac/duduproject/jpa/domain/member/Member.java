@@ -36,12 +36,16 @@ public class Member {
     private String memberName;
 
     @Column(name = "member_password")
-    @NotBlank
+    @NotNull
     private String memberPw;
 
     @Column(name = "member_gender")
     @NotBlank
     private String memberGender;
+
+    @Column(name = "member_birth")
+    @NotBlank
+    private String memberBirth;
 
     @Column(name = "member_phone")
     @NotBlank
@@ -81,12 +85,13 @@ public class Member {
 
     @Builder
     public Member(String memberEmail, String memberId, String memberName, String memberPw, String memberGender,
-                  String memberPhone, Role role, String memberAttributeCode, String memberProvider) {
+                  String memberBirth, String memberPhone, Role role, String memberAttributeCode, String memberProvider) {
         this.memberEmail = memberEmail;
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberPw = memberPw;
         this.memberGender = memberGender;
+        this.memberBirth = memberBirth;
         this.memberPhone = memberPhone;
         this.role = role;
         this.memberAttributeCode = memberAttributeCode;
@@ -96,13 +101,16 @@ public class Member {
     public Member infoUpdate(String memberName, String memberProvider) {
         this.memberName = memberName;
         this.memberProvider = memberProvider;
-
         return this;
     }
 
     public Member passwordUpdate(String memberPw) {
         this.memberPw = memberPw;
+        return this;
+    }
 
+    public Member memberWithdrawUpdate(String memberWithdrawYn) {
+        this.memberWithdrawYn = memberWithdrawYn;
         return this;
     }
 

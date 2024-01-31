@@ -46,21 +46,20 @@ public class MemberController {
         return memberService.memberEmailDuplicationChk(request.getParameter("memberEmail"));
     }
 
+    @GetMapping("/memberPwDuplicationChk")
+    public boolean passwordDuplicationChk(HttpServletRequest request) {
+        return memberService.passwordDuplicationChk(request.getParameter("passwordCheck"));
+    }
+
     @PostMapping("/reissue")
     public CommonResponseDto<JwtTokenResponseDto> reissue(@RequestBody JwtTokenRequestDto requestDto, HttpServletRequest request) {
         requestDto.setAccessToken(request.getHeader("Authorization"));
         return memberService.reissue(requestDto);
     }
 
-    @GetMapping("/getRole")
-    public String getRole() {
-        return memberService.getRole();
-    }
-
-    @GetMapping("/getMemberNo")
-    public Long getMemberNo() {
-        System.out.println(SecurityUtil.getCurrentMemberNo());
-        return SecurityUtil.getCurrentMemberNo();
+    @GetMapping("/findMemberInfo")
+    public CommonResponseDto<?> findMemberInfo() {
+        return memberService.findMemberInfo();
     }
 
     @PostMapping("/findMemberId")
@@ -78,4 +77,24 @@ public class MemberController {
     public CommonResponseDto<?> findMemberPw(@RequestBody MemberSignUpRequestDto requestDto) {
         return memberService.findMemberPw(requestDto);
     }
+
+    // 비밀번호 확인
+    @PutMapping("/passwordUpdate")
+    public CommonResponseDto<?> passwordUpdate(HttpServletRequest request) {
+        return memberService.passwordUpdate(request);
+    }
+
+    // 회원 탈퇴
+    @PutMapping("/memberWithdraw")
+    public CommonResponseDto<?> memberWithdraw(@RequestBody MemberSignInRequestDto requestDto) {
+        return memberService.memberWithdraw(requestDto);
+    }
+
+    @GetMapping("/getRole")
+    public String getRole() {
+        return memberService.getRole();
+    }
+
+    @GetMapping("/getMemberNo")
+    public Long getMemberNo() { return SecurityUtil.getCurrentMemberNo(); }
 }

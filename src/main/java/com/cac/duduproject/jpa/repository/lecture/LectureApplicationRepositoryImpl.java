@@ -1,10 +1,9 @@
 package com.cac.duduproject.jpa.repository.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.*;
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureApplication;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
-import com.cac.duduproject.web.dto.lecture.LectureListRequestDto;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

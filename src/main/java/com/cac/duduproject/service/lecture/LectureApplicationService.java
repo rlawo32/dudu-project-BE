@@ -1,8 +1,12 @@
 package com.cac.duduproject.service.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.*;
+import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureApplication;
+import com.cac.duduproject.jpa.domain.lecture.LectureState;
 import com.cac.duduproject.jpa.domain.member.Member;
-import com.cac.duduproject.jpa.repository.lecture.*;
+import com.cac.duduproject.jpa.repository.lecture.LectureApplicationRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureStateRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
@@ -10,7 +14,6 @@ import com.cac.duduproject.web.dto.lecture.LectureApplicationListRequestDto;
 import com.cac.duduproject.web.dto.lecture.LectureApplicationListResponseDto;
 import com.cac.duduproject.web.dto.lecture.LectureApplicationWriteRequestDto;
 import com.cac.duduproject.web.dto.lecture.LectureListResponseDto;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -38,7 +38,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
          } else {
              try {
                  if(authentication.isAuthenticated()) {
-
                      Member member = memberRepository.findById((Long) memberNo)
                              .orElseThrow(() -> new IllegalArgumentException("해당 사용자 No가 없습니다. No : " + memberNo));
 
@@ -46,9 +45,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
                              .member(member)
                              .memberLogType("SOCIAL")
                              .memberLogSuccessYn("Y")
+                             .memberLogReason("소셜 로그인 인증 성공")
                              .memberLogIpAddress("")
                              .build();
-
                      memberLogRepository.save(memberLog);
                  }
 

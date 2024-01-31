@@ -25,7 +25,7 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
     private MemberRepository memberRepository;
 
     public LectureApplicationRepositoryImpl() {
-        super(Lecture.class);
+        super(LectureApplication.class);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class MemberSignUpRequestDto {
     private String memberName;
     private String memberPw;
     private String memberGender;
+    private String memberBirth;
     private String memberPhone;
     private MemberTermsAgreeRequestDto memberTermsAgree;
 
@@ -25,6 +26,7 @@ public class MemberSignUpRequestDto {
                 .memberName(memberName)
                 .memberPw(passwordEncoder.encode(memberPw))
                 .memberGender(memberGender)
+                .memberBirth(memberBirth)
                 .memberPhone(memberPhone)
                 .role(Role.MEMBER)
                 .memberAttributeCode("-")

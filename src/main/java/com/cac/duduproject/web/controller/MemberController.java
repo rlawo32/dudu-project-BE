@@ -78,6 +78,12 @@ public class MemberController {
         return memberService.findMemberPw(requestDto);
     }
 
+    // 회원 수정
+    @PutMapping("/memberInfoUpdate")
+    public CommonResponseDto<?> memberInfoUpdate(@RequestBody MemberSignUpRequestDto requestDto) {
+        return memberService.memberInfoUpdate(requestDto);
+    }
+
     // 비밀번호 확인
     @PutMapping("/passwordUpdate")
     public CommonResponseDto<?> passwordUpdate(HttpServletRequest request) {

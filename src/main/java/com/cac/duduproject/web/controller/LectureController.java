@@ -1,7 +1,7 @@
 package com.cac.duduproject.web.controller;
 
 import com.cac.duduproject.service.lecture.*;
-import com.cac.duduproject.service.member.MemberService;
+import com.cac.duduproject.service.member.MemberSelectService;
 import com.cac.duduproject.util.ImageUploadUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
@@ -20,7 +20,7 @@ public class LectureController {
     private final LectureListService lectureListService;
     private final LectureEventService lectureEventService;
     private final LectureImageService lectureImageService;
-    private final MemberService memberService;
+    private final MemberSelectService memberSelectService;
 
     private final ImageUploadUtil imageUploadUtil;
 
@@ -66,7 +66,7 @@ public class LectureController {
 
     @GetMapping("/lectureTeacherList")
     public CommonResponseDto<?> lectureTeacherList(HttpServletRequest request) {
-        return memberService.findAllMemberList(request);
+        return memberSelectService.findAllMemberList(request);
     }
 
     @PostMapping("/lectureList")

@@ -36,20 +36,27 @@ public class MemberLog {
     @NotBlank
     private String memberLogSuccessYn;
 
+    @Column(name = "member_log_reason")
+    @NotBlank
+    private String memberLogReason;
+
     @Column(name = "member_log_ip_address")
-//    @NotBlank
+    @NotBlank
     private String memberLogIpAddress;
 
     @PrePersist
     public void onPrePersist() {
+        this.memberLogIpAddress = "-";
         this.memberLogDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
     }
 
     @Builder
-    public MemberLog(Member member, String memberLogType, String memberLogSuccessYn, String memberLogIpAddress) {
+    public MemberLog(Member member, String memberLogType, String memberLogSuccessYn,
+                     String memberLogReason, String memberLogIpAddress) {
         this.member = member;
         this.memberLogType = memberLogType;
         this.memberLogSuccessYn = memberLogSuccessYn;
+        this.memberLogReason = memberLogReason;
         this.memberLogIpAddress = memberLogIpAddress;
     }
 }

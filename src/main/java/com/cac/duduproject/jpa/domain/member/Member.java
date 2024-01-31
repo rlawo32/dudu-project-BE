@@ -98,9 +98,19 @@ public class Member {
         this.memberProvider = memberProvider;
     }
 
-    public Member infoUpdate(String memberName, String memberProvider) {
+    public Member oAuthInfoUpdate(String memberName, String memberProvider) {
         this.memberName = memberName;
         this.memberProvider = memberProvider;
+        return this;
+    }
+
+    public Member infoUpdate(String memberName, String memberEmail, String memberBirth,
+                             String memberPhone, String memberGender) {
+        this.memberName = memberName;
+        this.memberEmail = memberEmail;
+        this.memberBirth = memberBirth;
+        this.memberPhone = memberPhone;
+        this.memberGender = memberGender;
         return this;
     }
 

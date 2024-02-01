@@ -41,7 +41,8 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                                       Pageable pageable) {
         JPAQuery<Lecture> query = queryFactory.selectFrom(lecture)
                 .where(eqLectureInstitution(institutionNo),
-                        lecture.lectureTitle.contains(searchText),
+                        lecture.lectureTitle.contains(searchText).
+                                or(lecture.lectureTeacher.contains(searchText)),
                         eqMainCategory(mainCategoryNo),
                         eqSubCategory(subCategoryNo),
                         eqListType(listType),

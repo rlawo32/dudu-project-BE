@@ -6,5 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface LectureApplicationRepositoryCustom {
 
-    Page<LectureApplication> findBySearch(Long memberNo, String searchText, String sortType, Pageable pageable);
+    Page<LectureApplication> findBySearch(Long memberNo, String searchCategory,
+                                          String searchText, String sortType, Pageable pageable);
 }

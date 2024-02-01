@@ -29,10 +29,11 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
     }
 
     @Override
-    public Page<LectureApplication> findBySearch(Long memberNo, String searchText, String sortType,
-                                      Pageable pageable) {
+    public Page<LectureApplication> findBySearch(Long memberNo, String searchCategory,
+                                                 String searchText, String sortType, Pageable pageable) {
         JPAQuery<LectureApplication> query = queryFactory.selectFrom(lectureApplication)
                 .where(eqMember(memberNo),
+                        lectureApplication.lectureApplicationCancelYn.eq(searchCategory),
                         lectureApplication.lectureApplicationOrderId.contains(searchText)
                                 .or(lectureApplication.lecture.lectureTitle.contains(searchText)),
                         lectureApplication.lectureApplicationCreatedDate.contains(sortType));

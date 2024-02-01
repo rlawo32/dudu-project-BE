@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class LectureApplicationListRequestDto {
 
     private int pageNo;
+    private String searchCategory;
     private String sortType;
     private String searchText;
 }

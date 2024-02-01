@@ -10,10 +10,7 @@ import com.cac.duduproject.jpa.repository.lecture.LectureStateRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureApplicationListRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureApplicationListResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureApplicationWriteRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureListResponseDto;
+import com.cac.duduproject.web.dto.lecture.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +48,7 @@ public class LectureApplicationService {
 
             if(lecture.getLectureCapacity() > lecture.getLectureCurrentPerson()) {
                 lectureApplicationRepository.save(requestDto.toLectureApplication());
-                lecture.lectureCurrentPersonUpdate();
+                lecture.lectureCurrentPersonUpdate("U");
                 if(lecture.getLectureCapacity() == lecture.getLectureCurrentPerson()) {
                     LectureState lectureState = lectureStateRepository.findById(3L)
                             .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
@@ -74,11 +71,12 @@ public class LectureApplicationService {
 
             Long memberNo = SecurityUtil.getCurrentMemberNo();
             int pageNo = requestDto.getPageNo();
+            String searchCategory = requestDto.getSearchCategory();
             String sortType = requestDto.getSortType();
             String searchText = requestDto.getSearchText();
 
-            Page<LectureApplication> pageable = lectureApplicationRepository.findBySearch(memberNo, searchText, sortType,
-                    PageRequest.of(0, (2*pageNo), Sort.by("lectureApplicationCreatedDate").descending()));
+            Page<LectureApplication> pageable = lectureApplicationRepository.findBySearch(memberNo, searchCategory, searchText,
+                    sortType, PageRequest.of(0, (2*pageNo), Sort.by("lectureApplicationCreatedDate").descending()));
             Long totalPage = pageable.getTotalElements();
 
             List<LectureApplicationListResponseDto> list = pageable.stream()
@@ -88,6 +86,29 @@ public class LectureApplicationService {
             result.put("applicationList", list);
             result.put("totalPage", totalPage);
             return CommonResponseDto.setSuccess("LectureApplication List", result);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+    }
+
+    @Transactional
+    public CommonResponseDto<?> updateLectureApplicationCancel(LectureApplicationCancelRequestDto requestDto) {
+        try {
+            LectureApplication lectureApplication = lectureApplicationRepository.findById(requestDto.getLectureApplicationNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + requestDto.getLectureApplicationNo()));
+            lectureApplication.lectureApplicationCancel(requestDto.getLectureApplicationCancelDesc());
+
+            Long lectureNo = lectureApplication.getLecture().getLectureNo();
+            Lecture lecture = lectureRepository.findById(lectureNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
+            lecture.lectureCurrentPersonUpdate("D");
+
+            if(lecture.getLectureCapacity() > lecture.getLectureCurrentPerson()) {
+                LectureState lectureState = lectureStateRepository.findById(2L)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
+                lecture.lectureStateUpdate(lectureState);
+            }
+            return CommonResponseDto.setSuccess("LectureApplication Cancel Success", null);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

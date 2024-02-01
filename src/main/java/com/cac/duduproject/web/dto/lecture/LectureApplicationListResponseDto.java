@@ -15,6 +15,7 @@ public class LectureApplicationListResponseDto {
     private String lectureApplicationCreatedDate;
     private String lectureApplicationMemberName;
 
+    private Long lectureNo;
     private String lectureInstitutionName;
     private String lectureTitle;
     private String lectureTeacher;
@@ -31,9 +32,10 @@ public class LectureApplicationListResponseDto {
         this.lectureApplicationCancelDesc = lectureApplication.getLectureApplicationCancelDesc();
         this.lectureApplicationCreatedDate = lectureApplication.getLectureApplicationCreatedDate();
         this.lectureApplicationMemberName = lectureApplication.getMember().getMemberName();
+        this.lectureNo = lectureApplication.getLecture().getLectureNo();
         this.lectureInstitutionName = lectureApplication.getLecture().getLectureInstitution().getInstitutionName();
         this.lectureTitle = lectureApplication.getLecture().getLectureTitle();
-        this.lectureTeacher = lectureApplication.getLecture().getMember().getMemberName();
+        this.lectureTeacher = lectureApplication.getLecture().getLectureTeacher();
         this.lecturePeriod = lectureApplication.getLecture().getLecturePeriod();
         this.lectureTime = lectureApplication.getLecture().getLectureTime();
         this.lectureCount = lectureApplication.getLecture().getLectureCount();

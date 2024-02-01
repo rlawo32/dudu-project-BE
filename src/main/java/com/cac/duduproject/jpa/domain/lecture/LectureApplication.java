@@ -61,6 +61,11 @@ public class LectureApplication {
         this.lectureApplicationCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
     }
 
+    @PreUpdate
+    public void onPreUpdate() {
+        this.lectureApplicationCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm"));
+    }
+
     public LectureApplication lectureApplicationCancel(String desc) {
         this.lectureApplicationCancelYn = "Y";
         this.lectureApplicationCancelDesc = desc;

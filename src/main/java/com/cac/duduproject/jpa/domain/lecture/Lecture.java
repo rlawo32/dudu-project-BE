@@ -30,6 +30,10 @@ public class Lecture {
     @NotBlank
     private String lectureTitle;
 
+    @Column(name = "lecture_teacher")
+    @NotBlank
+    private String lectureTeacher;
+
     @Column(name = "lecture_period")
     @NotEmpty
     private String lecturePeriod;
@@ -131,8 +135,12 @@ public class Lecture {
         return this;
     }
 
-    public Lecture lectureCurrentPersonUpdate() {
-        this.lectureCurrentPerson += 1;
+    public Lecture lectureCurrentPersonUpdate(String type) {
+        if(type.equals("U")) {
+            this.lectureCurrentPerson += 1;
+        } else {
+            this.lectureCurrentPerson -= 1;
+        }
         return this;
     }
 
@@ -142,13 +150,14 @@ public class Lecture {
     }
 
     @Builder
-    public Lecture(String lectureTitle, String lecturePeriod, String lectureTime, String lectureReception,
-                   int lectureCapacity, Long lectureFee, String lectureDescription, String lectureSchedule,
-                   String materialsAndSignificant, String lectureDivision, int lectureCount,
+    public Lecture(String lectureTitle, String lectureTeacher, String lecturePeriod, String lectureTime,
+                   String lectureReception, int lectureCapacity, Long lectureFee, String lectureDescription,
+                   String lectureSchedule, String materialsAndSignificant, String lectureDivision, int lectureCount,
                    Member member, LectureInstitution lectureInstitution, LectureRoom lectureRoom,
                    LectureMainCategory lectureMainCategory, LectureSubCategory lectureSubCategory,
                    LectureState lectureState) {
         this.lectureTitle = lectureTitle;
+        this.lectureTeacher = lectureTeacher;
         this.lecturePeriod = lecturePeriod;
         this.lectureTime = lectureTime;
         this.lectureReception = lectureReception;

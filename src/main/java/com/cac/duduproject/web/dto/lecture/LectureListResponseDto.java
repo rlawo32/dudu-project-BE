@@ -19,6 +19,7 @@ public class LectureListResponseDto {
     private int lectureCount;
     private String lectureEventType;
     private String lectureThumbnail;
+    private String lectureBasketState;
 
     public LectureListResponseDto(Lecture lecture) {
         this.lectureNo = lecture.getLectureNo();

@@ -1,10 +1,10 @@
 package com.cac.duduproject.service.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
-import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
-import com.cac.duduproject.jpa.domain.lecture.LectureMainCategory;
-import com.cac.duduproject.jpa.domain.lecture.LectureSubCategory;
+import com.cac.duduproject.jpa.domain.lecture.*;
+import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.*;
+import com.cac.duduproject.jpa.repository.member.MemberRepository;
+import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.lecture.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +34,9 @@ public class LectureListService {
     private final LectureMainCategoryRepository lectureMainCategoryRepository;
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
     private final LectureStateRepository lectureStateRepository;
+    private final LectureBasketRepository lectureBasketRepository;
+
+    private final MemberRepository memberRepository;
 
     @Transactional
     public CommonResponseDto<?> findAllLectureInstitution() {
@@ -170,9 +173,23 @@ public class LectureListService {
                     .map(LectureListResponseDto::new)
                     .collect(Collectors.toList());
 
+            if(SecurityUtil.getCurrentMemberNo() != null) {
+                Long memberNo = SecurityUtil.getCurrentMemberNo();
+                for(int i=0; i<list.size(); i++) {
+                    Long lectureNo = list.get(i).getLectureNo();
+                    Lecture lecture = lectureRepository.findById(lectureNo)
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+                    Member member = memberRepository.findById(memberNo)
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + memberNo));
+                    boolean answer = lectureBasketRepository.existsByLectureAndMember(lecture, member);
+                    if(answer) {
+                        list.get(i).setLectureBasketState("Y");
+                    }
+                }
+            }
+
             result.put("lectureList", list);
             result.put("totalPage", totalPage);
-
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
@@ -261,8 +278,34 @@ public class LectureListService {
                     .collect(Collectors.toList());
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
-        };
+        }
         return CommonResponseDto.setSuccess("Lecture Detail", list);
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findLectureBasketList(HttpServletRequest request) {
+        try {
+            Map<String, Object> result = new HashMap<>();
+
+            Long memberNo = SecurityUtil.getCurrentMemberNo();
+            int pageNo = Integer.valueOf(request.getParameter("pageNo"));
+
+            Member member = memberRepository.findById(memberNo)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + memberNo));
+            Page<LectureBasket> pageable = lectureBasketRepository.findByMember(member, PageRequest.of(0, (5*pageNo)));
+            Long totalPage = pageable.getTotalElements();
+
+            List<LectureBasketListResponseDto> list = pageable.stream()
+                    .map(LectureBasketListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            result.put("lectureBasketList", list);
+            result.put("totalPage", totalPage);
+
+            return CommonResponseDto.setSuccess("LectureBasket List", result);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
     }
 
     @Transactional

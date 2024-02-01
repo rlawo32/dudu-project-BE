@@ -4,11 +4,9 @@ import com.cac.duduproject.jpa.domain.lecture.*;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
+import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureEventWriteRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureRoomRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureSubCategoryRequestDto;
-import com.cac.duduproject.web.dto.lecture.LectureWriteRequestDto;
+import com.cac.duduproject.web.dto.lecture.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +27,7 @@ public class LectureWriteService {
     private final LectureSubCategoryRepository lectureSubCategoryRepository;
     private final LectureStateRepository lectureStateRepository;
     private final LectureEventRepository lectureEventRepository;
+    private final LectureBasketRepository lectureBasketRepository;
 
     private final LectureImageService lectureImageService;
 
@@ -36,19 +35,19 @@ public class LectureWriteService {
     public CommonResponseDto<?> lectureWrite(LectureWriteRequestDto requestDto) {
         try {
             Member member = memberRepository.findById(requestDto.getMemberNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자 아이디가 없습니다. ID : " + requestDto.getMemberNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자 아이디가 없습니다. No. : " + requestDto.getMemberNo()));
 
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getInstitutionNo()));
 
             LectureRoom lectureRoom = lectureRoomRepository.findById(requestDto.getLectureRoomNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getLectureRoomNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getLectureRoomNo()));
 
             LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(requestDto.getMainCategoryNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getMainCategoryNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getMainCategoryNo()));
 
             LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(requestDto.getSubCategoryNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getSubCategoryNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getSubCategoryNo()));
 
             requestDto.setLectureTeacher(member.getMemberName());
             requestDto.setMember(member);
@@ -116,7 +115,7 @@ public class LectureWriteService {
 
         try {
             LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getInstitutionNo()));
 
             requestDto.setLectureInstitution(lectureInstitution);
 
@@ -132,7 +131,7 @@ public class LectureWriteService {
 
         try {
             LectureMainCategory lectureMainCategory = lectureMainCategoryRepository.findById(requestDto.getLectureMainCategoryNo())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getLectureMainCategoryNo()));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getLectureMainCategoryNo()));
 
             requestDto.setLectureMainCategory(lectureMainCategory);
 
@@ -148,7 +147,7 @@ public class LectureWriteService {
         try {
             if(requestDto.getLectureEventNo() == 0) {
                 LectureInstitution lectureInstitution = lectureInstitutionRepository.findById(requestDto.getInstitutionNo())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getInstitutionNo()));
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getInstitutionNo()));
                 requestDto.setLectureInstitution(lectureInstitution);
 
                 Long lectureEventNo = lectureEventRepository.save(requestDto.toLectureEvent()).getLectureEventNo();
@@ -156,23 +155,23 @@ public class LectureWriteService {
                 lectureImageService.lectureImageInsert(lectureEventNo, requestDto.getLectureEventThumbnail(), "E");
 
                 LectureEvent lectureEvent = lectureEventRepository.findById(lectureEventNo)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureEventNo));
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureEventNo));
 
                 for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
                     Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
                     Lecture lecture = lectureRepository.findById(lectureNo)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
 
                     lecture.lectureEventUpdate(lectureEvent);
                 }
             } else {
                 LectureEvent lectureEvent = lectureEventRepository.findById(requestDto.getLectureEventNo())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getLectureEventNo()));
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getLectureEventNo()));
 
                 for(int i=0; i<requestDto.getLectureEventList().size(); i++) {
                     Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
                     Lecture lecture = lectureRepository.findById(lectureNo)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
 
                     lecture.lectureEventUpdate(lectureEvent);
                 }
@@ -190,7 +189,7 @@ public class LectureWriteService {
                 Long lectureNo = requestDto.getLectureEventList().get(i).getLectureNo();
                 String eventType = requestDto.getLectureEventList().get(i).getLectureEventType();
                 Lecture lecture = lectureRepository.findById(lectureNo)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
 
                 if(requestDto.getLectureEventType().equals("R")) {
                     lecture.lectureEventTypeUpdate(eventType.substring(0, 1) + requestDto.getLectureEventType());
@@ -206,7 +205,7 @@ public class LectureWriteService {
                 Long lectureNo = requestDto.getLectureEventRemoveList().get(i).getLectureNo();
                 String eventType = requestDto.getLectureEventRemoveList().get(i).getLectureEventType();
                 Lecture lecture = lectureRepository.findById(lectureNo)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + lectureNo));
+                        .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
 
 
                 if(requestDto.getLectureEventType().equals("R")) {
@@ -219,6 +218,23 @@ public class LectureWriteService {
                     }
                 }
             }
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("Insert Success", null);
+    }
+
+    @Transactional
+    public CommonResponseDto<?> insertLectureBasket(LectureBasketRequestDto requestDto) {
+        try {
+            Lecture lecture = lectureRepository.findById(requestDto.getLectureNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + requestDto.getLectureNo()));
+            Member member = memberRepository.findById(SecurityUtil.getCurrentMemberNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + SecurityUtil.getCurrentMemberNo()));
+            requestDto.setLecture(lecture);
+            requestDto.setMember(member);
+
+            lectureBasketRepository.save(requestDto.toLectureBasket());
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

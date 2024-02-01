@@ -18,6 +18,7 @@ public class LectureController {
     private final LectureWriteService lectureWriteService;
     private final LectureApplicationService lectureApplicationService;
     private final LectureListService lectureListService;
+    private final LectureUpdateService lectureUpdateService;
     private final LectureEventService lectureEventService;
     private final LectureImageService lectureImageService;
     private final MemberSelectService memberSelectService;
@@ -172,5 +173,20 @@ public class LectureController {
     @PutMapping("/lectureApplicationCancel")
     public CommonResponseDto<?> lectureApplicationCancel(@RequestBody LectureApplicationCancelRequestDto requestDto) {
         return lectureApplicationService.updateLectureApplicationCancel(requestDto);
+    }
+
+    @PostMapping("/insertLectureBasket")
+    public CommonResponseDto<?> insertLectureBasket(@RequestBody LectureBasketRequestDto requestDto) {
+        return lectureWriteService.insertLectureBasket(requestDto);
+    }
+
+    @PostMapping("/lectureBasketList")
+    public CommonResponseDto<?> lectureBasketList(HttpServletRequest request) {
+        return lectureListService.findLectureBasketList(request);
+    }
+
+    @DeleteMapping("/deleteLectureBasket")
+    public CommonResponseDto<?> deleteLectureBasket(@RequestBody LectureBasketDeleteRequestDto requestDto) {
+        return lectureUpdateService.deleteLectureBasket(requestDto);
     }
 }

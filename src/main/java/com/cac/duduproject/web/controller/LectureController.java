@@ -168,4 +168,9 @@ public class LectureController {
     public CommonResponseDto<?> lectureApplicationList(@RequestBody LectureApplicationListRequestDto requestDto) {
         return lectureApplicationService.findAllLectureApplicationList(requestDto);
     }
+
+    @PutMapping("/lectureApplicationCancel")
+    public CommonResponseDto<?> lectureApplicationCancel(@RequestBody LectureApplicationCancelRequestDto requestDto) {
+        return lectureApplicationService.updateLectureApplicationCancel(requestDto);
+    }
 }

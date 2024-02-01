@@ -24,7 +24,7 @@ public class LectureListResponseDto {
         this.lectureNo = lecture.getLectureNo();
         this.lectureTitle = lecture.getLectureTitle();
         this.lectureDivision = lecture.getLectureDivision();
-        this.lectureTeacher = lecture.getMember().getMemberName();
+        this.lectureTeacher = lecture.getLectureTeacher();
         this.lectureTime = lecture.getLectureTime();
         this.lecturePeriod = lecture.getLecturePeriod();
         this.lectureFee = lecture.getLectureFee();

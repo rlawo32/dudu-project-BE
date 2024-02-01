@@ -50,6 +50,7 @@ public class LectureWriteService {
             LectureSubCategory lectureSubCategory = lectureSubCategoryRepository.findById(requestDto.getSubCategoryNo())
                     .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. ID : " + requestDto.getSubCategoryNo()));
 
+            requestDto.setLectureTeacher(member.getMemberName());
             requestDto.setMember(member);
             requestDto.setLectureInstitution(lectureInstitution);
             requestDto.setLectureRoom(lectureRoom);

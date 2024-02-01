@@ -15,6 +15,7 @@ import java.util.List;
 public class LectureWriteRequestDto {
 
     private String lectureTitle;
+    private String lectureTeacher;
     private String lecturePeriod;
     private String lectureTime;
     private String lectureReception;
@@ -46,6 +47,7 @@ public class LectureWriteRequestDto {
     public Lecture toLecture() {
         return Lecture.builder()
                 .lectureTitle(lectureTitle)
+                .lectureTeacher(lectureTeacher)
                 .lecturePeriod(lecturePeriod)
                 .lectureTime(lectureTime)
                 .lectureReception(lectureReception)

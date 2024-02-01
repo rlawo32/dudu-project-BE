@@ -37,7 +37,7 @@ public class LectureDetailResponseDto {
         }
         this.lectureInstitution = lecture.getLectureInstitution().getInstitutionName();
         this.lectureDivision = lecture.getLectureDivision();
-        this.lectureTeacher = lecture.getMember().getMemberName();
+        this.lectureTeacher = lecture.getLectureTeacher();
         this.lecturePeriod = lecture.getLecturePeriod();
         this.lectureTime = lecture.getLectureTime();
         this.lectureCount = lecture.getLectureCount();

@@ -7,7 +7,6 @@ import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.util.Role;
 import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureListResponseDto;
 import com.cac.duduproject.web.dto.member.MemberInfoResponseDto;
 import com.cac.duduproject.web.dto.member.MemberListResponseDto;
 import com.cac.duduproject.web.dto.member.MemberLogResponseDto;
@@ -105,9 +104,11 @@ public class MemberSelectService {
 
             Page<MemberLog> pageable = null;
             if(sortType.equals("N")) {
-                pageable = memberLogRepository.findByAllMemberLog(memberNo, PageRequest.of(0, (10*pageNo), Sort.by("memberLogDate").descending()));
+                pageable = memberLogRepository.findByAllMemberLog(memberNo,
+                        PageRequest.of(0, (10*pageNo), Sort.by("memberLogDate").descending()));
             } else {
-                pageable = memberLogRepository.findByAllMemberLog(memberNo, PageRequest.of(0, (10*pageNo), Sort.by("memberLogDate").ascending()));
+                pageable = memberLogRepository.findByAllMemberLog(memberNo,
+                        PageRequest.of(0, (10*pageNo), Sort.by("memberLogDate").ascending()));
             }
             Long totalPage = pageable.getTotalElements();
 

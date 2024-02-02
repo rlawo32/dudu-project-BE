@@ -92,7 +92,7 @@ public class MemberSelectService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!!!");
         }
-        return CommonResponseDto.setSuccess("Find MemberList Success", list);
+        return CommonResponseDto.setSuccess("Find MemberList List", list);
     }
 
     @Transactional
@@ -120,7 +120,7 @@ public class MemberSelectService {
             result.put("loginLogList", loginLogList);
             result.put("totalPage", totalPage);
 
-            return CommonResponseDto.setSuccess("Find MemberList Success", result);
+            return CommonResponseDto.setSuccess("Find MemberLog List", result);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!!!");
         }

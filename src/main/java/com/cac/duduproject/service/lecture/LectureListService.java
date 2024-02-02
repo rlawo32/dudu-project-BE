@@ -260,7 +260,7 @@ public class LectureListService {
                 result.put("totalPage", totalPage);
             }
 
-            return CommonResponseDto.setSuccess("LectureEvent Type", result);
+            return CommonResponseDto.setSuccess("LectureEvent Type List", result);
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }

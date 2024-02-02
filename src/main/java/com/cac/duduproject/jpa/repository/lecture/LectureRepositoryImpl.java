@@ -38,6 +38,8 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                                       Long mainCategoryNo, Long subCategoryNo, String listType,
                                       List<LectureListRequestDto.DivisionItemList> searchDivision,
                                       List<LectureListRequestDto.StateItemList> searchState,
+                                      List<LectureListRequestDto.DowItemList> searchDow,
+                                      List<LectureListRequestDto.FeeItemList> searchFee,
                                       Pageable pageable) {
         JPAQuery<Lecture> query = queryFactory.selectFrom(lecture)
                 .where(eqLectureInstitution(institutionNo),
@@ -47,7 +49,9 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                         eqSubCategory(subCategoryNo),
                         eqListType(listType),
                         (eqDivision(searchDivision)),
-                        (eqState(searchState)));
+                        (eqState(searchState)),
+                        (eqDow(searchDow)),
+                        (eqFee(searchFee)));
         List<Lecture> lectures = this.getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<Lecture>(lectures, pageable, query.fetchCount());
     }
@@ -113,6 +117,37 @@ public class LectureRepositoryImpl extends QuerydslRepositorySupport implements 
                 LectureState lectureState = lectureStateRepository.findById(searchState.get(i).getStItem())
                         .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + searchState));
                 builder.or(lecture.lectureState.eq(lectureState));
+            }
+            return builder;
+        }
+    }
+
+    private BooleanBuilder eqDow(List<LectureListRequestDto.DowItemList> searchDow) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if(searchDow.size() < 1) {
+            return null;
+        } else {
+            for(int i=0; i<searchDow.size(); i++) {
+                builder.or(lecture.lectureTime.contains("(" + searchDow.get(i).getDwItem() + ")"));
+            }
+            return builder;
+        }
+    }
+
+    private BooleanBuilder eqFee(List<LectureListRequestDto.FeeItemList> searchFee) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if(searchFee.size() < 1) {
+            return null;
+        } else {
+            for(int i=0; i<searchFee.size(); i++) {
+                if(searchFee.get(i).getFeKey().equals("D")) {
+                    builder.or(lecture.lectureFee.loe(Long.valueOf(searchFee.get(i).getFeValue())));
+                } else if(searchFee.get(i).getFeKey().equals("U")) {
+                    builder.or(lecture.lectureFee.goe(Long.valueOf(searchFee.get(i).getFeValue())));
+                } else if(searchFee.get(i).getFeKey().equals("B")) {
+                    String[] bet = searchFee.get(i).getFeValue().split("~");
+                    builder.or(lecture.lectureFee.between(Long.valueOf(bet[0]), Long.valueOf(bet[1])));
+                }
             }
             return builder;
         }

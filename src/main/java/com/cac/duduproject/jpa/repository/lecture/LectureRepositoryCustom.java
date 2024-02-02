@@ -14,5 +14,7 @@ public interface LectureRepositoryCustom {
                                Long mainCategoryNo, Long subCategoryNo, String listType,
                                List<LectureListRequestDto.DivisionItemList> searchDivision,
                                List<LectureListRequestDto.StateItemList> searchState,
+                               List<LectureListRequestDto.DowItemList> searchDow,
+                               List<LectureListRequestDto.FeeItemList> searchFee,
                                Pageable pageable);
 }

@@ -132,6 +132,8 @@ public class LectureListService {
 
             List<LectureListRequestDto.DivisionItemList> searchDivision = requestDto.getSearchDivision();
             List<LectureListRequestDto.StateItemList> searchState = requestDto.getSearchState();
+            List<LectureListRequestDto.DowItemList> searchDow = requestDto.getSearchDow();
+            List<LectureListRequestDto.FeeItemList> searchFee = requestDto.getSearchFee();
 
             Sort sort = Sort.by("lecturePeriod").ascending();
 
@@ -152,19 +154,19 @@ public class LectureListService {
             if(listType.equals("E")) { // event write load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
-                        searchDivision, searchState,
+                        searchDivision, searchState, searchDow, searchFee,
                         PageRequest.of(pageNo, 10, sort));
                 totalPage = Long.valueOf(pageable.getTotalPages());
             } else if(listType.equals("A")) { // lecture list all load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
-                        searchDivision, searchState,
+                        searchDivision, searchState, searchDow, searchFee,
                         PageRequest.of(0, (20*pageNo), sort));
                 totalPage = pageable.getTotalElements();
             } else if(listType.equals("M")) { // main recent event load
                 pageable = lectureRepository.findBySearch(institutionNo, searchText,
                         mainCategoryNo, subCategoryNo, listType,
-                        searchDivision, searchState,
+                        searchDivision, searchState, searchDow, searchFee,
                         PageRequest.of(0, 20, Sort.by("lectureCreatedDate").descending()));
                 totalPage = pageable.getTotalElements();
             }

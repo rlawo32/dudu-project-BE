@@ -20,6 +20,8 @@ public class LectureListRequestDto {
     private String searchText;
     private List<DivisionItemList> searchDivision;
     private List<StateItemList> searchState;
+    private List<DowItemList> searchDow;
+    private List<FeeItemList> searchFee;
 
     @Data
     public static class DivisionItemList {
@@ -30,6 +32,20 @@ public class LectureListRequestDto {
     public static class StateItemList {
         private Long stItem;
         private String stName;
+    }
+
+    @Data
+    public static class DowItemList {
+        private Long dwItem;
+        private String dwName;
+    }
+
+    @Data
+    public static class FeeItemList {
+        private Long feItem;
+        private String feKey;
+        private String feValue;
+        private String feName;
     }
 }
 

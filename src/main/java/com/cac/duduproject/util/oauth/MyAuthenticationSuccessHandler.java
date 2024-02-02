@@ -62,7 +62,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
                  refreshTokenRepository.save(refreshToken);
 
                  DriverManager.println("SuccessHandler oAuth2User: " + defaultOAuth2User);
-                 response.sendRedirect(UriComponentsBuilder.fromUriString("http://localhost:3000")
+                 response.sendRedirect(UriComponentsBuilder.fromUriString("https://dudu-project.netlify.app")
                          .queryParam("bearer", tokenDto.getGrantType())
                          .queryParam("accessToken", tokenDto.getAccessToken())
                          .queryParam("refreshToken", tokenDto.getRefreshToken())

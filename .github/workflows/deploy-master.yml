@@ -2,7 +2,7 @@ name: Deploy to cloudtype
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -49,11 +49,13 @@ jobs:
                 - name: GOOGLE_CLIENT_SECRET
                   value: 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
                 - name: NAVER_CLIENT_ID
-                  value: 36IC4qRwjsQ495GBCm_C
+                  value: tDxT9LD_WM0dDak0wseg
                 - name: NAVER_CLIENT_SECRET
-                  value: Y6Ak5sR7fx
+                  value: ByB9PBdxn_
                 - name: KAKAO_CLIENT_ID
-                  value: ee0584f00f2a788d89d3d4e8f47a3206
+                  value: e37f1380b6c56fb45f7f5a30860ab6c1
+                - name: KAKAO_CLIENT_SECRET
+                  value: FfJVyfpEimkYW1OZJJ6nxEzhA239vGnP
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git

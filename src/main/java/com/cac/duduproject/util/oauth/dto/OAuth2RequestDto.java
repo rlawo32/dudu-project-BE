@@ -20,6 +20,7 @@ public class OAuth2RequestDto {
                 .memberName(name)
                 .memberPw("-")
                 .memberGender("-")
+                .memberBirth("-")
                 .memberPhone("-")
                 .role(Role.SOCIAL)
                 .memberAttributeCode(attributeCode)

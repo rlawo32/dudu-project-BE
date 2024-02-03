@@ -12,12 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -308,25 +305,5 @@ public class LectureListService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-    }
-
-    @Transactional
-    @Scheduled(cron = "0 0 0 * * *")
-    public CommonResponseDto<?> schedulerLectureStateUpdate() {
-        try {
-            LocalDate now = LocalDate.now();
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-
-            List<Lecture> list = lectureRepository.findAllLectureNoAndLectureReception();
-
-            for(int i=0; i<list.size(); i++) {
-                String reception = list.get(i).getLectureReception();
-                LocalDate startDate = LocalDate.parse(reception.substring(0, reception.indexOf("~")-1), dtf);
-                LocalDate endDate = LocalDate.parse(reception.substring(reception.indexOf("~")+2), dtf);
-            }
-        } catch(Exception e) {
-            return CommonResponseDto.setFailed("Data Base Error!");
-        }
-        return CommonResponseDto.setSuccess("LectureInstitution List", null);
     }
 }

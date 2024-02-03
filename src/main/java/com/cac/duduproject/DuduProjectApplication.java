@@ -11,7 +11,8 @@ import java.util.TimeZone;
 @SpringBootApplication
 public class DuduProjectApplication {
 
-	@PostConstruct
+	// 해당 프로젝트 타임존 설정
+	@PostConstruct //프로젝트 실행 시, 처음 한번만 실행
 	public void setTimeZone(){
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 	}

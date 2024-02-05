@@ -7,9 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface LectureBasketRepository extends JpaRepository<LectureBasket, Long> {
 
     boolean existsByLectureAndMember(Lecture lecture, Member member);
 
+    Optional<LectureBasket> findByLectureAndMember(Lecture lecture, Member member);
     Page<LectureBasket> findByMember(Member member, Pageable pageable);
 }

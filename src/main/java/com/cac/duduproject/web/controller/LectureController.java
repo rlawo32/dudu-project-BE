@@ -170,6 +170,11 @@ public class LectureController {
         return lectureApplicationService.findAllLectureApplicationList(requestDto);
     }
 
+    @GetMapping("/lectureApplicationDuplicationChk")
+    public boolean lectureApplicationDuplicationChk(HttpServletRequest request) {
+        return lectureApplicationService.lectureApplicationDuplicationChk(Long.valueOf(request.getParameter("lectureNo")));
+    }
+
     @PutMapping("/lectureApplicationCancel")
     public CommonResponseDto<?> lectureApplicationCancel(@RequestBody LectureApplicationCancelRequestDto requestDto) {
         return lectureApplicationService.updateLectureApplicationCancel(requestDto);

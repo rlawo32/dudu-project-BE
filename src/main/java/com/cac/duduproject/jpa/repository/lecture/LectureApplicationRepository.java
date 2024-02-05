@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LectureApplicationRepository extends JpaRepository<LectureApplication, Long>, LectureApplicationRepositoryCustom {
 
-    boolean existsByLectureAndMember(Lecture lecture, Member member);
+    boolean existsByLectureAndMemberAndLectureApplicationCancelYn(Lecture lecture, Member member, String cancelYn);
 }

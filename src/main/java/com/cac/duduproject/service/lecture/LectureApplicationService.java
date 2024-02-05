@@ -116,7 +116,7 @@ public class LectureApplicationService {
         Lecture lecture = lectureRepository.findById(lectureNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
 
-        return lectureApplicationRepository.existsByLectureAndMember(lecture, member);
+        return lectureApplicationRepository.existsByLectureAndMemberAndLectureApplicationCancelYn(lecture, member, "N");
     }
 
     @Transactional

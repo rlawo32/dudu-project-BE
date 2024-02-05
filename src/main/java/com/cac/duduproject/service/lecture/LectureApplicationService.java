@@ -2,9 +2,11 @@ package com.cac.duduproject.service.lecture;
 
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
 import com.cac.duduproject.jpa.domain.lecture.LectureApplication;
+import com.cac.duduproject.jpa.domain.lecture.LectureBasket;
 import com.cac.duduproject.jpa.domain.lecture.LectureState;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.lecture.LectureApplicationRepository;
+import com.cac.duduproject.jpa.repository.lecture.LectureBasketRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureStateRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,34 +34,48 @@ public class LectureApplicationService {
     private final LectureRepository lectureRepository;
     private final LectureStateRepository lectureStateRepository;
     private final LectureApplicationRepository lectureApplicationRepository;
+    private final LectureBasketRepository lectureBasketRepository;
 
     @Transactional
     public CommonResponseDto<?> lectureApplicationWrite(LectureApplicationWriteRequestDto requestDto) {
         try {
-            Long lectureNo = Long.valueOf(requestDto.getOrderId().substring(requestDto.getOrderId().indexOf("_")+1));
-            Lecture lecture = lectureRepository.findById(lectureNo)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
-
             Long memberNo = SecurityUtil.getCurrentMemberNo();
             Member member = memberRepository.findById(memberNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + memberNo));
-
-            requestDto.setLecture(lecture);
             requestDto.setMember(member);
 
-            if(lecture.getLectureCapacity() > lecture.getLectureCurrentPerson()) {
-                lectureApplicationRepository.save(requestDto.toLectureApplication());
-                lecture.lectureCurrentPersonUpdate("U");
-                if(lecture.getLectureCapacity() == lecture.getLectureCurrentPerson()) {
-                    LectureState lectureState = lectureStateRepository.findById(3L)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
-                    lecture.lectureStateUpdate(lectureState);
+            String[] lectureNoArr = requestDto.getOrderId().split("_");
+            List<Lecture> entityList = new ArrayList<>();
+            for(int i=1; i<lectureNoArr.length; i++) {
+                Long lectureNo = Long.valueOf(lectureNoArr[i]);
+                Lecture lecture = lectureRepository.findById(lectureNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
+
+                requestDto.setLecture(lecture);
+                requestDto.setAmount(lecture.getLectureFee());
+
+                if(lecture.getLectureCapacity() > lecture.getLectureCurrentPerson()) {
+                    lectureApplicationRepository.save(requestDto.toLectureApplication());
+                    lecture.lectureCurrentPersonUpdate("U");
+                    if(lecture.getLectureCapacity() == lecture.getLectureCurrentPerson()) {
+                        LectureState lectureState = lectureStateRepository.findById(3L)
+                                .orElseThrow(() -> new IllegalArgumentException("해당 상태가 없습니다."));
+                        lecture.lectureStateUpdate(lectureState);
+                    }
+                    entityList.add(lecture);
+                    if(lectureBasketRepository.existsByLectureAndMember(lecture, member)) {
+                        LectureBasket lectureBasket = lectureBasketRepository.findByLectureAndMember(lecture, member)
+                                .orElseThrow(() -> new IllegalArgumentException("해당 데이터가 없습니다."));
+                        lectureBasketRepository.delete(lectureBasket);
+                    }
+                } else {
+                    return CommonResponseDto.setFailed("Lecture Capacity Over !!");
                 }
-                LectureListResponseDto lectureListResponseDto = new LectureListResponseDto(lecture);
-                return CommonResponseDto.setSuccess("Lecture Application Write Success", lectureListResponseDto);
-            } else {
-                return CommonResponseDto.setFailed("Lecture Capacity Over !!");
             }
+            List<LectureListResponseDto> list = entityList.stream()
+                    .map(LectureListResponseDto::new)
+                    .collect(Collectors.toList());
+            return CommonResponseDto.setSuccess("Lecture Application Write Success", list);
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
@@ -89,6 +106,17 @@ public class LectureApplicationService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
+    }
+
+    @Transactional
+    public boolean lectureApplicationDuplicationChk(Long lectureNo) {
+        Long memberNo = SecurityUtil.getCurrentMemberNo();
+        Member member = memberRepository.findById(memberNo)
+            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + memberNo));
+        Lecture lecture = lectureRepository.findById(lectureNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. No. : " + lectureNo));
+
+        return lectureApplicationRepository.existsByLectureAndMember(lecture, member);
     }
 
     @Transactional

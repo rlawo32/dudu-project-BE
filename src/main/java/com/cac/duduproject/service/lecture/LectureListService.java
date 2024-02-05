@@ -180,8 +180,7 @@ public class LectureListService {
                             .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
                     Member member = memberRepository.findById(memberNo)
                             .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + memberNo));
-                    boolean answer = lectureBasketRepository.existsByLectureAndMember(lecture, member);
-                    if(answer) {
+                    if(lectureBasketRepository.existsByLectureAndMember(lecture, member)) {
                         list.get(i).setLectureBasketState("Y");
                     }
                 }

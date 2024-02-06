@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface LectureRepository extends JpaRepository<Lecture, Long>, LectureRepositoryCustom {
 
-    @Query("SELECT l.lectureNo, l.lectureReception FROM Lecture l")
-    List<Lecture> findAllLectureNoAndLectureReception();
+    @Query("SELECT l.lectureNo, l.lectureEvent, l.lectureReception FROM Lecture l")
+    List<Lecture> findAllCustom();
     Page<Lecture> findAllByLectureEvent(LectureEvent lectureEvent, Pageable pageable);
     List<Lecture> findAllByLectureEventTypeContaining(String eventType);
     List<Lecture> findAllByLectureEventTypeContainingAndLectureSubCategory(String eventType, LectureSubCategory lectureSubCategory);

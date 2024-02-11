@@ -1,4 +1,4 @@
-package com.cac.duduproject.jpa.domain.board;
+package com.cac.duduproject.jpa.domain.community;
 
 import com.cac.duduproject.jpa.domain.lecture.*;
 import jakarta.persistence.*;

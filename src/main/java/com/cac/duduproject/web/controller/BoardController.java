@@ -1,10 +1,10 @@
 package com.cac.duduproject.web.controller;
 
-import com.cac.duduproject.service.board.BoardListService;
-import com.cac.duduproject.service.board.BoardWriteService;
+import com.cac.duduproject.service.community.BoardListService;
+import com.cac.duduproject.service.community.BoardWriteService;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.board.BoardListRequestDto;
-import com.cac.duduproject.web.dto.board.BoardWriteRequestDto;
+import com.cac.duduproject.web.dto.community.BoardListRequestDto;
+import com.cac.duduproject.web.dto.community.BoardWriteRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

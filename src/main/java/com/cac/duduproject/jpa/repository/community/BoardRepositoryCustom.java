@@ -1,6 +1,6 @@
-package com.cac.duduproject.jpa.repository.board;
+package com.cac.duduproject.jpa.repository.community;
 
-import com.cac.duduproject.jpa.domain.board.Board;
+import com.cac.duduproject.jpa.domain.community.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,4 +1,4 @@
-package com.cac.duduproject.web.dto.board;
+package com.cac.duduproject.web.dto.community;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

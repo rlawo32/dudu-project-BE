@@ -1,10 +1,10 @@
-package com.cac.duduproject.service.board;
+package com.cac.duduproject.service.community;
 
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
-import com.cac.duduproject.jpa.repository.board.BoardRepository;
+import com.cac.duduproject.jpa.repository.community.BoardRepository;
 import com.cac.duduproject.jpa.repository.lecture.LectureInstitutionRepository;
 import com.cac.duduproject.web.dto.CommonResponseDto;
-import com.cac.duduproject.web.dto.board.BoardWriteRequestDto;
+import com.cac.duduproject.web.dto.community.BoardWriteRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

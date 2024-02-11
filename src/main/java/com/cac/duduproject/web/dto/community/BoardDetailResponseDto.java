@@ -1,6 +1,6 @@
-package com.cac.duduproject.web.dto.board;
+package com.cac.duduproject.web.dto.community;
 
-import com.cac.duduproject.jpa.domain.board.Board;
+import com.cac.duduproject.jpa.domain.community.Board;
 import lombok.Data;
 
 @Data

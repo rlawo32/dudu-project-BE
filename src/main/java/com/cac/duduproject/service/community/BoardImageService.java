@@ -1,9 +1,9 @@
-package com.cac.duduproject.service.board;
+package com.cac.duduproject.service.community;
 
-import com.cac.duduproject.jpa.domain.board.Board;
-import com.cac.duduproject.jpa.domain.board.BoardImage;
-import com.cac.duduproject.jpa.repository.board.BoardImageRepository;
-import com.cac.duduproject.jpa.repository.board.BoardRepository;
+import com.cac.duduproject.jpa.domain.community.Board;
+import com.cac.duduproject.jpa.domain.community.BoardImage;
+import com.cac.duduproject.jpa.repository.community.BoardImageRepository;
+import com.cac.duduproject.jpa.repository.community.BoardRepository;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

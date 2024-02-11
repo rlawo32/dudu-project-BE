@@ -1,4 +1,4 @@
-package com.cac.duduproject.jpa.domain.board;
+package com.cac.duduproject.jpa.domain.community;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

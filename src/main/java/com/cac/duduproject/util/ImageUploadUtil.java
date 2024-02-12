@@ -53,18 +53,20 @@ public class ImageUploadUtil {
             String imageFileName = uuid + "_" + files.getOriginalFilename();
             String uploadDir = "";
 
-            if(type.equals("T")) {
+            if(type.equals("T")) { // 강좌 대표 이미지 경로
                 uploadDir = "/lectureThumbnailImage";
-            } else if(type.equals("L")) {
+            } else if(type.equals("L")) { // 강좌 이미지 경로
                 uploadDir = "/lectureContentImage";
-            } else if(type.equals("C")) {
+            } else if(type.equals("C")) { // Sub 카테고리 이미지 경로
                 uploadDir = "/lectureCategoryImage";
-            } else if(type.equals("E")) {
+            } else if(type.equals("E")) { // 강좌이벤트 이미지 경로
                 uploadDir = "/lectureEventImage";
-            } else if(type.equals("B")) {
+            } else if(type.equals("B")) { // 게시판 이미지 경로
                 uploadDir = "/boardContentImage";
-            } else if(type.equals("I")) {
+            } else if(type.equals("I")) { // 지점 이미지 경로
                 uploadDir = "/institutionImage";
+            } else if(type.equals("R")) { // 리뷰 이미지 경로
+                uploadDir = "/reviewImage";
             }
 
             File file = convertMultiPartFileToFile(files);
@@ -101,6 +103,8 @@ public class ImageUploadUtil {
                 deleteDir = "/boardContentImage";
             } else if(type.equals("I")) {
                 deleteDir = "/institutionImage";
+            } else if(type.equals("R")) {
+                deleteDir = "/reviewImage";
             }
 
             String imageFileName = request.getParameter("imageFileName");

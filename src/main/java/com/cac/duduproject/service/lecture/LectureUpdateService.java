@@ -54,6 +54,7 @@ public class LectureUpdateService {
     @Transactional
 //    @Scheduled(cron = "0 0 0 * * ?") // 매일 24시
     @Scheduled(cron = "0 0 0/6 * * *") // 6시간마다
+//    @Scheduled(cron = "0 0/1 * * * *") // 1분마다
     public void schedulerLectureStateUpdate() {
         try {
             LocalDate now = LocalDate.now();
@@ -83,16 +84,24 @@ public class LectureUpdateService {
 
                 if((!now.isBefore(startDate)) && (now.isBefore(endDate)) && (stateNo == 1)) { // 접수기간 사이
                     LectureState lectureState = lectureStateRepository.findById(2L)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다."));
                     lecture.lectureStateUpdate(lectureState);
                 } else if(now.isBefore(startDate)) { // 접수기간 이전
                     LectureState lectureState = lectureStateRepository.findById(1L)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다."));
                     lecture.lectureStateUpdate(lectureState);
                 } else if(now.isAfter(endDate.minusDays(1)) && (stateNo == 1 || stateNo == 2 || stateNo == 3)) { // 접수기간 이후
                     LectureState lectureState = lectureStateRepository.findById(4L)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다. No. : " + lectureNo));
+                            .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다."));
                     lecture.lectureStateUpdate(lectureState);
+                } else if(stateNo == 4) {
+                    String period = list.get(i).getLecturePeriod();
+                    LocalDate periodEndDate = LocalDate.parse(period.substring(tempPosition+1), dtf);
+                    if(now.isAfter(periodEndDate)) {
+                        LectureState lectureState = lectureStateRepository.findById(6L)
+                                .orElseThrow(() -> new IllegalArgumentException("해당 번호가 없습니다."));
+                        lecture.lectureStateUpdate(lectureState);
+                    }
                 }
             }
         } catch(Exception e) {

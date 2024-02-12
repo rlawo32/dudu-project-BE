@@ -1,7 +1,7 @@
 package com.cac.duduproject.jpa.repository.lecture;
 
-import com.cac.duduproject.jpa.domain.lecture.Lecture;
 import com.cac.duduproject.jpa.domain.lecture.LectureApplication;
+import com.cac.duduproject.jpa.domain.lecture.LectureState;
 import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,6 +23,8 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
     private JPAQueryFactory queryFactory;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private LectureStateRepository lectureStateRepository;
 
     public LectureApplicationRepositoryImpl() {
         super(LectureApplication.class);
@@ -32,8 +34,7 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
     public Page<LectureApplication> findBySearch(Long memberNo, String searchCategory,
                                                  String searchText, String sortType, Pageable pageable) {
         JPAQuery<LectureApplication> query = queryFactory.selectFrom(lectureApplication)
-                .where(eqMember(memberNo),
-                        lectureApplication.lectureApplicationCancelYn.eq(searchCategory),
+                .where(eqMember(memberNo), eqSearchCategory(searchCategory),
                         lectureApplication.lectureApplicationOrderId.contains(searchText)
                                 .or(lectureApplication.lecture.lectureTitle.contains(searchText)),
                         lectureApplication.lectureApplicationCreatedDate.contains(sortType));
@@ -48,6 +49,17 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
             Member member = memberRepository.findById(memberNo)
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + memberNo));
             return lectureApplication.member.eq(member);
+        }
+    }
+
+    private BooleanExpression eqSearchCategory(String searchCategory) {
+        if(searchCategory.equals("R")) {
+            LectureState lectureState = lectureStateRepository.findById(6L)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+            return lectureApplication.lectureApplicationCancelYn.eq("N")
+                    .and(lectureApplication.lecture.lectureState.eq(lectureState));
+        } else {
+            return lectureApplication.lectureApplicationCancelYn.eq(searchCategory);
         }
     }
 }

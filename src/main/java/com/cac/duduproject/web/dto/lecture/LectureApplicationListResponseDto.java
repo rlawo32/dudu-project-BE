@@ -23,6 +23,7 @@ public class LectureApplicationListResponseDto {
     private String lectureTime;
     private int lectureCount;
     private Long lectureFee;
+    private Long lectureStateNo;
 
     public LectureApplicationListResponseDto(LectureApplication lectureApplication) {
         this.lectureApplicationNo = lectureApplication.getLectureApplicationNo();
@@ -40,5 +41,6 @@ public class LectureApplicationListResponseDto {
         this.lectureTime = lectureApplication.getLecture().getLectureTime();
         this.lectureCount = lectureApplication.getLecture().getLectureCount();
         this.lectureFee = lectureApplication.getLecture().getLectureFee();
+        this.lectureStateNo = lectureApplication.getLecture().getLectureState().getLectureStateNo();
     }
 }

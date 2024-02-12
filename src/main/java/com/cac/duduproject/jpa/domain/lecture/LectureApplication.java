@@ -44,7 +44,7 @@ public class LectureApplication {
 
     @Column(name = "lecture_application_cancel_yn")
     @NotBlank
-    private String lectureApplicationCancelYn;
+    private String lectureApplicationCancelYn; // N : 결제완료, Y : 취소완료, R : 수강완료
 
     @Column(name = "lecture_application_cancel_desc")
     @NotBlank

@@ -79,7 +79,7 @@ public class FaqListService {
         } catch(Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
-        return CommonResponseDto.setSuccess("Faq List", result);
+        return CommonResponseDto.setSuccess("Faq Often List", result);
     }
 }
 

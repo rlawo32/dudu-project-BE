@@ -27,6 +27,11 @@ public class ReviewController {
         return reviewListService.findAllReviewList(requestDto);
     }
 
+    @GetMapping("/reviewOftenList")
+    public CommonResponseDto<?> reviewOftenList() {
+        return reviewListService.findReviewOftenList();
+    }
+
     @GetMapping("/reviewDetail")
     public CommonResponseDto<?> reviewDetail(HttpServletRequest request) {
         return reviewListService.findReviewDetail(request);

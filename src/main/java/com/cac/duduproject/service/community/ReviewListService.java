@@ -1,10 +1,8 @@
 package com.cac.duduproject.service.community;
 
 import com.cac.duduproject.jpa.domain.community.Review;
-import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.community.ReviewRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
-import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.community.ReviewDetailResponseDto;
 import com.cac.duduproject.web.dto.community.ReviewListRequestDto;
@@ -64,6 +62,26 @@ public class ReviewListService {
             return CommonResponseDto.setFailed("Data Base Error!");
         }
         return CommonResponseDto.setSuccess("Review List", result);
+    }
+
+    @Transactional
+    public CommonResponseDto<?> findReviewOftenList() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            Page<Review> pageable = reviewRepository.findByReviewOftenList
+                    (PageRequest.of(0, 4, Sort.by("reviewViews").descending()));
+            Long totalPage = Long.valueOf(pageable.getTotalElements());
+
+            List<ReviewListResponseDto> list = pageable.stream()
+                    .map(ReviewListResponseDto::new)
+                    .collect(Collectors.toList());
+
+            result.put("reviewList", list);
+            result.put("totalPage", totalPage);
+        } catch(Exception e) {
+            return CommonResponseDto.setFailed("Data Base Error!");
+        }
+        return CommonResponseDto.setSuccess("Review Often List", result);
     }
 
     @Transactional

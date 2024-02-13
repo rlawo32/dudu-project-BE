@@ -15,6 +15,7 @@ public class ReviewListResponseDto {
     private String institutionName;
     private String reviewCreatedDate;
 
+    private Long lectureNo;
     private String lectureTitle;
     private String lectureThumbnail;
 
@@ -27,6 +28,7 @@ public class ReviewListResponseDto {
         this.institutionNo = review.getLectureInstitution().getInstitutionNo();
         this.institutionName = review.getLectureInstitution().getInstitutionName();
         this.reviewCreatedDate = review.getReviewCreatedDate();
+        this.lectureNo = review.getLecture().getLectureNo();
         this.lectureTitle = review.getLecture().getLectureTitle();
         for(int i=0; i<review.getLecture().getLectureImages().size(); i++) {
             if(review.getLecture().getLectureImages().get(i).getLectureImageType().equals("T")) {

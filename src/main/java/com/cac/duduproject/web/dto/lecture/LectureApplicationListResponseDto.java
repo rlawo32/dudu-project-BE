@@ -25,6 +25,8 @@ public class LectureApplicationListResponseDto {
     private Long lectureFee;
     private Long lectureStateNo;
 
+    private Long reviewNo;
+
     public LectureApplicationListResponseDto(LectureApplication lectureApplication) {
         this.lectureApplicationNo = lectureApplication.getLectureApplicationNo();
         this.lectureApplicationOrderId = lectureApplication.getLectureApplicationOrderId();
@@ -42,5 +44,10 @@ public class LectureApplicationListResponseDto {
         this.lectureCount = lectureApplication.getLecture().getLectureCount();
         this.lectureFee = lectureApplication.getLecture().getLectureFee();
         this.lectureStateNo = lectureApplication.getLecture().getLectureState().getLectureStateNo();
+        if(lectureApplication.getLectureApplicationCancelYn().equals("R")) {
+            this.reviewNo = lectureApplication.getReview().getReviewNo();
+        } else {
+            this.reviewNo = 0L;
+        }
     }
 }

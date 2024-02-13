@@ -27,7 +27,7 @@ public class BoardImage {
 
     @Column(name = "board_image_type")
     @NotBlank
-    private String boardImageType; // thumbnail or detail
+    private String boardImageType;
 
     @Column(name = "board_image_origin")
     @NotBlank

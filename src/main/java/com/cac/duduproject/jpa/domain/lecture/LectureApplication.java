@@ -1,6 +1,8 @@
 package com.cac.duduproject.jpa.domain.lecture;
 
+import com.cac.duduproject.jpa.domain.community.Review;
 import com.cac.duduproject.jpa.domain.member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -44,7 +48,7 @@ public class LectureApplication {
 
     @Column(name = "lecture_application_cancel_yn")
     @NotBlank
-    private String lectureApplicationCancelYn; // N : 결제완료, Y : 취소완료, R : 수강완료
+    private String lectureApplicationCancelYn; // N : 결제완료, Y : 취소완료, R : 리뷰작성완료
 
     @Column(name = "lecture_application_cancel_desc")
     @NotBlank
@@ -53,6 +57,9 @@ public class LectureApplication {
     @Column(name = "lecture_application_created_date")
     @NotBlank
     private String lectureApplicationCreatedDate;
+
+    @OneToOne(mappedBy = "lectureApplication")
+    private Review review;
 
     @PrePersist
     public void onPrePersist() {
@@ -69,6 +76,11 @@ public class LectureApplication {
     public LectureApplication lectureApplicationCancel(String desc) {
         this.lectureApplicationCancelYn = "Y";
         this.lectureApplicationCancelDesc = desc;
+        return this;
+    }
+
+    public LectureApplication lectureApplicationReview() {
+        this.lectureApplicationCancelYn = "R";
         return this;
     }
 

@@ -38,7 +38,7 @@ public class ReviewListService {
             Long institutionNo = requestDto.getInstitutionNo();
             String searchText = requestDto.getSearchText();
 
-            Sort sort = Sort.by("reviewCreatedDate").ascending();
+            Sort sort = Sort.by("reviewCreatedDate").descending();
 
             if(sortType.equals("1")) { // 최신순
                 sort = Sort.by("reviewCreatedDate").descending();

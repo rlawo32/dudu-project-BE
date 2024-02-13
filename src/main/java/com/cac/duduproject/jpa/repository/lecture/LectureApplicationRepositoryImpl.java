@@ -57,6 +57,7 @@ public class LectureApplicationRepositoryImpl extends QuerydslRepositorySupport 
             LectureState lectureState = lectureStateRepository.findById(6L)
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
             return lectureApplication.lectureApplicationCancelYn.eq("N")
+                    .or(lectureApplication.lectureApplicationCancelYn.eq("R"))
                     .and(lectureApplication.lecture.lectureState.eq(lectureState));
         } else {
             return lectureApplication.lectureApplicationCancelYn.eq(searchCategory);

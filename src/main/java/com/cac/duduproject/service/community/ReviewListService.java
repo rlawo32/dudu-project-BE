@@ -1,7 +1,10 @@
 package com.cac.duduproject.service.community;
 
 import com.cac.duduproject.jpa.domain.community.Review;
+import com.cac.duduproject.jpa.domain.member.Member;
 import com.cac.duduproject.jpa.repository.community.ReviewRepository;
+import com.cac.duduproject.jpa.repository.member.MemberRepository;
+import com.cac.duduproject.util.security.SecurityUtil;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.community.ReviewDetailResponseDto;
 import com.cac.duduproject.web.dto.community.ReviewListRequestDto;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class ReviewListService {
 
     private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public CommonResponseDto<?> findAllReviewList(ReviewListRequestDto requestDto) {

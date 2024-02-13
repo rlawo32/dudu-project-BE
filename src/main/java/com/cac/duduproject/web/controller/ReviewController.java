@@ -31,4 +31,9 @@ public class ReviewController {
     public CommonResponseDto<?> reviewDetail(HttpServletRequest request) {
         return reviewListService.findReviewDetail(request);
     }
+
+    @PutMapping("/reviewViewsUp")
+    public CommonResponseDto<?> reviewViewsUp(HttpServletRequest request) {
+        return reviewWriteService.reviewViewsUp(request);
+    }
 }

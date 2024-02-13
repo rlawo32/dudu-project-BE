@@ -1,6 +1,7 @@
 package com.cac.duduproject.jpa.domain.community;
 
 import com.cac.duduproject.jpa.domain.lecture.Lecture;
+import com.cac.duduproject.jpa.domain.lecture.LectureApplication;
 import com.cac.duduproject.jpa.domain.lecture.LectureInstitution;
 import com.cac.duduproject.jpa.domain.member.Member;
 import jakarta.persistence.*;
@@ -41,9 +42,17 @@ public class Review {
     @NotNull
     private int reviewScore;
 
+    @Column(name = "review_views")
+    @NotNull
+    private Long reviewViews;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_no")
     private Lecture lecture;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecture_application_no")
+    private LectureApplication lectureApplication;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_no")
@@ -59,17 +68,25 @@ public class Review {
 
     @PrePersist
     public void onPrePersist() {
+        this.reviewViews = 0L;
         this.reviewCreatedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd_HH:mm"));
+    }
+
+    public Review reviewViewsUpdate() {
+        this.reviewViews += 1;
+        return this;
     }
 
     @Builder
     public Review(String reviewTitle, String reviewContent, String reviewAuthor, int reviewScore,
-                  Lecture lecture, Member member, LectureInstitution lectureInstitution) {
+                  Lecture lecture, LectureApplication lectureApplication, Member member,
+                  LectureInstitution lectureInstitution) {
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.reviewAuthor = reviewAuthor;
         this.reviewScore = reviewScore;
         this.lecture = lecture;
+        this.lectureApplication = lectureApplication;
         this.member = member;
         this.lectureInstitution = lectureInstitution;
     }

@@ -127,7 +127,6 @@ public class MemberAuthService {
                                 .key(authentication.getName())
                                 .value(tokenDto.getRefreshToken())
                                 .build();
-
                         refreshTokenRepository.save(refreshToken);
                     }
                 }

@@ -80,7 +80,6 @@ public class EmailUtil {
             message.setText("아이디는 " + memberId + "입니다.");
 
             Transport.send(message);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

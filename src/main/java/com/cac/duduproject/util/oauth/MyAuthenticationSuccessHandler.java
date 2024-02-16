@@ -68,7 +68,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
                          .queryParam("bearer", tokenDto.getGrantType())
                          .queryParam("accessToken", tokenDto.getAccessToken())
                          .queryParam("refreshToken", tokenDto.getRefreshToken())
-                         .queryParam("expires", tokenDto.getRefreshTokenExpiresIn())
+                         .queryParam("expires", tokenDto.getAccessTokenExpires())
+                         .queryParam("expiresDate", tokenDto.getAccessTokenExpiresDate())
                          .build().encode(StandardCharsets.UTF_8)
                          .toUriString());
 

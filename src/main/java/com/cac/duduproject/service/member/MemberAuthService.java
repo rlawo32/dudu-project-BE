@@ -140,7 +140,6 @@ public class MemberAuthService {
 
     @Transactional
     public CommonResponseDto<JwtTokenResponseDto> reissue(JwtTokenRequestDto requestDto) {
-        JwtTokenResponseDto tokenDto = new JwtTokenResponseDto();
         try {
             // Refresh Token 검증
             if (!jwtTokenProvider.validateToken(requestDto.getRefreshToken())) {
@@ -157,18 +156,17 @@ public class MemberAuthService {
                 if (!refreshToken.getValue().equals(requestDto.getRefreshToken())) {
                     return CommonResponseDto.setFailed("토큰의 유저 정보가 일치하지 않습니다.");
                 } else {
-                    tokenDto = jwtTokenProvider.generateTokenDto(authentication, "COMMON");
+                    JwtTokenResponseDto tokenDto = jwtTokenProvider.generateTokenDto(authentication, "COMMON");
 
                     // 저장소 정보 업데이트
                     RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
                     refreshTokenRepository.save(newRefreshToken);
+                    return CommonResponseDto.setSuccess("Reissue Success", tokenDto);
                 }
             }
         } catch (Exception e) {
             return CommonResponseDto.setFailed("Data Base Error!!!");
         }
-        // 토큰 발급
-        return CommonResponseDto.setSuccess("Reissue Success", tokenDto);
     }
 
     // 권한 조회

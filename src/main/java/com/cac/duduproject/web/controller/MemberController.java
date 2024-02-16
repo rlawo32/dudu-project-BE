@@ -40,6 +40,11 @@ public class MemberController {
         return memberAuthService.signIn(requestDto);
     }
 
+    @PostMapping("/logout")
+    public CommonResponseDto<?> logout() {
+        return memberAuthService.logout();
+    }
+
     @GetMapping("/memberIdDuplicationChk")
     public boolean memberIdDuplicationChk(HttpServletRequest request) {
         return memberAuthService.memberIdDuplicationChk(request.getParameter("memberId"));

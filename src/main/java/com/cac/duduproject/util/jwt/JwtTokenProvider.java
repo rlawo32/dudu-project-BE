@@ -34,8 +34,8 @@ public class JwtTokenProvider implements InitializingBean {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
-        this.accessTokenValidityInMilliseconds = tokenValidityInSeconds * 42; // 86,400ms : 1.44m(0.001d), 1,814,400ms : 30.24m
-        this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 3000; // 86,400ms : 1.44m(0.001d), 259,200,000ms : 4,320m(3d)
+        this.accessTokenValidityInMilliseconds = tokenValidityInSeconds * 30; // 60,000ms : 1m(0.001d), 60000 * 30 = 30m
+        this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 60 * 24 * 2; // 60,000ms : 1m(0.001d), 60000 * 60 * 24 * 2 = 2d
     }
 
     // 빈이 생성되고 주입을 받은 후에 secret값을 Base64 Decode해서 key 변수에 할당하기 위해
@@ -101,7 +101,8 @@ public class JwtTokenProvider implements InitializingBean {
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .refreshTokenExpiresIn(refreshExprTime)
+                .accessTokenExpires(this.accessTokenValidityInMilliseconds)
+                .accessTokenExpiresDate(accessExprTime)
                 .build();
     }
 

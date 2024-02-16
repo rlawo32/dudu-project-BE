@@ -139,6 +139,19 @@ public class MemberAuthService {
     }
 
     @Transactional
+    public CommonResponseDto<?> logout() {
+        try {
+            RefreshToken refreshToken = refreshTokenRepository.findById(SecurityUtil.getCurrentMemberNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + SecurityUtil.getCurrentMemberNo()));
+
+            refreshTokenRepository.delete(refreshToken);
+        } catch (Exception e) {
+            return CommonResponseDto.setFailed("로그아웃에 실패하였습니다.");
+        }
+        return CommonResponseDto.setSuccess("Logout Success", null);
+    }
+
+    @Transactional
     public CommonResponseDto<JwtTokenResponseDto> reissue(JwtTokenRequestDto requestDto) {
         try {
             // Refresh Token 검증

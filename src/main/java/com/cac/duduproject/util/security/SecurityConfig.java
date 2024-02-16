@@ -54,6 +54,12 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
 
                 .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID", "refreshToken")
+
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
 
@@ -76,12 +82,6 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler(new MyAuthenticationSuccessHandler(jwtTokenProvider, memberRepository, memberLogRepository, refreshTokenRepository))
                 .userInfoEndpoint().userService(customOAuth2UserService);
-
-        httpSecurity
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID", "refreshToken");
 
         return httpSecurity.build();
     }

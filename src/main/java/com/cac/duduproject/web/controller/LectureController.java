@@ -30,7 +30,7 @@ public class LectureController {
         return lectureWriteService.lectureWrite(requestDto);
     }
 
-    @GetMapping("/lectureInstitutionList")
+    @GetMapping("/auth/lectureInstitutionList")
     public CommonResponseDto<?> lectureInstitutionList() {
         return lectureListService.findAllLectureInstitution();
     }
@@ -40,12 +40,12 @@ public class LectureController {
         return lectureWriteService.insertLectureRoom(requestDto);
     }
 
-    @GetMapping("/lectureRoomList")
+    @GetMapping("/auth/lectureRoomList")
     public CommonResponseDto<?> lectureRoomList(HttpServletRequest request) {
         return lectureListService.findLectureRoom(request);
     }
 
-    @GetMapping("/lectureMainCategoryList")
+    @GetMapping("/auth/lectureMainCategoryList")
     public CommonResponseDto<?> lectureMainCategoryList() {
         return lectureListService.findAllLectureMainCategory();
     }
@@ -55,7 +55,7 @@ public class LectureController {
         return lectureWriteService.insertLectureSubCategory(requestDto);
     }
 
-    @GetMapping("/lectureSubCategoryList")
+    @GetMapping("/auth/lectureSubCategoryList")
     public CommonResponseDto<?> lectureSubCategoryList(HttpServletRequest request) {
         return lectureListService.findLectureSubCategory(request);
     }
@@ -70,7 +70,7 @@ public class LectureController {
         return memberSelectService.findAllMemberList(request);
     }
 
-    @PostMapping("/lectureList")
+    @PostMapping("/auth/lectureList")
     public CommonResponseDto<?> lectureList(@RequestBody LectureListRequestDto requestDto) {
         return lectureListService.findAllLectureList(requestDto);
     }
@@ -80,7 +80,7 @@ public class LectureController {
         return lectureWriteService.insertLectureEvent(requestDto);
     }
 
-    @GetMapping("/lectureEventDetail")
+    @GetMapping("/auth/lectureEventDetail")
     public CommonResponseDto<?> lectureEventDetail(HttpServletRequest request) {
         return lectureEventService.findLectureEventDetail(request);
     }
@@ -90,7 +90,7 @@ public class LectureController {
         return lectureEventService.findAllLectureEvent(requestDto);
     }
 
-    @PostMapping("/lectureEventList")
+    @PostMapping("/auth/lectureEventList")
     public CommonResponseDto<?> lectureEventList(@RequestBody LectureEventListRequestDto requestDto) {
         return lectureEventService.findLectureEventList(requestDto);
     }
@@ -110,7 +110,7 @@ public class LectureController {
         lectureEventService.lectureEventListDelete(request);
     }
 
-    @GetMapping("/lectureStateList")
+    @GetMapping("/auth/lectureStateList")
     public CommonResponseDto<?> lectureStateList() {
         return lectureListService.findAllLectureState();
     }
@@ -125,12 +125,12 @@ public class LectureController {
         imageUploadUtil.ImageDeleteS3(request);
     }
 
-    @GetMapping("/lectureDetail")
+    @GetMapping("/auth/lectureDetail")
     public CommonResponseDto<?> lectureDetail(HttpServletRequest request) {
         return lectureListService.findLectureDetail(request);
     }
 
-    @PostMapping("/lectureEventType")
+    @PostMapping("/auth/lectureEventType")
     public CommonResponseDto<?> lectureEventType(@RequestBody LectureListRequestDto requestDto) {
         return lectureListService.findLectureEventType(requestDto);
     }
@@ -140,7 +140,7 @@ public class LectureController {
         return lectureWriteService.insertLectureMainEvent(requestDto);
     }
 
-    @GetMapping("/eventCategoryList")
+    @GetMapping("/auth/eventCategoryList")
     public CommonResponseDto<?> eventCategoryList(HttpServletRequest request) {
         return lectureListService.findEventCategoryList(request);
     }
@@ -150,7 +150,7 @@ public class LectureController {
         lectureImageService.lectureImageInsert(requestDto.getInstitutionNo(), requestDto.getInstitutionImage(), "I");
     }
 
-    @GetMapping("/lectureInstitutionImageList")
+    @GetMapping("/auth/lectureInstitutionImageList")
     public CommonResponseDto<?> lectureInstitutionImageList(HttpServletRequest request) {
         return lectureImageService.findLectureInstitutionImage(request);
     }

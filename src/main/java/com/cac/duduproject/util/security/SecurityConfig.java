@@ -68,7 +68,9 @@ public class SecurityConfig {
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/member/**").permitAll()
                 .requestMatchers("/lecture/auth/**").permitAll()
-                .requestMatchers("/board/boardList", "/board/boardDetail").permitAll()
+                .requestMatchers("/faq/**").permitAll()
+                .requestMatchers("/board/**").permitAll()
+                .requestMatchers("/review/**").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()
 

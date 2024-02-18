@@ -141,7 +141,7 @@ public class MemberAuthService {
     @Transactional
     public CommonResponseDto<?> logout() {
         try {
-            RefreshToken refreshToken = refreshTokenRepository.findById(SecurityUtil.getCurrentMemberNo())
+            RefreshToken refreshToken = refreshTokenRepository.findByKey(String.valueOf(SecurityUtil.getCurrentMemberNo()))
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. No. : " + SecurityUtil.getCurrentMemberNo()));
 
             refreshTokenRepository.delete(refreshToken);

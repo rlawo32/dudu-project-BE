@@ -65,12 +65,9 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeHttpRequests()// HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
-                .requestMatchers("/", "/**").permitAll()
+                .requestMatchers("/").permitAll()
                 .requestMatchers("/member/**").permitAll()
-                .requestMatchers("/lecture/lectureList", "/lecture/lectureMainCategoryList",
-                        "/lecture/lectureSubCategoryList", "/lecture/lectureInstitutionList",
-                        "/lecture/lectureEventList", "/lecture/lectureEventDetail", "/lecture/lectureStateList",
-                        "/lecture/lectureDetail").permitAll()
+                .requestMatchers("/lecture/auth/**").permitAll()
                 .requestMatchers("/board/boardList", "/board/boardDetail").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()

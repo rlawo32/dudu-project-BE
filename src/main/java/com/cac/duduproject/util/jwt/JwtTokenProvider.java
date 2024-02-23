@@ -101,7 +101,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .accessTokenExpires(this.accessTokenValidityInMilliseconds)
+                .accessTokenExpires(this.accessTokenValidityInMilliseconds - 2000) // 자동 로그아웃 기능을 위한 간극
                 .accessTokenExpiresDate(accessExprTime)
                 .build();
     }

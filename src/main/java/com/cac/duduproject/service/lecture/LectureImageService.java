@@ -5,14 +5,11 @@ import com.cac.duduproject.jpa.repository.lecture.*;
 import com.cac.duduproject.web.dto.CommonResponseDto;
 import com.cac.duduproject.web.dto.ImageInsertRequestDto;
 import com.cac.duduproject.web.dto.lecture.LectureInstitutionImageResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureInstitutionResponseDto;
-import com.cac.duduproject.web.dto.lecture.LectureRoomResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

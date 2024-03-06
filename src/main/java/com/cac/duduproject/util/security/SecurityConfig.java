@@ -1,6 +1,5 @@
 package com.cac.duduproject.util.security;
 
-
 import com.cac.duduproject.jpa.repository.member.MemberLogRepository;
 import com.cac.duduproject.jpa.repository.member.MemberRepository;
 import com.cac.duduproject.jpa.repository.member.RefreshTokenRepository;
@@ -22,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Spring Security 활성화 및 웹 보안 설정 구성
 public class SecurityConfig {
 
     private final CorsConfig corsConfig;

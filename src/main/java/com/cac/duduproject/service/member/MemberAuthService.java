@@ -80,7 +80,6 @@ public class MemberAuthService {
         try {
             Member member = memberRepository.findByMemberId(memberId)
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자 아이디가 없습니다. ID : " + memberId));
-
             MemberLog memberLog;
 
             if(member.getMemberWithdrawYn().equals("Y")) {
@@ -128,6 +127,16 @@ public class MemberAuthService {
                                 .value(tokenDto.getRefreshToken())
                                 .build();
                         refreshTokenRepository.save(refreshToken);
+                    } else {
+                        memberLog = MemberLog.builder()
+                                .member(member)
+                                .memberLogType("COMMON")
+                                .memberLogSuccessYn("N")
+                                .memberLogReason("JWT 인증 실패")
+                                .memberLogIpAddress("")
+                                .build();
+
+                        memberLogRepository.save(memberLog);
                     }
                 }
             }

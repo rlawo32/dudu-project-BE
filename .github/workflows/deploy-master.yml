@@ -39,9 +39,9 @@ jobs:
                 - name: AUTH_SECOND
                   value: "60000"
                 - name: S3_ACCESS_KEY_ID
-                  value: AKIA34GK4P4GQRP5JAVQ
+                  value: NONE
                 - name: S3_SECRET_KEY
-                  value: 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
+                  value: NONE
                 - name: S3_BUCKET
                   value: react-project-bucket
                 - name: GOOGLE_CLIENT_ID
